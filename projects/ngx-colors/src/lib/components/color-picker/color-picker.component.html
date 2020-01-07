@@ -16,12 +16,12 @@
 
     <div class="right">
 
-      <div #hueSlider class="hue" [slider] [rgX]="1" [style.display]="(cpColorMode || 1) === 1 ? 'block' : 'none'" (newValue)="onSliderChange('hue',$event)" (dragStart)="onDragStart('hue')" (dragEnd)="onDragEnd('hue')">
+      <div #hueSlider class="hue" [slider] [rgX]="1" (newValue)="onSliderChange('hue',$event)" (dragStart)="onDragStart('hue')" (dragEnd)="onDragEnd('hue')">
        
         <div class="sliderCursor" [style.left.px]="slider?.h"><div><div></div></div></div>
       </div>
 
-      <div #alphaSlider class="alpha" [slider] [rgX]="1" [style.display]="cpAlphaChannel === 'disabled' ? 'none' : 'block'" [style.background-color]="alphaSliderColor" (newValue)="onSliderChange('alpha',$event)" (dragStart)="onDragStart('alpha')" (dragEnd)="onDragEnd('alpha')">
+      <div #alphaSlider class="alpha" [slider] [rgX]="1" [style.background-color]="alphaSliderColor" (newValue)="onSliderChange('alpha',$event)" (dragStart)="onDragStart('alpha')" (dragEnd)="onDragEnd('alpha')">
         <div class="sliderCursor" [style.left.px]="slider?.a"><div><div></div></div></div>
       
       </div>

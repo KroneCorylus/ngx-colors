@@ -14,8 +14,7 @@ import { SliderDirective } from './directives/slider.directive';
   declarations: [NgxColorsComponent, IconsComponent,ColorPickerComponent, SliderDirective],
   imports: [
     
-    CommonModule,
-    BrowserAnimationsModule
+    CommonModule
   ],
   providers: [ConverterService],
   exports: [NgxColorsComponent],

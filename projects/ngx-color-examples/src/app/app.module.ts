@@ -8,11 +8,11 @@ import { NgxColorsModule } from 'projects/ngx-colors/src/public-api';
 @NgModule({
   declarations: [
     AppComponent,
-    NgxColorsModule
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxColorsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

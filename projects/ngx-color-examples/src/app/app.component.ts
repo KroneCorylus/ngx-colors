@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ngx-color-examples';
-  selectedColor = '#000000'
+  rightColor = '#42A5F5'
+  leftColor = '#C0CA33'
 }

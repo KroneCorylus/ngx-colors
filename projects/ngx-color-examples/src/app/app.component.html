@@ -1,3 +1,18 @@
-<router-outlet></router-outlet>
-{{test:selectedColor}}
-<ngx-colors [(color)]="selectedColor"></ngx-colors>
+
+<div class="container" [style.background]="'linear-gradient(45deg, ' + leftColor + ' 0%,' + rightColor + ' 100%)'">
+
+
+  <div class="main-wrapper">
+    <div class="title">ngx-color</div>
+    <div class="selector-wrapper">
+    <ngx-colors style="float:left" [(color)]="leftColor" ></ngx-colors>
+    <div class="color" style="float:left">{{leftColor}}</div>
+    <div class="color" style="float:right">Slide-In animations</div>
+    </div>
+    <div class="selector-wrapper">
+      <ngx-colors  style="float:right" [(color)]="rightColor" [colorsAnimationEffect]="'popup'"></ngx-colors>
+      <div class="color" style="float:right">{{rightColor}}</div>
+      <div class="color" style="float:left">Popup animations</div>
+      </div>
+  </div>
+</div>

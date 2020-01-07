@@ -1,0 +1,31 @@
+
+<div #dialogPopup class="color-picker" (click)="$event.stopPropagation()">
+  
+  <div class="saturation-lightness" [slider] [rgX]="1" [rgY]="1" [style.background-color]="hueSliderColor" (newValue)="onSliderChange('saturation-lightness',$event)" (dragStart)="onDragStart('saturation-lightness')" (dragEnd)="onDragEnd('saturation-lightness')">
+    <div class="cursor" [style.top.px]="slider?.v" [style.left.px]="slider?.s">
+
+      <div></div>
+    </div>
+  </div>
+
+  <div class="hue-alpha box">
+    <div class="left">
+      <div class="selected-color-background"></div>
+      <div class="selected-color" [style.background-color]="selectedColor"></div>      
+    </div>
+
+    <div class="right">
+
+      <div #hueSlider class="hue" [slider] [rgX]="1" [style.display]="(cpColorMode || 1) === 1 ? 'block' : 'none'" (newValue)="onSliderChange('hue',$event)" (dragStart)="onDragStart('hue')" (dragEnd)="onDragEnd('hue')">
+       
+        <div class="sliderCursor" [style.left.px]="slider?.h"><div><div></div></div></div>
+      </div>
+
+      <div #alphaSlider class="alpha" [slider] [rgX]="1" [style.display]="cpAlphaChannel === 'disabled' ? 'none' : 'block'" [style.background-color]="alphaSliderColor" (newValue)="onSliderChange('alpha',$event)" (dragStart)="onDragStart('alpha')" (dragEnd)="onDragEnd('alpha')">
+        <div class="sliderCursor" [style.left.px]="slider?.a"><div><div></div></div></div>
+      
+      </div>
+
+    </div>
+  </div>
+</div>

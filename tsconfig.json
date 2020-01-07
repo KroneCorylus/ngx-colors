@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-colors": [
+        "dist/ngx-colors"
+      ],
+      "ngx-colors/*": [
+        "dist/ngx-colors/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

@@ -111,7 +111,7 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
 
   /**
    * Change color from default colors
-   * @param {string} color
+   * @param string color
    */
   public changeColor(color: string): void {
     this.previewColor = color;
@@ -183,7 +183,7 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
 
   /**
    * Change color from input
-   * @param {string} color
+   * @param string color
    */
   public changeColorManual(color: string): void {
       this.previewColor = color;

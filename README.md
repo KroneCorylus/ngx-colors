@@ -7,6 +7,7 @@
 
 ## Demo
 
+https://ngx-colors.web.app/
 
 ## Installation
 

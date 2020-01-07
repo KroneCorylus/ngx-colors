@@ -1,24 +1,40 @@
-# NgxColors
+<p align="center">
+  <h1 align="center">ngx-colors</h1>
+  <p align="center">Simple yet elegant Material color picker for Angular</p>
+  <p align="center">
+  </p>
+</p>
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.14.
+## Demo
 
-## Code scaffolding
+https://ngx-colors.web.app/
 
-Run `ng generate component component-name --project ngx-colors` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-colors`.
-> Note: Don't forget to add `--project ngx-colors` or else it will be added to the default project in your `angular.json` file. 
+## Installation
 
-## Build
+#### Npm
+```shell
+npm install ngx-colors
+```
 
-Run `ng build ngx-colors` to build the project. The build artifacts will be stored in the `dist/` directory.
+#### Usage
 
-## Publishing
 
-After building your library with `ng build ngx-colors`, go to the dist folder `cd dist/ngx-colors` and run `npm publish`.
+##### Load the module for your app:
 
-## Running unit tests
+```javascript
+import { NgxColorsModule } from 'ngx-colors';
 
-Run `ng test ngx-colors` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@NgModule({
+  ...
+  imports: [
+    ...
+    NgxColorsModule
+  ]
+})
+```
 
-## Further help
+##### Use it in your HTML template:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```html
+<ngx-colors [(color)]="color"></ngx-colors>
+```

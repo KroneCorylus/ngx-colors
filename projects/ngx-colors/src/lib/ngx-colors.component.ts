@@ -52,6 +52,9 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
   @Input() color: string = '#00000000';
   @Output() colorChange: EventEmitter<string> = new EventEmitter<string>(false);
 
+
+  @Output() change: EventEmitter<string> = new EventEmitter<string>();
+
   //Animation type for the color palette show up
   //slide-in, popup,
   @Input() colorsAnimationEffect = 'slide-in'
@@ -95,6 +98,7 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
   public ngOnChanges(changes: any): void {
     if(changes.color){
       this.previewColor = this.color;
+      this.change.emit(this.color);
     }
   }
 
@@ -206,6 +210,7 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
   set Color(value: string) {
       this.color = value;
       this.colorChange.emit(this.color);
+      this.change.emit(this.color);
   }
 
 }

@@ -1,6 +1,7 @@
 .container{
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
     position: relative;
 }
 .main-wrapper{
@@ -11,8 +12,8 @@
     right: 0;
     margin:auto;
     height: 300px;
-    min-width: 500px;
     width: 40vw;
+    min-width: 90vw;;
     // background: white;
     border-radius: 3px;
     // box-shadow:0 1px 1px 0 rgba(0,0,0,.2), 0 1px 1px 1px rgba(0,0,0,.14), 0 1px 1px 1px rgba(0,0,0,.12);
@@ -25,6 +26,7 @@
     font-variant-caps: small-caps;
     font-weight: 100;
     letter-spacing: 0.3em;
+    max-width: 100vw;
 }
 .selector-wrapper{
     background: white;
@@ -33,6 +35,7 @@
     border-radius: 50px;
     margin-top: 20px;
     overflow: hidden;
+    // max-width: 90vw;
 }
 .color {
     font-family: sans-serif;

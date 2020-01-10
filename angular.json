@@ -7,7 +7,12 @@
       "projectType": "library",
       "root": "projects/ngx-colors",
       "sourceRoot": "projects/ngx-colors/src",
-      "prefix": "lib",
+      "prefix": "ngx-colors",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -65,6 +70,7 @@
             "aot": false,
             "assets": [
               "projects/ngx-color-examples/src/favicon.ico",
+              "projects/ngx-color-examples/src/google5eb9cb8e74ff5434.html",
               "projects/ngx-color-examples/src/assets"
             ],
             "styles": [

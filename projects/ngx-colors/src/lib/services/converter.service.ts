@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Cmyk, Rgba, Hsla, Hsva } from '../clases/formats';
 
 import { ColorPickerComponent } from '../components/color-picker/color-picker.component';
+import { ColorFormats } from '../enums/formats';
 
 @Injectable()
 export class ConverterService {
@@ -13,6 +14,39 @@ export class ConverterService {
   // public setActive(active: ColorPickerComponent | null): void {
   //   this.active = active;
   // }
+
+
+  toFormat(hsva:Hsva,format:ColorFormats){
+    var output = '';
+    switch(format){
+      case ColorFormats.HEX:
+        var rgba:Rgba = this.hsvaToRgba(hsva);
+        rgba.denormalize();
+        var output = this.rgbaToHex(rgba,true);
+        break;
+      case ColorFormats.HSLA:
+        var hsla:Hsla = this.hsva2hsla(hsva);
+        hsla.denormalize();
+        var output = hsla.toString();
+        break;
+      case ColorFormats.RGBA:
+        var rgba:Rgba = this.hsvaToRgba(hsva);
+        var output = rgba.toString();
+        break;
+      case ColorFormats.CMYK:
+        var rgba:Rgba = this.hsvaToRgba(hsva);
+        var cmyk:Cmyk = this.rgbaToCmyk(rgba);
+        break;
+    }
+    return output;
+  }
+
+  public stringToFormat(color:string, format:ColorFormats){
+    var hsva = this.stringToHsva(color,true);
+    return this.toFormat(hsva,format);
+  }
+
+
 
   public hsva2hsla(hsva: Hsva): Hsla {
     const h = hsva.h, s = hsva.s, v = hsva.v, a = hsva.a;

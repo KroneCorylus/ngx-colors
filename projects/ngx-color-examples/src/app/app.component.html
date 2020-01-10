@@ -1,18 +1,77 @@
-
-<div class="container" [style.background]="gradient">
+<div class="container" [style.background]="gradient" >
 
 
   <div class="main-wrapper">
     <div class="title">ngx-color</div>
     <div class="selector-wrapper">
-    <ngx-colors (change)="updateGradient()" style="float:left" [(color)]="leftColor" ></ngx-colors>
-    <div class="color" style="float:left">{{leftColor}}</div>
-    <div class="color" style="float:right">Slide-In animations</div>
+      <ngx-colors (change)="updateGradient()" style="float:left" [(color)]="leftColor"></ngx-colors>
+      <div class="color" style="float:left">{{leftColor}}</div>
+      <div class="color" style="float:right">Slide-In animations</div>
     </div>
     <div class="selector-wrapper">
-      <ngx-colors  (change)="updateGradient()" style="float:right" [(color)]="rightColor" [colorsAnimationEffect]="'popup'"></ngx-colors>
+      <ngx-colors (change)="updateGradient()" style="float:right" [(color)]="rightColor"
+        [colorsAnimationEffect]="'popup'"></ngx-colors>
       <div class="color" style="float:right">{{rightColor}}</div>
       <div class="color" style="float:left">Popup animations</div>
-      </div>
+    </div>
   </div>
 </div>
+<div class="documentation">
+  <h2>Install & Import</h2>
+  <h3>Npm</h3>
+  <div class="codeblock">
+    npm install ngx-colors
+  </div>
+
+  <h3>Import</h3>
+ 
+  <div class="codeblock"> 
+    <pre><span class="pl-k">import</span> {{'{'}} NgxColorsModule {{'}'}} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'ngx-colors'</span></span>;
+
+      @<span class="pl-en">NgModule</span>({{'{'}}
+        <span class="pl-k">...</span>
+        imports<span class="pl-k">:</span> [
+          <span class="pl-k">...</span>
+          NgxColorsModule
+        ]
+      {{'}'}})</pre>
+  </div>
+
+  <h2>Examples</h2>
+
+  <h3>Animations</h3>
+
+  <div class="codeblock"> 
+    {{test}}
+    </div>
+  <h3>Custom palette</h3>
+  <div class="codeblock"> 
+    no implemented
+    </div>
+  <h3>Output format</h3>
+  <div class="codeblock"> 
+    no implemented
+    </div>
+  <h3>Disable custom colors</h3>
+  <div class="codeblock"> 
+    no implemented
+    </div>
+</div>
+
+
+
+
+
+
+<!-- <div class="rlink">
+  <a class="github" href="https://github.com/KroneCorylus/ngx-colors">
+    <img src="assets/img/logos/GitHub_Logo.png"></a>
+  <a class="npm" href="https://www.npmjs.com/package/ngx-colors">
+    <svg viewBox="0 0 780 250">
+      <path fill="#231F20"
+        d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z">
+      </path>
+    </svg>
+  </a>
+
+</div> -->

@@ -7,17 +7,19 @@ import { IconsComponent } from './components/icons/icons.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { ConverterService } from './services/converter.service';
 import { SliderDirective } from './directives/slider.directive';
+import { PanelComponent } from './components/panel/panel.component';
+import { ComponentFactoryService } from './services/component-factory.service';
 
 
 
 @NgModule({
-  declarations: [NgxColorsComponent, IconsComponent,ColorPickerComponent, SliderDirective],
+  declarations: [NgxColorsComponent, IconsComponent,ColorPickerComponent, SliderDirective, PanelComponent],
   imports: [
     
     CommonModule
   ],
-  providers: [ConverterService],
+  providers: [ConverterService,ComponentFactoryService],
   exports: [NgxColorsComponent],
-  entryComponents:[ColorPickerComponent]
+  entryComponents:[PanelComponent]
 })
 export class NgxColorsModule { }

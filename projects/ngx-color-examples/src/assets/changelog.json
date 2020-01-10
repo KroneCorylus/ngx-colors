@@ -1,0 +1,18 @@
+[
+    {
+        "version":"0.0.6",
+        "changelog":[
+            "If there is not space to the right of the screen the color picker is open to the left",
+            "Separe the dialog to a component, this is needed for dinamically add it to the DOM"
+        ]
+    },
+    {
+        "version":"0.0.7",
+        "changelog":[
+            "Fixing bug close on click anywhere",
+            "Fixing bug with panel position",
+            "",
+            ""
+        ]
+    }
+]

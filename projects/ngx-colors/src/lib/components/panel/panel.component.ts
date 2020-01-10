@@ -45,7 +45,7 @@ export class PanelComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   click(event) {
-    if(!this.dialogElement.nativeElement.contains(event.target) && !this.caller.nativeElement.contains(event.target)) {
+    if(this.isOutside(event)) {
       console.log('clickout');
       this.emitClose();
     } 
@@ -84,16 +84,19 @@ export class PanelComponent implements OnInit {
     
   public menu = 1;
  
- 
+  private overlay;
 
   @ViewChild('dialog', { static: false }) dialogElement: ElementRef;
 
 
   public ngOnInit(){
+    this.overlay = document.createElement('div');
+    this.overlay.classList.add('ngx-colors-overlay');
+    document.body.appendChild(this.overlay);
   }
 
   public ngOnDestroy(){
-    console.log('destroyyy!')
+    this.overlay.remove();
   }
 
   public ngOnChanges(changes: any): void {
@@ -168,7 +171,8 @@ export class PanelComponent implements OnInit {
   isOutside(event){
     this.changeDetectorRef.detectChanges();
     if(this.dialogElement != null){
-        return !(isDescendantOrSame(this.dialogElement.nativeElement,event.target))
+        return event.target.classList.contains('ngx-colors-overlay');
+        // return !(isDescendantOrSame(this.dialogElement.nativeElement,event.target)) && !(isDescendantOrSame(this.caller.nativeElement,event.target))
     } 
     return false;
   }

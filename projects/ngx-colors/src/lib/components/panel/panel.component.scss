@@ -1,7 +1,10 @@
 @import '../../shared/variables.scss';
 :host{
   position: fixed;
-  z-index: 1000;
+  z-index: 2001;
+}
+.hidden {
+  display: none;
 }
     $radius:5px;
     .opened {

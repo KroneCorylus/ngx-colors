@@ -1,18 +1,47 @@
 [
+    
     {
         "version":"0.0.6",
         "changelog":[
-            "If there is not space to the right of the screen the color picker is open to the left",
-            "Separe the dialog to a component, this is needed for dinamically add it to the DOM"
+            {
+                "type":"fix",
+                "details":"Separe the dialog to a component, this is needed for dinamically add it to the DOM"
+            },
+            {
+                "type":"feature",
+                "details":"If there is not space to the right of the screen the color picker is open to the left"
+            }
         ]
     },
     {
         "version":"0.0.7",
         "changelog":[
-            "Fixing bug close on click anywhere",
-            "Fixing bug with panel position",
-            "",
-            ""
+            {
+                "type":"fix",
+                "details":"Fixing bug close on click anywhere"
+            },
+            {
+                "type":"fix",
+                "details":"Fixing bug with panel position"
+            }
+        ]
+    },
+    {
+        "version":"0.0.8",
+        "changelog":[
+            {
+                "type":"fix",
+                "details":"Change to use of overlay for detect clickout"
+            }
+        ]
+    },
+    {
+        "version":"x.x.x",
+        "changelog":[
+            {
+                "type":"type",
+                "details":"details"
+            }
         ]
     }
 ]

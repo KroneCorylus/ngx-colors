@@ -2,17 +2,9 @@ import { ColorFormats } from '../enums/formats';
 
 
 export function isDescendantOrSame(nodeParent: any, nodeTarget: any): boolean {
-  let match = false;
-  let node: any = nodeTarget;
+  console.log('test');
+  return nodeParent == nodeTarget || Array.from(nodeParent.childNodes).some(c => isDescendantOrSame(c,nodeTarget))
 
-  while (!match && node !== null) {
-    if (nodeParent === node) {
-      match = true
-    }
-    node = node.parentNode;
-  }
-
-  return match;
 }
 export function getFormat(format:string):ColorFormats{
   var result:ColorFormats;

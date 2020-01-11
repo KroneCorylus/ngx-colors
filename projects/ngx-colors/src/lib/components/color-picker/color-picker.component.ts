@@ -71,11 +71,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit,On
     }
   }
 
-  setColor(color) {
-    this.color = color
-    this.colorChange.emit(this.color);
-    this.colorSelectedChange.emit(this.outputColor);
-  }
+ 
 
   ngAfterViewInit(): void {
   }
@@ -120,14 +116,11 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit,On
     }
   }
 
-  public onDragEnd(slider: string): void {
-    this.setColor(this.outputColor);
+  setColor(color) {
+    this.color = color
+    this.colorChange.emit(this.color);
+    this.colorSelectedChange.emit(this.outputColor);
   }
-
-  public onDragStart(slider: string): void {
-    this.setColor(this.outputColor);
-  }
-
 
   private updateColor(): void {
     if (this.sliderDimMax) {

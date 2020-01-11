@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewChild, ElementRef, HostListener, HostBinding } from '@angular/core';
 import { trigger, transition, query, style, stagger, animate, keyframes } from '@angular/animations';
 import { isDescendantOrSame } from '../../helpers/helpers';
 import { ColorFormats } from '../../enums/formats';
 import { ConverterService } from '../../services/converter.service';
 import { defaultColors } from '../../helpers/default-colors';
 import { formats } from '../../helpers/formats';
-
 
 
 
@@ -46,11 +45,22 @@ export class PanelComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   click(event) {
     if(this.isOutside(event)) {
-      console.log('clickout');
       this.emitClose();
     } 
   }
 
+  @HostListener('document:scroll')
+  onScroll(){
+    this.setPosition()
+  }
+  @HostListener('window:resize')
+  onResize(){
+    this.setPosition()
+  }
+
+
+  @HostBinding('style.top.px') public top: number;
+  @HostBinding('style.left.px') public left: number;
   constructor(
     public service:ConverterService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -71,7 +81,7 @@ export class PanelComponent implements OnInit {
   @Input() caller:ElementRef;
 
   //selected color used for ui before apply format, 
-  public previewColor: string = '#000000';
+  // public previewColor: string = '#000000';
   public colorPickerColor: string = '#000000';
 
   // public show = false;
@@ -93,6 +103,7 @@ export class PanelComponent implements OnInit {
     this.overlay = document.createElement('div');
     this.overlay.classList.add('ngx-colors-overlay');
     document.body.appendChild(this.overlay);
+    this.setPosition();
   }
 
   public ngOnDestroy(){
@@ -101,17 +112,25 @@ export class PanelComponent implements OnInit {
 
   public ngOnChanges(changes: any): void {
     if(changes.color){
-      this.previewColor = this.color;
-      this.change.emit(this.color);
+      this.colorPickerColor = this.color;
     }
   }
-
+  public setPosition() {
+    if(this.caller){
+      var viewportOffset = this.caller.nativeElement.getBoundingClientRect();
+      this.top = viewportOffset.top + viewportOffset.height;
+      this.left = viewportOffset.left + 250 > window.innerWidth ? viewportOffset.right - 250 : viewportOffset.left;
+    }
+    else{
+      this.emitClose();
+    }
+  }
   public hasVariant(color):boolean{
-    return color.variants.some(v => v.toUpperCase() == this.previewColor.toUpperCase() );
+    return color.variants.some(v => v.toUpperCase() == this.colorPickerColor.toUpperCase() );
   }
 
   public isSelected(color){
-    return color.toUpperCase() == this.previewColor.toUpperCase();
+    return color.toUpperCase() == this.colorPickerColor.toUpperCase();
   }
 
 
@@ -120,17 +139,15 @@ export class PanelComponent implements OnInit {
    * @param string color
    */
   public changeColor(color: string): void {
-    this.previewColor = color;
     this.colorPickerColor = color;
     this.Color = this.service.stringToFormat(color,this.format);
-    // this.event.emit(this.rawColor);
     this.menu = 1;
     this.emitClose();
   }
 
   public nextFormat(){
     this.format = (this.format + 1) % this.colorFormats.length;
-    this.Color = this.service.stringToFormat(this.previewColor,this.format);
+    this.Color = this.service.stringToFormat(this.colorPickerColor,this.format);
   }
 
 
@@ -154,7 +171,7 @@ export class PanelComponent implements OnInit {
   }
 
   public onChangeColorPicker(event) {
-    this.previewColor = this.service.toFormat(event,ColorFormats.HEX);
+    this.colorPickerColor = this.service.toFormat(event,ColorFormats.HEX);
     this.Color = this.service.toFormat(event,this.format);
   }
 
@@ -163,8 +180,10 @@ export class PanelComponent implements OnInit {
    * @param string color
    */
   public changeColorManual(color: string): void {
-      this.previewColor = color;
       this.colorPickerColor = color;
+      this.color = color;
+      this.colorChange.emit(this.color);
+      this.change.emit(this.color);
   }
 
 
@@ -182,8 +201,8 @@ export class PanelComponent implements OnInit {
   }
   set Color(value: string) {
       this.color = value;
-      this.colorChange.next(this.color);
-      this.change.next(this.color);
+      this.colorChange.emit(this.color);
+      this.change.emit(this.color);
   }
 
 

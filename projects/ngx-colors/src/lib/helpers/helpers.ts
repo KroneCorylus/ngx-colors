@@ -2,7 +2,6 @@ import { ColorFormats } from '../enums/formats';
 
 
 export function isDescendantOrSame(nodeParent: any, nodeTarget: any): boolean {
-  console.log('test');
   return nodeParent == nodeTarget || Array.from(nodeParent.childNodes).some(c => isDescendantOrSame(c,nodeTarget))
 
 }

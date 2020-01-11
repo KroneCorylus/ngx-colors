@@ -62,7 +62,7 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
   public ngOnChanges(changes: any): void {
     if(changes.color){
       this.previewColor = this.color;
-      this.change.emit(this.color);
+      // this.change.emit(this.color)
       this.colorChange.emit(this.color);
     }
   }
@@ -70,6 +70,7 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
 
   public onChange(){
     this.colorChange.emit(this.color);
+    this.change.emit(this.color)
   }
 
   public showVariants(color){
@@ -84,9 +85,9 @@ export class NgxColorsComponent implements OnInit, OnDestroy, OnChanges{
   }
   public open(){
     
-    var viewportOffset = this.callerElement.nativeElement.getBoundingClientRect();
-    this.top = viewportOffset.top + viewportOffset.height;
-    this.left = viewportOffset.left + 250 > window.innerWidth ? viewportOffset.right - 250 : viewportOffset.left;
+    // var viewportOffset = this.callerElement.nativeElement.getBoundingClientRect();
+    // this.top = viewportOffset.top + viewportOffset.height;
+    // this.left = viewportOffset.left + 250 > window.innerWidth ? viewportOffset.right - 250 : viewportOffset.left;
     
     this.show = true
     this.menu = 1;

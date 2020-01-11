@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import {HttpClient} from '@angular/common/http'
 
 @Component({
   selector: 'app-root',
@@ -18,16 +19,39 @@ export class AppComponent implements OnInit {
 
 
   constructor(
-    public domSanitizer:DomSanitizer
+    public domSanitizer:DomSanitizer,
+    public http:HttpClient
   ){
 
   }
 
   navbar = false;
   test = `<ngx-colors [colorsAnimationEffect]="'popup'"> </ngx-colors>`;
-
+  versions:Array<any>;
   ngOnInit(){
     this.updateGradient();
+    this.http.get('/assets/changelog.json').subscribe(
+        (data:Array<any>) => {
+          this.versions = Array.from(data);
+          this.versions = this.versions.sort(
+            (a,b) => {
+              let diff;
+              var segmentsA:Array<string> = a.version.split('.')
+              var segmentsB:Array<string> = b.version.split('.')
+              for (let index = 0; index < segmentsA.length; index++) {
+                if(segmentsA[index].includes('x')){
+                  return 1;
+                }
+                diff =  Number.parseInt(segmentsA[index]) - Number.parseInt(segmentsB[index])
+                if(diff != 0){
+                  return -diff;
+                }
+              }
+            return 0;
+            }
+          );
+          console.log(this.versions);
+        });
   }
 
 

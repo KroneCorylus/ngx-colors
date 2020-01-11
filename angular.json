@@ -74,6 +74,7 @@
               "projects/ngx-color-examples/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/ngx-color-examples/src/styles.scss"
             ],
             "scripts": []
@@ -139,6 +140,7 @@
               "projects/ngx-color-examples/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/ngx-color-examples/src/styles.scss"
             ],
             "scripts": []
@@ -170,6 +172,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "ngx-colors-examples"
 }

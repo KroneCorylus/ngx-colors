@@ -36,6 +36,28 @@
         ]
     },
     {
+        "version":"0.0.9",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"The panel now follows the caller when scrolling or resizing windows"
+            }
+        ]
+    },
+    {
+        "version":"0.0.10",
+        "changelog":[
+            {
+                "type":"bugfix",
+                "details":"Only changes produced within the panel emit change event"
+            },
+            {
+                "type":"bugfix",
+                "details":"Remove of the tripled emit of event change when the picker is dragged"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

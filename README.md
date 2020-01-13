@@ -1,7 +1,8 @@
 <p align="center">
   <h1 align="center">ngx-colors</h1>
   <p align="center">Simple yet elegant Material color picker for Angular</p>
-  <p align="center">
+  <p align="center">ngx-colors is an angular components that allows users to select a color either through text input(hex, rgba, hsla), by choosing a pre set color from the palette, or from  Hue, Lightness, Alpha sliders.
+
   </p>
 </p>
 
@@ -36,5 +37,5 @@ import { NgxColorsModule } from 'ngx-colors';
 ##### Use it in your HTML template:
 
 ```html
-<ngx-colors [(color)]="color"></ngx-colors>
+<ngx-colors ngx-colors-trigger [(color)]="color"></ngx-colors>
 ```

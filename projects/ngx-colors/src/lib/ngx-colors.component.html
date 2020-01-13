@@ -1,8 +1,7 @@
 <div class="app-color-picker" #caller>
     <div class="preview">
-        <div class="preview-background" (click)="toggleDialog()">
-            <div class="circle" [ngStyle]="{'background': previewColor}"></div>
+        <div class="preview-background">
+            <div class="circle" [ngStyle]="{'background': color}"></div>
         </div>
     </div>
-    <ngx-colors-panel #dialog [caller]="callerElement" [style.top.px]="top" [style.left.px]="left" *ngIf="show" [(color)]="color" (change)="onChange()" [colorsAnimationEffect]="colorsAnimationEffect" (close)="close()" ></ngx-colors-panel>
 </div>

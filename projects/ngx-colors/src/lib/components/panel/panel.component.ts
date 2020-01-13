@@ -5,6 +5,7 @@ import { ColorFormats } from '../../enums/formats';
 import { ConverterService } from '../../services/converter.service';
 import { defaultColors } from '../../helpers/default-colors';
 import { formats } from '../../helpers/formats';
+import { NgxColorsTriggerDirective } from '../../directives/ngx-colors-trigger.directive';
 
 
 
@@ -58,79 +59,61 @@ export class PanelComponent implements OnInit {
     this.setPosition()
   }
 
-
   @HostBinding('style.top.px') public top: number;
   @HostBinding('style.left.px') public left: number;
+
   constructor(
-    public service:ConverterService,
-    private changeDetectorRef: ChangeDetectorRef,
-    // private appRef: ApplicationRef,
+    public service:ConverterService
   )
   {
+
   }
-  //IO color
-  @Input() color: string = '#00000000';
-  @Output() colorChange: EventEmitter<string> = new EventEmitter<string>(false);
 
-
-  @Output() change: EventEmitter<string> = new EventEmitter<string>();
-  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
-  //Animation type for the color palette show up
-  //slide-in, popup,
-  @Input() colorsAnimationEffect = 'slide-in'
-  @Input() caller:ElementRef;
-
-  //selected color used for ui before apply format, 
-  // public previewColor: string = '#000000';
-  public colorPickerColor: string = '#000000';
-
-  // public show = false;
+  public color = '#000000';
+  public previewColor: string = '#000000';
+  public colorsAnimationEffect = 'slide-in'
 
   public palette = defaultColors;
-  public colorFormats = formats;
-  public selectedFormat:number = 0;
-  public format:ColorFormats = ColorFormats.HEX;
   public variants = [];
+
+  public colorFormats = formats;
+  public format:ColorFormats = ColorFormats.HEX;
+ 
     
   public menu = 1;
  
-  private overlay;
 
-  @ViewChild('dialog', { static: false }) dialogElement: ElementRef;
+  private triggerInstance:NgxColorsTriggerDirective;
+  private triggerElementRef;
+  
 
 
   public ngOnInit(){
-    this.overlay = document.createElement('div');
-    this.overlay.classList.add('ngx-colors-overlay');
-    document.body.appendChild(this.overlay);
     this.setPosition();
   }
 
-  public ngOnDestroy(){
-    this.overlay.remove();
+
+  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette){
+      this.triggerInstance = triggerInstance;
+      this.triggerElementRef = triggerElementRef;
+      this.color = color;
+      this.previewColor = this.color;
+      this.palette = this.palette
   }
 
-  public ngOnChanges(changes: any): void {
-    if(changes.color){
-      this.colorPickerColor = this.color;
-    }
-  }
   public setPosition() {
-    if(this.caller){
-      var viewportOffset = this.caller.nativeElement.getBoundingClientRect();
+    if(this.triggerElementRef){
+      var viewportOffset = this.triggerElementRef.nativeElement.getBoundingClientRect();
       this.top = viewportOffset.top + viewportOffset.height;
       this.left = viewportOffset.left + 250 > window.innerWidth ? viewportOffset.right - 250 : viewportOffset.left;
     }
-    else{
-      this.emitClose();
-    }
   }
   public hasVariant(color):boolean{
-    return color.variants.some(v => v.toUpperCase() == this.colorPickerColor.toUpperCase() );
+    return color.variants.some(v => v.toUpperCase() == this.previewColor.toUpperCase() );
   }
 
   public isSelected(color){
-    return color.toUpperCase() == this.colorPickerColor.toUpperCase();
+    return color.toUpperCase() == this.previewColor.toUpperCase();
   }
 
 
@@ -139,72 +122,68 @@ export class PanelComponent implements OnInit {
    * @param string color
    */
   public changeColor(color: string): void {
-    this.colorPickerColor = color;
-    this.Color = this.service.stringToFormat(color,this.format);
-    this.menu = 1;
+    this.setColor(this.service.stringToFormat(color,this.format));
+    this.triggerInstance.onChange();
     this.emitClose();
   }
 
-  public nextFormat(){
-    this.format = (this.format + 1) % this.colorFormats.length;
-    this.Color = this.service.stringToFormat(this.colorPickerColor,this.format);
+  public onChangeColorPicker(event) {
+    this.setColor(this.service.toFormat(event,this.format));
+    this.triggerInstance.onChange();
+  }
+
+  public changeColorManual(color: string): void {
+      this.previewColor = color;
+      this.color = color;
+      this.triggerInstance.setColor(this.color);
+      this.triggerInstance.onChange();
+  }
+
+  setColor(value){
+    this.color = value;
+    this.setPreviewColor(value);
+    this.triggerInstance.setColor(value)
   }
 
 
+  setPreviewColor(value){
+    this.previewColor = this.service.stringToFormat(value,ColorFormats.HEX);
+  }
+
+  onChange(){
+    this.triggerInstance.onChange();
+  }
   
+  public showColors(){
+    this.menu = 1;
+  }
 
   public showVariants(color){
     this.variants = color.variants;
     this.menu = 2;
   }
 
-  public showColors(){
-    this.menu = 1;
-  }
-
   public addColor(){
     this.menu = 3;
   }
 
+  public nextFormat(){
+    this.format = (this.format + 1) % this.colorFormats.length;
+    this.setColor(this.service.stringToFormat(this.previewColor,this.format));
+  }
+
+
   public emitClose(){
-    this.close.emit(true);
+    this.triggerInstance.close();
   }
 
-  public onChangeColorPicker(event) {
-    this.colorPickerColor = this.service.toFormat(event,ColorFormats.HEX);
-    this.Color = this.service.toFormat(event,this.format);
-  }
-
-  /**
-   * Change color from input
-   * @param string color
-   */
-  public changeColorManual(color: string): void {
-      this.colorPickerColor = color;
-      this.color = color;
-      this.colorChange.emit(this.color);
-      this.change.emit(this.color);
-  }
-
+ 
 
   isOutside(event){
-    this.changeDetectorRef.detectChanges();
-    if(this.dialogElement != null){
         return event.target.classList.contains('ngx-colors-overlay');
-        // return !(isDescendantOrSame(this.dialogElement.nativeElement,event.target)) && !(isDescendantOrSame(this.caller.nativeElement,event.target))
-    } 
-    return false;
   }
 
-  get Color(): string {
-    return this.color;
-  }
-  set Color(value: string) {
-      this.color = value;
-      this.colorChange.emit(this.color);
-      this.change.emit(this.color);
-  }
-
+  
 
 
 }

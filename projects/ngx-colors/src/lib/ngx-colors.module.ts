@@ -8,18 +8,19 @@ import { ColorPickerComponent } from './components/color-picker/color-picker.com
 import { ConverterService } from './services/converter.service';
 import { SliderDirective } from './directives/slider.directive';
 import { PanelComponent } from './components/panel/panel.component';
-import { ComponentFactoryService } from './services/component-factory.service';
+import { PanelFactoryService } from './services/panel-factory.service';
+import { NgxColorsTriggerDirective } from './directives/ngx-colors-trigger.directive';
 
 
 
 @NgModule({
-  declarations: [NgxColorsComponent, IconsComponent,ColorPickerComponent, SliderDirective, PanelComponent],
+  declarations: [NgxColorsComponent, IconsComponent,ColorPickerComponent, SliderDirective, PanelComponent, NgxColorsTriggerDirective],
   imports: [
     
     CommonModule
   ],
-  providers: [ConverterService,ComponentFactoryService],
-  exports: [NgxColorsComponent],
-  entryComponents:[PanelComponent]
+  providers: [ConverterService,PanelFactoryService],
+  exports: [NgxColorsComponent,NgxColorsTriggerDirective],
+  entryComponents:[PanelComponent,ColorPickerComponent]
 })
 export class NgxColorsModule { }

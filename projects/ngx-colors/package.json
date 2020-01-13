@@ -1,6 +1,6 @@
 {
   "name": "ngx-colors",
-  "version": "0.0.10",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",

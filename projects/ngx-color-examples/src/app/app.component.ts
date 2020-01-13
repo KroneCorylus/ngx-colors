@@ -50,7 +50,6 @@ export class AppComponent implements OnInit {
             return 0;
             }
           );
-          console.log(this.versions);
         });
   }
 

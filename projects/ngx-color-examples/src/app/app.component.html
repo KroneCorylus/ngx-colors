@@ -4,13 +4,14 @@
   <div class="main-wrapper">
     <div class="title">ngx-colors</div>
     <div class="selector-wrapper">
-      <ngx-colors (change)="updateGradient()" style="float:left" [(color)]="leftColor"></ngx-colors>
+      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(color)]="leftColor"></ngx-colors>
       <div class="color" style="float:left">{{leftColor}}</div>
       <div class="color" style="float:right">Slide-In animations</div>
     </div>
     <div class="selector-wrapper">
-      <ngx-colors (change)="updateGradient()" style="float:right" [(color)]="rightColor"
-        [colorsAnimationEffect]="'popup'"></ngx-colors>
+      <!-- <input type="text" [value]="rightColor" ngx-colors-trigger [(color)]="rightColor"> -->
+      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:right" [(color)]="rightColor"
+        [colorsAnimation]="'popup'"></ngx-colors>
       <div class="color" style="float:right">{{rightColor}}</div>
       <div class="color" style="float:left">Popup animations</div>
     </div>
@@ -51,7 +52,7 @@
     <span class="text">The &lt;ngx-colors&gt; element supports 2-way binding to the color property.</span>
     
     <div class="exampleblock">
-    <ngx-colors style="display: inline-block; margin:5px;" [(color)]="leftColor"></ngx-colors>
+    <ngx-colors ngx-colors-trigger style="display: inline-block; margin:5px;" [(color)]="leftColor"></ngx-colors>
     <mat-form-field >
       <input matInput [(ngModel)]="leftColor">
     </mat-form-field>
@@ -84,10 +85,12 @@
   <mat-tab label="CHANGELOG">
     <div class="documentation">
       <div *ngFor="let version of versions" >
+        <ng-container *ngIf="version.version != 'x.x.x'">
         <div class="version-number">{{version.version}}</div>
         <div *ngFor="let change of version.changelog">
-          <div [class]="change.type == 'fix' ? 'fix' : 'feature'"></div><div style="display:inline-block">{{change.details}}</div>
+          <div [class]="change.type == 'fix' ? 'fix' : 'feature'"></div><span>{{change.details}}</span>
         </div>
+      </ng-container>
     </div>
 
     </div>

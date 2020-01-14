@@ -12,7 +12,7 @@
     "npm-pack": "cd dist/ngx-colors && npm pack",
     "package": "npm run build-lib && npm run npm-pack",
     "publishLib": "cd dist/ngx-colors && npm publish",
-    "CBP": "ng build --prod ngx-color-examples && cd dist/ngx-color-examples && firebase deploy"
+    "CBD": "ng build --prod ngx-color-examples && cd dist/ngx-color-examples && firebase deploy"
   },
   "private": true,
   "dependencies": {

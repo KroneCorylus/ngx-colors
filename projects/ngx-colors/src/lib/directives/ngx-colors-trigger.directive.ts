@@ -13,10 +13,12 @@ export class NgxColorsTriggerDirective{
   @Output() colorChange:EventEmitter<string> = new EventEmitter<string>();
 
   //This defines the type of animation for the palatte.(slide-in | popup)
-  @Input() colorsAnimation;
+  @Input() colorsAnimation:'slide-in' | 'popup' = 'slide-in';
 
   //This is used to set a custom palette of colors in the panel;
   @Input() customColors;
+
+  @Input() format;
 
   //This event is trigger every time a change is made using the panen
   @Output() change:EventEmitter<string> = new EventEmitter<string>();;
@@ -37,7 +39,7 @@ export class NgxColorsTriggerDirective{
 
   open(){
     this.panelRef = this.panelFactory.createPanel();
-    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.customColors);
+    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.customColors,this.colorsAnimation);
   }
 
   public close(){

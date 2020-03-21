@@ -6,6 +6,7 @@ import { ConverterService } from '../../services/converter.service';
 import { defaultColors } from '../../helpers/default-colors';
 import { formats } from '../../helpers/formats';
 import { NgxColorsTriggerDirective } from '../../directives/ngx-colors-trigger.directive';
+import { Hsva } from '../../clases/formats';
 
 
 
@@ -71,6 +72,8 @@ export class PanelComponent implements OnInit {
 
   public color = '#000000';
   public previewColor: string = '#000000';
+  public hsva = new Hsva(0,1,1,1)
+
   public colorsAnimationEffect = 'slide-in'
 
   public palette = defaultColors;
@@ -90,15 +93,17 @@ export class PanelComponent implements OnInit {
 
   public ngOnInit(){
     this.setPosition();
+    this.hsva = this.service.stringToHsva(this.color);
   }
 
 
-  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette){
+  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation){
       this.triggerInstance = triggerInstance;
       this.triggerElementRef = triggerElementRef;
       this.color = color;
       this.previewColor = this.color;
       this.palette = this.palette
+      this.colorsAnimationEffect = animation;
   }
 
   public setPosition() {
@@ -122,32 +127,34 @@ export class PanelComponent implements OnInit {
    * @param string color
    */
   public changeColor(color: string): void {
-    this.setColor(this.service.stringToFormat(color,this.format));
+    this.setColor(this.service.stringToHsva(color));
     this.triggerInstance.onChange();
     this.emitClose();
   }
 
-  public onChangeColorPicker(event) {
-    this.setColor(this.service.toFormat(event,this.format));
+  public onChangeColorPicker(event:Hsva) {
+    this.setColor(event);
     this.triggerInstance.onChange();
   }
 
   public changeColorManual(color: string): void {
       this.previewColor = color;
       this.color = color;
+      this.hsva = this.service.stringToHsva(color);
       this.triggerInstance.setColor(this.color);
       this.triggerInstance.onChange();
   }
 
-  setColor(value){
-    this.color = value;
+  setColor(value:Hsva){
+    this.hsva = value;
+    this.color = this.service.toFormat(value,this.format);
     this.setPreviewColor(value);
-    this.triggerInstance.setColor(value)
+    this.triggerInstance.setColor(this.color)
   }
 
 
-  setPreviewColor(value){
-    this.previewColor = this.service.stringToFormat(value,ColorFormats.HEX);
+  setPreviewColor(value:Hsva){
+    this.previewColor = this.service.hsvaToRgba(value).toString();
   }
 
   onChange(){
@@ -169,7 +176,7 @@ export class PanelComponent implements OnInit {
 
   public nextFormat(){
     this.format = (this.format + 1) % this.colorFormats.length;
-    this.setColor(this.service.stringToFormat(this.previewColor,this.format));
+    this.setColor(this.hsva);
   }
 
 

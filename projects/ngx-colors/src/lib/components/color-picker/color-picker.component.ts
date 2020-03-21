@@ -20,12 +20,12 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit,On
   
 
   //IO color
-  @Input()  color: string;
-  @Output() colorChange:EventEmitter<string> = new EventEmitter<string>(false);
+  @Input()  color: Hsva = new Hsva(0,1,1,1);
+  @Output() colorChange:EventEmitter<Hsva> = new EventEmitter<Hsva>(false);
   //Event triggered when any slider change
-  @Output() colorSelectedChange:EventEmitter<Hsva> = new EventEmitter<Hsva>(false); 
+  // @Output() colorSelectedChange:EventEmitter<Hsva> = new EventEmitter<Hsva>(false); 
 
-  private hsva: Hsva;
+  private hsva: Hsva = new Hsva(0,1,1,1);
   private outputColor: Hsva;
   public selectedColor: string = '#000000';
   private fallbackColor: string = '#000000';
@@ -49,35 +49,27 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit,On
   ngOnInit(): void {
 
     this.slider = new SliderPosition(0, 0, 0, 0);
-    
     const hueWidth = this.hueSlider.nativeElement.offsetWidth || 140;
     const alphaWidth = this.alphaSlider.nativeElement.offsetWidth || 140;
     this.sliderDimMax = new SliderDimension(hueWidth, 220, 130, alphaWidth);
-
-  
-
-    this.setColorFromString((this.color || this.fallbackColor));
+    // this.setColorFromString((this.color || this.fallbackColor));
+    this.update();
 
   }
 
-
-
   ngOnDestroy(): void {
+
   }
 
   ngOnChanges(changes: any): void {
-    if(changes.color){
-      this.setColorFromString((this.color || this.fallbackColor));
+    if(changes.color && this.color){
+      this.update();
     }
   }
 
- 
-
   ngAfterViewInit(): void {
+
   }
-
-
-
 
   public onSliderChange(type:string, event){
     switch(type){
@@ -95,36 +87,19 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit,On
         break;
     }
     // this.sHue = this.hsva.h;
-    this.updateColor();
+    this.update();
     this.setColor(this.outputColor);
-  }
-
-  public setColorFromString(value: string): void {
-    let hsva: Hsva | null;
-    hsva = this.service.stringToHsva(value,true);
-
-    //if fails use fallback color
-    if (!hsva && !this.hsva) {
-      hsva = this.service.stringToHsva(this.fallbackColor, false);
-    }
-
-
-    if (hsva) {
-      this.hsva = hsva;
-      // this.sHue = this.hsva.h;
-      this.updateColor();
-    }
   }
 
   setColor(color) {
     this.color = color
     this.colorChange.emit(this.color);
-    this.colorSelectedChange.emit(this.outputColor);
   }
 
-  private updateColor(): void {
-    if (this.sliderDimMax) {
+  private update(): void {
 
+    this.hsva = this.color;
+    if (this.sliderDimMax) {
       let rgba = this.service.hsvaToRgba(this.hsva).denormalize();
       let hue = this.service.hsvaToRgba(new Hsva(this.hsva.h, 1, 1, 1)).denormalize();
 

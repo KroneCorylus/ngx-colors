@@ -17,11 +17,22 @@ import { PanelComponent } from './components/panel/panel.component';
 export class NgxColorsComponent{
 
   constructor(
+
+    public service:ConverterService
   )
   {
   }
 
   //IO color
   @Input() color: string = '#00000000';
- 
+  previewColor;
+
+
+  onChangeColorPicker(event){
+    this.previewColor = event;
+  }
+
+  setPreviewColor(value){
+    this.previewColor = this.service.stringToFormat(value,ColorFormats.HEX);
+  }
 }

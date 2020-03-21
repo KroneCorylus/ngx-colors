@@ -9,11 +9,22 @@ import {MatTabsModule} from '@angular/material/tabs'
 import { FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+
+export function getHighlightLanguages() {
+  return {
+    typescript: () => import('highlight.js/lib/languages/typescript'),
+    css: () => import('highlight.js/lib/languages/css'),
+    xml: () => import('highlight.js/lib/languages/xml')
+  };
+}
+
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    HighlightModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -23,7 +34,14 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
     HttpClientModule,
     MatInputModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        languages: getHighlightLanguages()
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

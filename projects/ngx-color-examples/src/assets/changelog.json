@@ -48,11 +48,11 @@
         "version":"0.0.10",
         "changelog":[
             {
-                "type":"bugfix",
+                "type":"fix",
                 "details":"Only changes produced within the panel emit change event"
             },
             {
-                "type":"bugfix",
+                "type":"fix",
                 "details":"Remove of the tripled emit of event change when the picker is dragged"
             }
         ]
@@ -67,6 +67,23 @@
             {
                 "type":"feature",
                 "details":"Now the panel can be attached to other elements using the directive ngx-colors-trigger"
+            }
+        ]
+    },
+    {
+        "version":"1.0.1",
+        "changelog":[
+            {
+                "type":"fix",
+                "details":"Fixed a bug where changing the color using the color-picker slider changed the color shown in the slider too."
+            },
+            {
+                "type":"fix",
+                "details":"Now animation can be set again using colorsAnimation property"
+            },
+            {
+                "type":"performance",
+                "details":"Removing unnecesary conversions"
             }
         ]
     },

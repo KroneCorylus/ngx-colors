@@ -25,10 +25,17 @@ export class AppComponent implements OnInit {
 
   }
 
+
+  colors = ['#C0CA33','#42A5F5','#455a64','#c2185b','#ab47bc','#26a69a']
+
   navbar = false;
   test = `<ngx-colors [colorsAnimationEffect]="'popup'"> </ngx-colors>`;
   versions:Array<any>;
   ngOnInit(){
+
+
+    
+    this.randomBrackground();
     this.updateGradient();
     this.http.get('/assets/changelog.json').subscribe(
         (data:Array<any>) => {
@@ -54,6 +61,18 @@ export class AppComponent implements OnInit {
   }
 
 
+  randomBrackground(){
+    console.log('asd');
+    let index = this.randomInt(0,this.colors.length - 1);
+    this.leftColor = this.colors[index];
+    this.colors.splice(index,1);
+    index = this.randomInt(0,this.colors.length - 1);
+    this.rightColor = this.colors[index];
+  }
+
+  randomInt(min, max) {
+    return min + Math.floor((max - min) * Math.random());
+  }
 
   updateGradient(){
     this.gradient = this.domSanitizer.bypassSecurityTrustStyle('linear-gradient(45deg, ' + this.leftColor + ' 0%,' + this.rightColor + ' 100%)');

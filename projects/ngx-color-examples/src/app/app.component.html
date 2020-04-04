@@ -4,13 +4,13 @@
   <div class="main-wrapper">
     <div class="title">ngx-colors</div>
     <div class="selector-wrapper">
-      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(color)]="leftColor"></ngx-colors>
+      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="leftColor"></ngx-colors>
       <div class="color" style="float:left">{{leftColor}}</div>
       <div class="color" style="float:right">Slide-In animations</div>
     </div>
     <div class="selector-wrapper">
       <!-- <input type="text" [value]="rightColor" ngx-colors-trigger [(color)]="rightColor"> -->
-      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:right" [(color)]="rightColor"
+      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:right" [(ngModel)]="rightColor"
         [colorsAnimation]="'popup'"></ngx-colors>
       <div class="color" style="float:right">{{rightColor}}</div>
       <div class="color" style="float:left">Popup animations</div>
@@ -27,45 +27,33 @@
       <h3>Npm</h3>
       Install dependency
       <div class="codeblock">
-        npm install @angular/animations
+        <pre> npm install @angular/animations</pre>
       </div>
       <br>
       Install ngx-colors
       <div class="codeblock">
-        npm install ngx-colors
+        <pre>npm install ngx-colors</pre>
       </div>
 
       <h3>Import</h3>
 
       <div class="codeblock">
-        <pre><span class="pl-k">import</span> {{'{'}} NgxColorsModule {{'}'}} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'ngx-colors'</span></span>;
-  
-        @<span class="pl-en">NgModule</span>({{'{'}}
-          <span class="pl-k">...</span>
-          imports<span class="pl-k">:</span> [
-            <span class="pl-k">...</span>
-            NgxColorsModule
-          ]
-        {{'}'}})</pre>
+        <pre><code [highlight]="codes[0][0].code"></code></pre>
       </div>
 
       <h2>Basic usage</h2>
       <h3>Getting and setting a colors</h3>
-      <span class="text">The &lt;ngx-colors&gt; element supports 2-way binding to the color property.</span>
+      <span class="text">The &lt;ngx-colors&gt; element supports 2-way binding to the ngModel property.</span>
 
       <div class="exampleblock">
-        <ngx-colors ngx-colors-trigger style="display: inline-block; margin:5px;" [(color)]="leftColor"></ngx-colors>
+        <ngx-colors ngx-colors-trigger style="display: inline-block; margin:5px;" (change)="updateGradient()" [(ngModel)]="leftColor"></ngx-colors>
         <mat-form-field>
           <input matInput [(ngModel)]="leftColor">
         </mat-form-field>
       </div>
       <div class="codeblock">
-        <span class="pl-kos">&lt;</span><span class="pl-ent">ngx-colors</span><span class="pl-c1"> ngx-colors-trigger
-          [(color)]</span>="<span class="pl-s">ioColor</span>"<span class="pl-kos">&gt;</span><span
-          class="pl-kos">&lt;/</span><span class="pl-ent">ngx-colors</span><span class="pl-kos">&gt;</span>
 
-          <span class="pl-kos">&lt;</span><span class="pl-ent">mat-form-field</span>
-
+          <pre><code [highlight]="codes[1][0].code"></code></pre>
 
       </div>
       <br>
@@ -73,42 +61,49 @@
       <h3>Detecting changes</h3>
       <span class="text">Use the property change to detect changes when the user interact with the color picker</span>
       <div class="codeblock">
-        <span class="pl-kos">&lt;</span><span class="pl-ent">ngx-colors</span> <span class="pl-c1"> ngx-colors-trigger
-          (change)</span>="<span class="pl-s">updateGradient()</span>" <span class="pl-c1"> [(color)]</span>="<span
-          class="pl-s">ioColor</span>"<span class="pl-kos">&gt;</span><span class="pl-kos">&lt;/</span><span
-          class="pl-ent">ngx-colors</span><span class="pl-kos">&gt;</span>
+        <pre><code [highlight]="codes[2][0].code"></code></pre>
       </div>
       <br>
       <hr>
       <h3>Output format</h3>
       <div class="codeblock">
-        no implemented
+        <pre>no implemented</pre>
       </div>
       <br>
       <hr>
       <h3>Disable color slider</h3>
       <div class="codeblock">
-        no implemented
+        <pre>no implemented</pre>
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="API"> Content 2 </mat-tab>
+  <mat-tab label="API">
+   <!-- {{testForm.value | json}}
+
+  
+
+    <div style="padding:500px 200px">
+      <form [formGroup]="testForm">
+        <ngx-colors ngx-colors-trigger formControlName="testCtrl"></ngx-colors>
+  
+      </form>
+    </div> -->
+
+
+  </mat-tab>
   <mat-tab label="EXAMPLES">
     <div class="documentation">
       <h2>More usage examples</h2>
       <h3>Custom Trigger</h3>
-      <span class="text">The &lt;ngx-colors-trigger&gt; directive can be apply to any element to make a custom
+      <span class="text">The ngx-colors-trigger directive can be apply to any element to make a custom
         trigger</span>
 
       <div class="exampleblock">
         <div style="width: 50px;height: 50px;margin:10px" [style.background]="leftColor" ngx-colors-trigger
-          [(color)]="leftColor"></div>
+          [(ngModel)]="leftColor"></div>
       </div>
       <div class="codeblock">
-        <span class="pl-kos">&lt;</span><span class="pl-ent">div</span><span class="pl-c1"> ngx-colors-trigger
-          [(color)]</span>="<span class="pl-s">ioColor</span>"<span class="pl-c1"> [style.background]</span>="<span
-          class="pl-s">ioColor</span>" <span class="pl-kos">&gt;</span><span class="pl-kos">&lt;/</span><span
-          class="pl-ent">div</span><span class="pl-kos">&gt;</span>
+        <pre><code [highlight]="examples[0][0].code"></code></pre>
       </div>
       <br>
       <hr>

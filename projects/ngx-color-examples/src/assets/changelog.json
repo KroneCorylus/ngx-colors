@@ -88,6 +88,15 @@
         ]
     },
     {
+        "version":"2.0.0",
+        "changelog":[
+            {
+                "type":"performance",
+                "details":"Implements Angular ControlValueAccessor, now we can use ngModel and formGroup"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

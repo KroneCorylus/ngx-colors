@@ -1,11 +1,5 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy,ComponentRef, ViewChild, ElementRef, ChangeDetectorRef, OnChanges, ViewEncapsulation, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ApplicationRef, EmbeddedViewRef, Injector } from '@angular/core';
-import { defaultColors } from './helpers/default-colors';
-import { formats } from './helpers/formats';
-import { ConverterService } from './services/converter.service';
-import { ColorFormats } from './enums/formats';
-import { isDescendantOrSame } from './helpers/helpers';
-import { PanelFactoryService } from './services/panel-factory.service';
-import { PanelComponent } from './components/panel/panel.component';
+import { Component, ViewEncapsulation, Host, OnInit } from '@angular/core';
+import { NgxColorsTriggerDirective } from './directives/ngx-colors-trigger.directive';
 
 @Component({
   selector: 'ngx-colors',
@@ -14,25 +8,20 @@ import { PanelComponent } from './components/panel/panel.component';
   encapsulation: ViewEncapsulation.None,
   
 })
-export class NgxColorsComponent{
+export class NgxColorsComponent implements OnInit{
 
   constructor(
-
-    public service:ConverterService
+    @Host() private triggerDirective: NgxColorsTriggerDirective,
   )
   {
   }
 
+  // @ViewChild(NgxColorsTriggerDirective) triggerDirective;
+  ngOnInit(): void {
+    this.triggerDirective.change.subscribe(
+      color => {this.color = color;}
+    );
+  }
   //IO color
-  @Input() color: string = '#00000000';
-  previewColor;
-
-
-  onChangeColorPicker(event){
-    this.previewColor = event;
-  }
-
-  setPreviewColor(value){
-    this.previewColor = this.service.stringToFormat(value,ColorFormats.HEX);
-  }
+  color: string = this.triggerDirective.color;
 }

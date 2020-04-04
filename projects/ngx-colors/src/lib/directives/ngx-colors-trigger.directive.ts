@@ -1,16 +1,27 @@
-import { EventEmitter,Input, Output, Directive, ElementRef, OnDestroy, OnChanges, OnInit, ComponentRef, HostListener } from '@angular/core';
+import { EventEmitter,Input, Output, Directive, ElementRef, ComponentRef, HostListener, forwardRef } from '@angular/core';
 import { PanelFactoryService } from '../services/panel-factory.service';
 import { PanelComponent } from '../components/panel/panel.component';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-  selector: '[ngx-colors-trigger]'
+  selector: '[ngx-colors-trigger]',
+  providers: [
+    { 
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NgxColorsTriggerDirective),
+      multi: true
+    }
+  ]
 })
-export class NgxColorsTriggerDirective{
+export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
 
   //Main input/output of the color picker
-  @Input() color = '#000000';
-  @Output() colorChange:EventEmitter<string> = new EventEmitter<string>();
+  // @Input() color = '#000000';
+  // @Output() colorChange:EventEmitter<string> = new EventEmitter<string>();
+
+  color = '';
+
 
   //This defines the type of animation for the palatte.(slide-in | popup)
   @Input() colorsAnimation:'slide-in' | 'popup' = 'slide-in';
@@ -20,8 +31,9 @@ export class NgxColorsTriggerDirective{
 
   @Input() format;
 
-  //This event is trigger every time a change is made using the panen
+  // This event is trigger every time a change is made using the panen
   @Output() change:EventEmitter<string> = new EventEmitter<string>();;
+
 
 
   @HostListener('click') onClick(){
@@ -36,6 +48,9 @@ export class NgxColorsTriggerDirective{
 
   panelRef:ComponentRef<PanelComponent>
 
+  onTouchedCallback: () => void = () => {};
+  onChangeCallback: (_: any) => void = () => {};
+
 
   open(){
     this.panelRef = this.panelFactory.createPanel();
@@ -47,13 +62,28 @@ export class NgxColorsTriggerDirective{
   }
 
   public onChange(){
-    this.change.emit(this.color);
+    this.onChangeCallback(this.color);
   }
 
 
   public setColor(color){
-    this.color = color;
-    this.colorChange.emit(this.color);
+    this.writeValue(color);
   }
+
+  writeValue(value){
+    if(value !== this.color){
+      this.color = value;
+      this.change.emit(value);
+    }
+  }
+
+  registerOnChange(fn: any) {
+    this.onChangeCallback = fn;
+  }
+
+  registerOnTouched(fn: any) {
+      this.onTouchedCallback = fn;
+  }
+
 
 }

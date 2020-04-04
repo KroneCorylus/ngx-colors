@@ -10,7 +10,17 @@
 
 https://ngx-colors.web.app/
 
+
+## Preview
+
+![Low quality gif](https://ngx-colors.web.app/assets/img/example-gif.gif)
+
 ## Installation
+
+#### Npm
+```shell
+npm install @angular/animations
+```
 
 #### Npm
 ```shell
@@ -37,5 +47,5 @@ import { NgxColorsModule } from 'ngx-colors';
 ##### Use it in your HTML template:
 
 ```html
-<ngx-colors ngx-colors-trigger [(color)]="color"></ngx-colors>
+<ngx-colors ngx-colors-trigger [(ngModel)]="color"></ngx-colors>
 ```

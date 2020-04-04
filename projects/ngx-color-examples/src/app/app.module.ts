@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NgxColorsModule } from 'projects/ngx-colors/src/public-api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
@@ -26,6 +26,7 @@ export function getHighlightLanguages() {
   imports: [
     HighlightModule,
     BrowserModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     NgxColorsModule,

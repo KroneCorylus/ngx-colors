@@ -1,6 +1,6 @@
 {
   "name": "ngx-colors",
-  "version": "2.2.1",
+  "version": "2.1.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
@@ -12,6 +12,8 @@
     "npm-pack": "cd dist/ngx-colors && npm pack",
     "package": "npm run build-lib && npm run npm-pack",
     "publishLib": "cp -f README.md dist/ngx-colors && cd dist/ngx-colors && npm publish",
+    "XUX": "npm version minor && cd projects/ngx-colors && npm version minor",
+    "XXU": "npm version patch && cd projects/ngx-colors && npm version patch",
     "BPP": "npm run package && npm run publishLib #BUILD PACKAGE n PUBLISH",
     "BFD": "ng build --prod ngx-color-examples && cd dist/ngx-color-examples && firebase deploy #BUILD n FIREBASE DEPLOY"
   },

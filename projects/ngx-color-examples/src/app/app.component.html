@@ -1,6 +1,6 @@
 <div class="container" [style.background]="gradient">
 
-
+ 
   <div class="main-wrapper">
     <div class="title">ngx-colors</div>
     <div class="selector-wrapper">
@@ -11,7 +11,7 @@
     <div class="selector-wrapper">
       <!-- <input type="text" [value]="rightColor" ngx-colors-trigger [(color)]="rightColor"> -->
       <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:right" [(ngModel)]="rightColor"
-        [colorsAnimation]="'popup'"></ngx-colors>
+        [colorsAnimation]="'popup'" [palette]='customPalette'></ngx-colors>
       <div class="color" style="float:right">{{rightColor}}</div>
       <div class="color" style="float:left">Popup animations</div>
     </div>

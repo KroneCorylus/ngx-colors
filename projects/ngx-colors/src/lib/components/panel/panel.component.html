@@ -1,9 +1,9 @@
 <div class="opened" #dialog>
     <ng-container *ngIf="menu == 1">
         <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-            <div (click)="showVariants(color)" *ngFor="let color of palette" class="circle circle-border"
-                [ngStyle]="{'background': color.preview}">
-                <div *ngIf="hasVariant(color)" class="selected"></div>
+            <div (click)="onColorClick(color)" *ngFor="let color of palette" class="circle circle-border"
+                [ngStyle]="getBackgroundColor(color)">
+                <div *ngIf="hasVariant(color) || isSelected(color)" class="selected"></div>
             </div>
             <div (click)="addColor()" class="circle button">
                 <div class="add">

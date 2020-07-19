@@ -2,6 +2,7 @@ import { EventEmitter,Input, Output, Directive, ElementRef, ComponentRef, HostLi
 import { PanelFactoryService } from '../services/panel-factory.service';
 import { PanelComponent } from '../components/panel/panel.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgxColor } from '../clases/color';
 
 @Directive({
   selector: '[ngx-colors-trigger]',
@@ -27,7 +28,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
   @Input() colorsAnimation:'slide-in' | 'popup' = 'slide-in';
 
   //This is used to set a custom palette of colors in the panel;
-  @Input() customColors;
+  @Input() palette:Array<string> | Array<NgxColor>;
 
   @Input() format;
 
@@ -54,7 +55,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   open(){
     this.panelRef = this.panelFactory.createPanel();
-    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.customColors,this.colorsAnimation);
+    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation);
   }
 
   public close(){
@@ -72,6 +73,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   writeValue(value){
     if(value !== this.color){
+      console.log('test');
       this.color = value;
       this.change.emit(value);
     }

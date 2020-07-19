@@ -17,10 +17,8 @@ app-root{
     height: 300px;
     width:40vw;
     min-width:  600px;
-    // background: white;
     border-radius: 3px;
-    // box-shadow:0 1px 1px 0 rgba(0,0,0,.2), 0 1px 1px 1px rgba(0,0,0,.14), 0 1px 1px 1px rgba(0,0,0,.12);
-}
+   }
 
 
 @media only screen and (max-width: 600px) {
@@ -46,7 +44,6 @@ app-root{
     border-radius: 50px;
     margin-top: 20px;
     overflow: hidden;
-    // max-width: 90vw;
 }
 .color {
     font-family: sans-serif;
@@ -56,26 +53,6 @@ app-root{
     line-height: 20px;
 }
 
-// .rlink {
-//     text-align: right;
-//     position: absolute;
-//     top:10px; right:10px;
-//     .github {
-//         display: block;
-//         img{
-//             width: 100px;
-//         }
-//     }       
-//     .npm {
-//         width: 100px;
-//         display: inline;
-//         padding: 0 8px 0 0;
-//         svg{
-//             width: 80px;
-//             fill:black;
-//         }
-//     }
-// }
 .documentation{
     padding: 20px 20px 20px 20px;
     background:#fafafa;

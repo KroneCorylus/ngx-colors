@@ -91,6 +91,7 @@ export class PanelComponent implements OnInit {
   
 
 
+
   public ngOnInit(){
     this.setPosition();
     this.hsva = this.service.stringToHsva(this.color);
@@ -102,7 +103,7 @@ export class PanelComponent implements OnInit {
       this.triggerElementRef = triggerElementRef;
       this.color = color;
       this.previewColor = this.color;
-      this.palette = this.palette
+      this.palette = palette ?? defaultColors;
       this.colorsAnimationEffect = animation;
   }
 
@@ -114,11 +115,20 @@ export class PanelComponent implements OnInit {
     }
   }
   public hasVariant(color):boolean{
-    return color.variants.some(v => v.toUpperCase() == this.previewColor.toUpperCase() );
+    return typeof color != 'string' && color.variants.some(v => v.toUpperCase() == this.previewColor.toUpperCase() );
   }
 
   public isSelected(color){
-    return color.toUpperCase() == this.previewColor.toUpperCase();
+    return typeof color == 'string' && color.toUpperCase() == this.previewColor.toUpperCase();
+  }
+
+  public getBackgroundColor(color){
+    if(typeof color == 'string'){
+      return { 'background': color };
+    }
+    else{
+      return { 'background': color.preview };
+    }
   }
 
 
@@ -127,6 +137,7 @@ export class PanelComponent implements OnInit {
    * @param string color
    */
   public changeColor(color: string): void {
+    console.log('changeColor',color);
     this.setColor(this.service.stringToHsva(color));
     this.triggerInstance.onChange();
     this.emitClose();
@@ -146,6 +157,7 @@ export class PanelComponent implements OnInit {
   }
 
   setColor(value:Hsva){
+    console.log('setColor',value);
     this.hsva = value;
     this.color = this.service.toFormat(value,this.format);
     this.setPreviewColor(value);
@@ -165,9 +177,15 @@ export class PanelComponent implements OnInit {
     this.menu = 1;
   }
 
-  public showVariants(color){
-    this.variants = color.variants;
-    this.menu = 2;
+  public onColorClick(color){
+    if(typeof color == 'string'){
+      console.log('onColorClick',color);
+      this.changeColor(color);
+    }
+    else{
+      this.variants = color.variants;
+      this.menu = 2;
+    }
   }
 
   public addColor(){

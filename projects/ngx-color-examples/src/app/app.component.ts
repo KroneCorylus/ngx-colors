@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
     testCtrl: new FormControl(''),
   });
 
+  customPalette = ['#C0CA33','#42A5F5','#455a64','#c2185b','#ab47bc','#26a69a','#00acc1']
   colors = ['#C0CA33','#42A5F5','#455a64','#c2185b','#ab47bc','#26a69a','#00acc1']
 
   codes = codes;

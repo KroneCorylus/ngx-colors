@@ -22,5 +22,8 @@
     "ngx",
     "Colors",
     "Color Picker"
-  ]
+  ],
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
 }

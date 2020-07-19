@@ -48,11 +48,11 @@
         "version":"0.0.10",
         "changelog":[
             {
-                "type":"fix",
+                "type":"performance",
                 "details":"Only changes produced within the panel emit change event"
             },
             {
-                "type":"fix",
+                "type":"performance",
                 "details":"Remove of the tripled emit of event change when the picker is dragged"
             }
         ]
@@ -91,8 +91,25 @@
         "version":"2.0.0",
         "changelog":[
             {
-                "type":"performance",
+                "type":"feature",
                 "details":"Implements Angular ControlValueAccessor, now we can use ngModel and formGroup"
+            }
+        ]
+    },
+    {
+        "version":"2.1.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Updating to Angular 10"
+            },
+            {
+                "type":"feature",
+                "details":"Allow set a custom palette using the property \"palette\""
+            },
+            {
+                "type":"fix",
+                "details":"Fixed a bug where sometimes the change event would fire before the value was updated"
             }
         ]
     },

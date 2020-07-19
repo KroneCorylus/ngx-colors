@@ -1,8 +1,7 @@
 <p align="center">
   <h1 align="center">ngx-colors</h1>
-  <p align="center">Simple yet elegant Material color picker for Angular</p>
   <p align="center">Beautiful Angular component for selecting a color from a 
-color palette, from Hue, Lightness, Alpha sliders or through text input(hex, rgba, hsla) 
+color palette, a Color Picker (Hue, Lightness, Alpha sliders) or through text input(hex, rgba, hsla) 
 
   </p>
 </p>

@@ -76,8 +76,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/ngx-color-examples/src/styles.scss",
-              "./node_modules/highlight.js/styles/atom-one-light2.css"
+              "projects/ngx-color-examples/src/styles.scss"
             ],
             "scripts": []
           },

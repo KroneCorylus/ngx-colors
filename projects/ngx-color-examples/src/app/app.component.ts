@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http'
 import {codes,examples} from './codes';
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   leftColor = '#C0CA33';
   gradient;
 
-
+  @ViewChild("tabmenu") menuView: ElementRef;
 
   constructor(
     public domSanitizer:DomSanitizer,
@@ -82,6 +82,10 @@ export class AppComponent implements OnInit {
 
   updateGradient(){
     this.gradient = this.domSanitizer.bypassSecurityTrustStyle('linear-gradient(45deg, ' + this.leftColor + ' 0%,' + this.rightColor + ' 100%)');
+  }
+
+  scrollIntoView(){
+    this.menuView.nativeElement.scrollIntoView({behavior:'smooth'})
   }
 
 }

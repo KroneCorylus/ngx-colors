@@ -2,9 +2,17 @@ app-root{
     font-family: sans-serif;
 }
 .container{
-    height: 100vh;
+    height: calc(100vh - 45px);
     overflow: hidden;
     position: relative;
+}
+pre{
+    margin: 0px;
+}
+
+.hljs{
+    padding:1em;
+    border-radius: 4px;
 }
 .main-wrapper{
     transition: 2s;

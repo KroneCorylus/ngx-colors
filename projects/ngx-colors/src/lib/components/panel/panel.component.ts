@@ -137,15 +137,14 @@ export class PanelComponent implements OnInit {
    * @param string color
    */
   public changeColor(color: string): void {
-    console.log('changeColor',color);
     this.setColor(this.service.stringToHsva(color));
-    this.triggerInstance.onChange();
+    // this.triggerInstance.onChange();
     this.emitClose();
   }
 
   public onChangeColorPicker(event:Hsva) {
     this.setColor(event);
-    this.triggerInstance.onChange();
+    // this.triggerInstance.onChange();
   }
 
   public changeColorManual(color: string): void {
@@ -153,15 +152,14 @@ export class PanelComponent implements OnInit {
       this.color = color;
       this.hsva = this.service.stringToHsva(color);
       this.triggerInstance.setColor(this.color);
-      this.triggerInstance.onChange();
+      // this.triggerInstance.onChange();
   }
 
   setColor(value:Hsva){
-    console.log('setColor',value);
     this.hsva = value;
     this.color = this.service.toFormat(value,this.format);
     this.setPreviewColor(value);
-    this.triggerInstance.setColor(this.color)
+    this.triggerInstance.setColor(this.color);
   }
 
 
@@ -170,7 +168,7 @@ export class PanelComponent implements OnInit {
   }
 
   onChange(){
-    this.triggerInstance.onChange();
+    // this.triggerInstance.onChange();
   }
   
   public showColors(){
@@ -179,7 +177,6 @@ export class PanelComponent implements OnInit {
 
   public onColorClick(color){
     if(typeof color == 'string'){
-      console.log('onColorClick',color);
       this.changeColor(color);
     }
     else{

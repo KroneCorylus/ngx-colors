@@ -11,7 +11,7 @@
     "build-lib": "ng build --prod ngx-colors",
     "npm-pack": "cd dist/ngx-colors && npm pack",
     "package": "npm run build-lib && npm run npm-pack",
-    "publishLib": "cp -f README.md dist/ngx-colors @&& cd dist/ngx-colors && npm publish",
+    "publishLib": "cp -f README.md dist/ngx-colors && cd dist/ngx-colors && npm publish",
     "BPP": "npm run package && npm run publishLib #BUILD PACKAGE n PUBLISH",
     "BFD": "ng build --prod ngx-color-examples && cd dist/ngx-color-examples && firebase deploy #BUILD n FIREBASE DEPLOY"
   },

@@ -114,6 +114,15 @@
         ]
     },
     {
+        "version":"2.1.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Forced output format"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

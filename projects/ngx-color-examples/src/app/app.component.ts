@@ -42,9 +42,6 @@ export class AppComponent implements OnInit {
   navbar = false;
   versions:Array<any>;
   ngOnInit(){
-
-    console.log(this.snippets);
-    
     this.randomBrackground();
     this.updateGradient();
     this.http.get('/assets/changelog.json').subscribe(

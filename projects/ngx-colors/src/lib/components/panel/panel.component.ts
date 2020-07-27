@@ -106,8 +106,6 @@ export class PanelComponent implements OnInit {
       
       if(format){
         if(formats.includes(format)){
-
-        console.log('formato',format);
           this.format = formats.indexOf(format.toLowerCase());
           this.canChangeFormat = false;
           if(this.service.getFormatByString(this.color) != format.toLowerCase()){

@@ -276,4 +276,20 @@ export class ConverterService {
 
     return this.hsvaToRgba(hsva).toString();
   }
+
+  public getFormatByString(color: string): string {
+      color = color.toLowerCase();
+      let regexHex:RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/
+      let regexRGBA:RegExp = /(rgba\((\d{1,3},\s?){3}(1|0?\.\d+)\)|rgb\(\d{1,3}(,\s?\d{1,3}){2}\))/
+      let regexHSLA:RegExp = /(hsla\((\d{1,3}%?,\s?){3}(1|0?\.\d+)\)|hsl\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/
+      if(regexHex.test(color)){
+        return 'hex'
+      }
+      else if(regexRGBA.test(color)){
+        return 'rgba'
+      }
+      else if(regexHSLA.test(color)){
+        return 'hsla'
+      }
+  }
 }

@@ -8,6 +8,10 @@ export var api = {
             {
                 name:'colorsAnimation',
                 description: 'Set the animation for the color circles.<br>Options: <ul><li>popup</li><li>slide-in</li><ul>'
+            },
+            {
+                name:'format',
+                description: 'Set output format.<br>Options: <ul><li>hex</li><li>rgba</li><li>hsla</li><ul>'
             }
         ],
         output:[

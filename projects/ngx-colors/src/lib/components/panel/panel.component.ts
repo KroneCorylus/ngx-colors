@@ -82,6 +82,7 @@ export class PanelComponent implements OnInit {
   public colorFormats = formats;
   public format:ColorFormats = ColorFormats.HEX;
  
+  public canChangeFormat:boolean = true;
     
   public menu = 1;
  
@@ -98,10 +99,31 @@ export class PanelComponent implements OnInit {
   }
 
 
-  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation){
+  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation,format:string){
       this.triggerInstance = triggerInstance;
       this.triggerElementRef = triggerElementRef;
       this.color = color;
+      
+      if(format){
+        if(formats.includes(format)){
+
+        console.log('formato',format);
+          this.format = formats.indexOf(format.toLowerCase());
+          this.canChangeFormat = false;
+          if(this.service.getFormatByString(this.color) != format.toLowerCase()){
+            
+            this.setColor(this.service.stringToHsva(this.color));
+          }
+        }
+        else{
+          console.error('Format provided is invalid, using HEX');
+          this.format = ColorFormats.HEX;
+        }
+      }
+      else{
+        this.format = formats.indexOf(this.service.getFormatByString(this.color));
+      }
+      
       this.previewColor = this.color;
       this.palette = palette ?? defaultColors;
       this.colorsAnimationEffect = animation;
@@ -190,8 +212,10 @@ export class PanelComponent implements OnInit {
   }
 
   public nextFormat(){
-    this.format = (this.format + 1) % this.colorFormats.length;
-    this.setColor(this.hsva);
+    if(this.canChangeFormat){
+      this.format = (this.format + 1) % this.colorFormats.length;
+      this.setColor(this.hsva);
+    }
   }
 
 

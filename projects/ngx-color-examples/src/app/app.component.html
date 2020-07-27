@@ -10,7 +10,7 @@
     </div>
     <div class="selector-wrapper">
       <!-- <input type="text" [value]="rightColor" ngx-colors-trigger [(color)]="rightColor"> -->
-      <ngx-colors ngx-colors-trigger [format]="'rgba'" (change)="updateGradient()" style="float:left" [(ngModel)]="rightColor"
+      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="rightColor"
         [colorsAnimation]="'popup'" [palette]='customPalette'></ngx-colors>
       <div class="color">{{rightColor}}</div>
       <div class="descripcion">Popup animations & Custom palette</div>

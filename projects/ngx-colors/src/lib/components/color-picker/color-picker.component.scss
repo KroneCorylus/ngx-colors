@@ -21,6 +21,7 @@
   cursor: default;
   @include disable-selection;
   background-color: #fff;
+  touch-action: none;
 }
 
 .color-picker * {

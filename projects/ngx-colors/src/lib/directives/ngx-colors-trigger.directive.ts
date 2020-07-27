@@ -42,7 +42,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
   }
   constructor(
     private triggerRef:ElementRef,
-    private panelFactory:PanelFactoryService
+    private panelFactory:PanelFactoryService,
   ) 
   {
   }
@@ -55,7 +55,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   open(){
     this.panelRef = this.panelFactory.createPanel();
-    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation);
+    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation,this.format);
   }
 
   public close(){

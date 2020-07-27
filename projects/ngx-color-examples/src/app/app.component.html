@@ -5,28 +5,43 @@
     <div class="title">ngx-colors</div>
     <div class="selector-wrapper">
       <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="leftColor"></ngx-colors>
-      <div class="color" style="float:left">{{leftColor}}</div>
-      <div class="color" style="float:right">Slide-In animations & Default palette</div>
+      <div class="color" >{{leftColor}}</div>
+      <div class="descripcion" >Slide-In animations & Default palette</div>
     </div>
     <div class="selector-wrapper">
       <!-- <input type="text" [value]="rightColor" ngx-colors-trigger [(color)]="rightColor"> -->
-      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:right" [(ngModel)]="rightColor"
+      <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="rightColor"
         [colorsAnimation]="'popup'" [palette]='customPalette'></ngx-colors>
-      <div class="color" style="float:right">{{rightColor}}</div>
-      <div class="color" style="float:left">Popup animations & Custom palette</div>
+      <div class="color">{{rightColor}}</div>
+      <div class="descripcion">Popup animations & Custom palette</div>
     </div>
   </div>
 </div>
-<div #tabmenu>
+<div class="tab-wrapper" #tabmenu>
+  <div class="sitios">
+    <a href="https://github.com/KroneCorylus/ngx-colors"><img src="../assets/img/logos/GitHub_Logo.png"></a>
+    <a href="https://www.npmjs.com/package/ngx-colors"><img src="../assets/img/logos/npm-logo-red.svg"></a>
+  </div>
   <mat-tab-group (selectedTabChange)="scrollIntoView()">
     <mat-tab label="OVERVIEW">
       <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()" style="padding: 16px 0px;width: 100%;position: absolute;">OVERVIEW</span>
+        <span (click)="scrollIntoView()" class="tabLabel">OVERVIEW</span>
       </ng-template>
       <div class="documentation">
         <h2>Overview</h2>
-        ngx-colors is an angular components that allows users to select a color either through text input(hex, rgba,
-        hsla), by choosing a pre set color from the palette, or from Hue, Lightness, Alpha sliders.
+        <p>
+          ngx-colors is an angular component that allows users to select a color either through text input(hex, rgba,
+          hsla), by choosing a pre set color from the palette, or a color picker with using Hue, Lightness and Alpha sliders.
+        </p>
+        It is composed of two parts:
+        <ul>
+          <li>
+            <b>ngx-colors-trigger</b>: This directive can be applied to any html element turning it into a trigger that when clicked will open the color picker
+          </li>
+          <li>
+            <b>ngx-colors</b>: This component is a premade button that will display the selected color.
+          </li>
+        </ul>
         <h2>Install & Import</h2>
         <h3>Npm</h3>
         Install dependency
@@ -37,11 +52,11 @@
   
         <h3>Import</h3>
   
-          <pre><code [highlight]="codes[0][0].code"></code></pre>
+          <pre><code [highlight]="snippets['overview']['import'].code"></code></pre>
   
         <h2>Basic usage</h2>
         <h3>Getting and setting a color</h3>
-        <span class="text">The &lt;ngx-colors&gt; element supports 2-way binding to the ngModel property.</span>
+        <span class="text">The <b>ngx-colors-trigger</b> directive supports 2-way binding using <a href="https://angular.io/api/forms/NgModel">ngModel</a> property.</span>
   
         <div class="exampleblock">
           <ngx-colors ngx-colors-trigger style="display: inline-block; margin:5px;" (change)="updateGradient()" [(ngModel)]="leftColor"></ngx-colors>
@@ -49,15 +64,27 @@
             <input matInput [(ngModel)]="leftColor">
           </mat-form-field>
         </div>
+            <pre><code [highlight]="snippets['overview']['ngmodel'].code"></code></pre>
+
+
+            <br>
+            <span class="text">Or it can be used it inside a <a href="https://angular.io/guide/reactive-forms">ReactiveForm</a></span>
   
-            <pre><code [highlight]="codes[1][0].code"></code></pre>
+        <div class="exampleblock">
+          <form class="example-form">
+            <ngx-colors ngx-colors-trigger style="display: inline-block; margin:5px;" [formControl]="colorFormControl"></ngx-colors>
+          </form>
+          Value: {{ colorFormControl.value }}
+        </div>
+  
+            <pre><code [highlight]="snippets['overview']['formcontrol'].code"></code></pre>
   
         <br>
         <hr>
         <h3>Detecting changes</h3>
         <span class="text">Use the property change to detect changes when the user interact with the color picker</span>
   
-          <pre><code [highlight]="codes[2][0].code"></code></pre>
+          <pre><code [highlight]="snippets['overview']['detectchanges'].code"></code></pre>
   
         <br>
         <hr>
@@ -75,24 +102,50 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()" style="padding: 16px 0px;width: 100%;position: absolute;">API</span>
+        <span (click)="scrollIntoView()" >API</span>
       </ng-template>
-     <!-- {{testForm.value | json}}
-  
-    
-  
-      <div style="padding:500px 200px">
-        <form [formGroup]="testForm">
-          <ngx-colors ngx-colors-trigger formControlName="testCtrl"></ngx-colors>
-    
-        </form>
-      </div> -->
-  
+      <div class="documentation">
+        <h2>Reference for ngx-colors</h2>
+        <pre><code [highlight]="snippets['api']['reference'].code"></code></pre>
+        <h2>Directive <b>ngx-colors-trigger</b></h2>
+        <h3>@Inputs</h3>
+      <table class="api-table">
+        <tr>
+          <th>
+            name
+          </th>
+          <th>
+            description
+          </th>
+        </tr>
+        <tr *ngFor="let row of api.directive.input">
+          <td class="name">{{row.name}}</td>
+          <td [innerHtml]="row.description"></td>
+        </tr>
+      </table>
+      <h3>@outputs</h3>
+      <table class="api-table">
+        <tr>
+          <th>
+            name
+          </th>
+          <th>
+            description
+          </th>
+        </tr>
+        <tr *ngFor="let row of api.directive.output">
+          <td class="name">{{row.name}}</td>
+          <td [innerHtml]="row.description"></td>
+        </tr>
+      </table>
+      </div>
+
+      
   
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()" style="padding: 16px 0px;width: 100%;position: absolute;">EXAMPLES</span>
+        <span (click)="scrollIntoView()" >EXAMPLES</span>
       </ng-template>
       <div class="documentation">
         <h2>More usage examples</h2>
@@ -104,15 +157,15 @@
           <div style="width: 50px;height: 50px;margin:10px" [style.background]="leftColor" ngx-colors-trigger
             [(ngModel)]="leftColor"></div>
         </div>
-          <pre><code [highlight]="examples[0][0].code"></code></pre>
+          <pre><code [highlight]="snippets['examples']['customtrigger'].code"></code></pre>
         <br>
         <hr>
-        <div style="height: 500px;"></div>
+        <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="leftColor"></ngx-colors>
       </div>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()" style="padding: 16px 0px;width: 100%;position: absolute;">CHANGELOG</span>
+        <span (click)="scrollIntoView()" >CHANGELOG</span>
       </ng-template>
       <div class="documentation">
         <div *ngFor="let version of versions">

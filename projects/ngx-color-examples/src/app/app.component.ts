@@ -1,8 +1,10 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, APP_ID } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http'
-import {codes,examples} from './codes';
+import {snippets} from './codes';
+import {api} from './api';
 import { FormGroup, FormControl } from '@angular/forms';
+import { NgxColor } from 'projects/ngx-colors/src/public-api';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -34,13 +36,14 @@ export class AppComponent implements OnInit {
   customPalette = ['#C0CA33','#42A5F5','#455a64','#c2185b','#ab47bc','#26a69a','#00acc1']
   colors = ['#C0CA33','#42A5F5','#455a64','#c2185b','#ab47bc','#26a69a','#00acc1']
 
-  codes = codes;
-  examples = examples;
+  snippets = snippets;
+  api = api;
+  colorFormControl = new FormControl('#455a64');
   navbar = false;
   versions:Array<any>;
   ngOnInit(){
 
-
+    console.log(this.snippets);
     
     this.randomBrackground();
     this.updateGradient();

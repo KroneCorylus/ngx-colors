@@ -19,9 +19,7 @@ export class DocumentViewerComponent implements OnInit {
       this.http.get(this.documents[i].file,{responseType: 'text'}).subscribe(
         data => {
           this.documents[i]["content"] = data;
-          console.log(data);
         });
-      // this.documents[i]["content"] = readFileSync(this.documents[i].file, 'utf-8');
     }
   }
 

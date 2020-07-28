@@ -141,6 +141,19 @@
         ]
     },
     {
+        "version":"2.4.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Add property hideTextInput"
+            },
+            {
+                "type":"feature",
+                "details":"Add property hideColorPicker"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

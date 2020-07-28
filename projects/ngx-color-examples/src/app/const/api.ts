@@ -12,6 +12,14 @@ export var api = {
             {
                 name:'format',
                 description: 'Set output format.<br>Options: <ul><li>hex</li><li>rgba</li><li>hsla</li><ul>'
+            },
+            {
+                name:'hideColorPicker',
+                description: 'Hide the option to see the sliders to choose a color'
+            },
+            {
+                name:'hideTextInput',
+                description: 'Hide the text input'
             }
         ],
         output:[

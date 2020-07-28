@@ -1,7 +1,7 @@
 {
   "name": "ngx-colors",
-  "version": "2.3.0",
-  "license" : "MIT",
+  "version": "2.4.0",
+  "license": "MIT",
   "description": "A beautiful color picker for angular that let you choose from a color palette, using sliders (Hue, Lightness, Alpha sliders) or through text input(hex, rgba, hsla)",
   "peerDependencies": {
     "@angular/common": "~10.0.4",

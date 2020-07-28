@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { CustomTriggerExampleComponent } from './examples/custom-trigger-example/custom-trigger-example.component';
+import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 
 export function getHighlightLanguages() {
   return {
@@ -22,6 +24,8 @@ export function getHighlightLanguages() {
 @NgModule({
   declarations: [
     AppComponent,
+    CustomTriggerExampleComponent,
+    DocumentViewerComponent,
   ],
   imports: [
     HighlightModule,

@@ -1,0 +1,7 @@
+<div class="code-wrapper">
+<mat-tab-group>
+    <ng-container *ngFor="let document of documents">
+    <mat-tab [label]="document.label" *ngIf="document.content">  <pre><code [languages]="document.leng" [highlight]="document.content"></code></pre></mat-tab>
+    </ng-container>
+</mat-tab-group>
+</div>

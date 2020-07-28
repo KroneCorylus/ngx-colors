@@ -144,17 +144,14 @@
         <span (click)="scrollIntoView()" >EXAMPLES</span>
       </ng-template>
       <div class="documentation">
+
+        
         <h2>More usage examples</h2>
         <h3>Custom Trigger</h3>
         <span class="text">The ngx-colors-trigger directive can be apply to any element to make a custom
           trigger</span>
-  
-        <div class="exampleblock">
-          <div style="width: 50px;height: 50px;margin:10px" [style.background]="leftColor" ngx-colors-trigger
-            [(ngModel)]="leftColor"></div>
-        </div>
-          <pre><code [highlight]="snippets['examples']['customtrigger'].code"></code></pre>
-        <br>
+        <app-custom-trigger-example></app-custom-trigger-example>
+        <app-document-viewer [documents]="examples.customtrigger"></app-document-viewer>
         <hr>
         <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="leftColor"></ngx-colors>
       </div>

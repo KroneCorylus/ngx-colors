@@ -72,7 +72,8 @@
             "assets": [
               "projects/ngx-color-examples/src/favicon.ico",
               "projects/ngx-color-examples/src/google5eb9cb8e74ff5434.html",
-              "projects/ngx-color-examples/src/assets"
+              "projects/ngx-color-examples/src/assets",
+              "projects/ngx-color-examples/src/app/examples"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",

@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, APP_ID } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http'
-import {snippets} from './codes';
-import {api} from './api';
+import {examples} from './const/examples';
+import {snippets} from './const/snippets';
+import {api} from './const/api';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgxColor } from 'projects/ngx-colors/src/public-api';
 @Component({
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
   colors = ['#C0CA33','#42A5F5','#455a64','#c2185b','#ab47bc','#26a69a','#00acc1']
 
   snippets = snippets;
+  examples = examples;
   api = api;
   colorFormControl = new FormControl('#455a64');
   navbar = false;

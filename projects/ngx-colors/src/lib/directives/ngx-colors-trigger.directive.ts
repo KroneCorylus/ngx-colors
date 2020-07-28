@@ -30,7 +30,9 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
   //This is used to set a custom palette of colors in the panel;
   @Input() palette:Array<string> | Array<NgxColor>;
 
-  @Input() format;
+  @Input() format:string;
+  @Input() hideTextInput:boolean;
+  @Input() hideColorPicker:boolean;
 
   // This event is trigger every time the selected color change
   @Output() change:EventEmitter<string> = new EventEmitter<string>();
@@ -56,7 +58,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   open(){
     this.panelRef = this.panelFactory.createPanel();
-    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation,this.format);
+    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation,this.format, this.hideTextInput, this.hideColorPicker);
   }
 
   public close(){

@@ -5,7 +5,7 @@
                 [ngStyle]="getBackgroundColor(color)">
                 <div *ngIf="hasVariant(color) || isSelected(color)" class="selected"></div>
             </div>
-            <div (click)="addColor()" class="circle button">
+            <div (click)="addColor()" *ngIf="!hideColorPicker" class="circle button">
                 <div class="add">
                     <icons icon="add"></icons>
                 </div>
@@ -41,7 +41,7 @@
             <color-picker [color]="hsva" (colorChange)="onChangeColorPicker($event)"></color-picker>
         </div>
     </ng-container>
-    <div class="manual-input-wrapper">
+    <div class="manual-input-wrapper" *ngIf="!hideTextInput">
         <p (click)="nextFormat()">{{colorFormats[format]}}</p>
         <div class="g-input">
             <input placeholder="#FFFFFF" type="text" [value]="color" [style.font-size.px]="color.length > 23 ? 9 : 10" [style.letter-spacing.px]="color.length > 16 ? 0 : 1.5" (keyup)="changeColorManual(paintInput.value)"

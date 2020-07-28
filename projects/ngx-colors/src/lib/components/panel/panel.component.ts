@@ -85,6 +85,9 @@ export class PanelComponent implements OnInit {
   public canChangeFormat:boolean = true;
     
   public menu = 1;
+
+  public hideColorPicker:boolean = false;
+  public hideTextInput:boolean = false;
  
 
   private triggerInstance:NgxColorsTriggerDirective;
@@ -99,10 +102,12 @@ export class PanelComponent implements OnInit {
   }
 
 
-  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation,format:string){
+  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation,format:string, hideTextInput:boolean, hideColorPicker:boolean){
       this.triggerInstance = triggerInstance;
       this.triggerElementRef = triggerElementRef;
       this.color = color;
+      this.hideColorPicker = hideColorPicker;
+      this.hideTextInput = hideTextInput;
       
       if(format){
         if(formats.includes(format)){

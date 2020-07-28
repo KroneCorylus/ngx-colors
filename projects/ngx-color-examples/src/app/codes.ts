@@ -29,6 +29,10 @@ Value: {{ colorFormControl.value }}`
         detectchanges:{
             "leng":"HTML",
             "code":`<ngx-colors ngx-colors-trigger (change)="updateGradient()" [(ngModel)]="ioColor"></ngx-colors>`
+        },
+        inputevent:{
+            "leng":"HTML",
+            "code":`<ngx-colors ngx-colors-trigger (input)="updateGradient()" [(ngModel)]="ioColor"></ngx-colors>`
         }
     },
     api:{

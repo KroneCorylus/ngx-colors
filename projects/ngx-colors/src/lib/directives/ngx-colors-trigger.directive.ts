@@ -32,9 +32,10 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   @Input() format;
 
-  // This event is trigger every time a change is made using the panel
-  @Output() change:EventEmitter<string> = new EventEmitter<string>();;
-
+  // This event is trigger every time the selected color change
+  @Output() change:EventEmitter<string> = new EventEmitter<string>();
+  // This event is trigger every time the user change the color using the panel
+  @Output() input:EventEmitter<string> = new EventEmitter<string>();
 
 
   @HostListener('click') onClick(){
@@ -69,6 +70,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   public setColor(color){
     this.writeValue(color);
+    this.input.emit(color);
   }
 
   get value():string{

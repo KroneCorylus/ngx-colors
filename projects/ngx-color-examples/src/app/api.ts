@@ -17,8 +17,12 @@ export var api = {
         output:[
             {
                 name:'change',
-                description: 'Gets triggered when the color is change by the user'
+                description: 'Gets triggered when the color is changed.'
             },
+            {
+                name:'input',
+                description: 'Gets triggered when the color is changed by the user'
+            }
         ]
     }
 }

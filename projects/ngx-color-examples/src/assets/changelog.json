@@ -123,6 +123,24 @@
         ]
     },
     {
+        "version":"2.2.1",
+        "changelog":[
+            {
+                "type":"fix",
+                "details":"Fix stuttering when dragging sliders on touch screen devices"
+            }
+        ]
+    },
+    {
+        "version":"2.3.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Add input event"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

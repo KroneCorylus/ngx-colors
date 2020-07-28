@@ -2,7 +2,7 @@ export var api = {
     directive:{
         input:[
             {
-                name:'customPalette',
+                name:'palette',
                 description: 'Set a custom palette for the color picker. Can recibe an Array of string or NgxColor'
             },
             {

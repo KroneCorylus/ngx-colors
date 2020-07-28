@@ -147,14 +147,41 @@
 
         
         <h2>More usage examples</h2>
+         <!-- EXAMPLE BLOCK -->
         <h3>Custom Trigger</h3>
         <span class="text">The ngx-colors-trigger directive can be apply to any element to make a custom
           trigger</span>
-        <app-custom-trigger-example></app-custom-trigger-example>
+        <div class="showcase">
+          <app-custom-trigger-example></app-custom-trigger-example>
+        </div>
         <app-document-viewer [documents]="examples.customtrigger"></app-document-viewer>
+        <br>
         <hr>
-        <ngx-colors ngx-colors-trigger (change)="updateGradient()" style="float:left" [(ngModel)]="leftColor"></ngx-colors>
-      </div>
+        <!-- END EXAMPLE BLOCK -->
+
+        <!-- EXAMPLE BLOCK -->
+        <h3>Hide some parts of the component</h3>
+        <span class="text">You can hide the text input or the Color Picker if want. try playing with the toggles here.</span>
+        <div class="showcase">
+          <app-hide-elements-example></app-hide-elements-example>
+        </div>
+        <app-document-viewer [documents]="examples.hideelements"></app-document-viewer>
+        <br>
+        <hr>
+        <!-- END EXAMPLE BLOCK -->
+
+        <!-- EXAMPLE BLOCK -->
+        <h3>Custom palette (simple)</h3>
+        <p class="text">You can provide your own palette with the parameter <b>palette</b></p>
+        <p class="text">Try adding new colors to the palette using the color picker</p>
+        <div class="showcase">
+          <app-custom-palette-example></app-custom-palette-example>
+        </div>
+        <app-document-viewer [documents]="examples.custompalette"></app-document-viewer>
+        <br>
+        <hr>
+        <!-- END EXAMPLE BLOCK -->
+        </div>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>

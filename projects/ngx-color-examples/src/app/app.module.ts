@@ -8,11 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { CustomTriggerExampleComponent } from './examples/custom-trigger-example/custom-trigger-example.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
-
+import { HideElementsExampleComponent } from './examples/hide-elements-example/hide-elements-example.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { CustomPaletteExampleComponent } from './examples/custom-palette-example/custom-palette-example.component';
 export function getHighlightLanguages() {
   return {
     typescript: () => import('highlight.js/lib/languages/typescript'),
@@ -26,6 +29,8 @@ export function getHighlightLanguages() {
     AppComponent,
     CustomTriggerExampleComponent,
     DocumentViewerComponent,
+    HideElementsExampleComponent,
+    CustomPaletteExampleComponent,
   ],
   imports: [
     HighlightModule,
@@ -37,7 +42,9 @@ export function getHighlightLanguages() {
     MatTabsModule,
     FormsModule,
     HttpClientModule,
-    MatInputModule
+    MatInputModule,
+    MatSlideToggleModule,
+    MatButtonModule
   ],
   providers: [
     {

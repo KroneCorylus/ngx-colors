@@ -1,0 +1,11 @@
+
+<ngx-colors 
+    ngx-colors-trigger 
+    [hideTextInput]="hideTextInput" 
+    [hideColorPicker]="hideColorPicker" 
+    [(ngModel)]="color">
+</ngx-colors>
+
+<mat-slide-toggle [(ngModel)]="hideTextInput" >Hide text input</mat-slide-toggle>
+<br>
+<mat-slide-toggle [(ngModel)]="hideColorPicker" >Hide color picker</mat-slide-toggle>

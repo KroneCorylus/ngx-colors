@@ -154,6 +154,15 @@
         ]
     },
     {
+        "version":"2.4.1",
+        "changelog":[
+            {
+                "type":"fux",
+                "details":"Change text from 'Aceptar' to 'Accept' in the color picker"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

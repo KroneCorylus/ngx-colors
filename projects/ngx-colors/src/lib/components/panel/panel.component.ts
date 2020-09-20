@@ -88,7 +88,7 @@ export class PanelComponent implements OnInit {
 
   public hideColorPicker:boolean = false;
   public hideTextInput:boolean = false;
- 
+  public acceptLabel:string;
 
   private triggerInstance:NgxColorsTriggerDirective;
   private triggerElementRef;
@@ -102,13 +102,13 @@ export class PanelComponent implements OnInit {
   }
 
 
-  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation,format:string, hideTextInput:boolean, hideColorPicker:boolean){
+  public iniciate(triggerInstance:NgxColorsTriggerDirective,triggerElementRef,color,palette,animation,format:string, hideTextInput:boolean, hideColorPicker:boolean, acceptLabel:string){
       this.triggerInstance = triggerInstance;
       this.triggerElementRef = triggerElementRef;
       this.color = color;
       this.hideColorPicker = hideColorPicker;
       this.hideTextInput = hideTextInput;
-      
+      this.acceptLabel = acceptLabel;
       if(format){
         if(formats.includes(format)){
           this.format = formats.indexOf(format.toLowerCase());

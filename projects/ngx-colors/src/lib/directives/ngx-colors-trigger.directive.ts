@@ -33,7 +33,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
   @Input() format:string;
   @Input() hideTextInput:boolean;
   @Input() hideColorPicker:boolean;
-
+  @Input() acceptLabel:string = 'ACCEPT';
   // This event is trigger every time the selected color change
   @Output() change:EventEmitter<string> = new EventEmitter<string>();
   // This event is trigger every time the user change the color using the panel
@@ -58,7 +58,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor{
 
   open(){
     this.panelRef = this.panelFactory.createPanel();
-    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation,this.format, this.hideTextInput, this.hideColorPicker);
+    this.panelRef.instance.iniciate(this,this.triggerRef,this.color,this.palette,this.colorsAnimation,this.format, this.hideTextInput, this.hideColorPicker,this.acceptLabel);
   }
 
   public close(){

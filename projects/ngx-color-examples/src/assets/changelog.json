@@ -157,8 +157,17 @@
         "version":"2.4.1",
         "changelog":[
             {
-                "type":"fux",
+                "type":"fix",
                 "details":"Change text from 'Aceptar' to 'Accept' in the color picker"
+            }
+        ]
+    },
+    {
+        "version":"2.5.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Add property to set the text of the 'Accept' Button"
             }
         ]
     },

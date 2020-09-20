@@ -16,6 +16,7 @@ import { DocumentViewerComponent } from './components/document-viewer/document-v
 import { HideElementsExampleComponent } from './examples/hide-elements-example/hide-elements-example.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { CustomPaletteExampleComponent } from './examples/custom-palette-example/custom-palette-example.component';
+import { ChangeAcceptLabelExampleComponent } from './examples/change-accept-label/change-accept-label.component'
 export function getHighlightLanguages() {
   return {
     typescript: () => import('highlight.js/lib/languages/typescript'),
@@ -31,6 +32,7 @@ export function getHighlightLanguages() {
     DocumentViewerComponent,
     HideElementsExampleComponent,
     CustomPaletteExampleComponent,
+    ChangeAcceptLabelExampleComponent
   ],
   imports: [
     HighlightModule,

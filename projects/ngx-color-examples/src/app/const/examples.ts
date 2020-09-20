@@ -35,5 +35,18 @@ export var examples = {
           leng:["html"],
           file:"/app/examples/custom-palette-example/custom-palette-example.component.html"
         },
+      ],
+      changelabel: [
+        {
+          label:"HTML",
+          leng:["html"],
+          file:"/app/examples/change-accept-label/change-accept-label.component.html"
+        },
+        {
+          label:"TS",
+          leng:["typescript"],
+          file:"/app/examples/change-accept-label/change-accept-label.component.ts"
+        },
+        
       ]
 }

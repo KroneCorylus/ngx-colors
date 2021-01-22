@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomPaletteExampleComponent } from './custom-palette-example.component';
 
@@ -6,7 +6,7 @@ describe('CustomPaletteExampleComponent', () => {
   let component: CustomPaletteExampleComponent;
   let fixture: ComponentFixture<CustomPaletteExampleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomPaletteExampleComponent ]
     })

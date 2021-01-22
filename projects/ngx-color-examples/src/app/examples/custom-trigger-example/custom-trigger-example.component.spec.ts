@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomTriggerExampleComponent } from './custom-trigger-example.component';
 
@@ -6,7 +6,7 @@ describe('CustomTriggerExampleComponent', () => {
   let component: CustomTriggerExampleComponent;
   let fixture: ComponentFixture<CustomTriggerExampleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomTriggerExampleComponent ]
     })

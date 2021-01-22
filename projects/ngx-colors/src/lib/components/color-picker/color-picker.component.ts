@@ -47,14 +47,15 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit,On
   ) { }
 
   ngOnInit(): void {
-
+    if(!this.color){
+      this.color = new Hsva(0,1,1,1);
+    }
     this.slider = new SliderPosition(0, 0, 0, 0);
     const hueWidth = this.hueSlider.nativeElement.offsetWidth || 140;
     const alphaWidth = this.alphaSlider.nativeElement.offsetWidth || 140;
     this.sliderDimMax = new SliderDimension(hueWidth, 220, 130, alphaWidth);
     // this.setColorFromString((this.color || this.fallbackColor));
     this.update();
-
   }
 
   ngOnDestroy(): void {

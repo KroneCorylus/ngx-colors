@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   snippets = snippets;
   examples = examples;
   api = api;
-  colorFormControl = new FormControl('#455a64');
+  colorFormControl = new FormControl(null);
   navbar = false;
   versions:Array<any>;
   ngOnInit(){

@@ -1,51 +1,75 @@
 <div class="opened" #dialog>
-    <ng-container *ngIf="menu == 1">
-        <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-            <div (click)="onColorClick(color)" *ngFor="let color of palette" class="circle circle-border"
-                [ngStyle]="getBackgroundColor(color)">
-                <div *ngIf="hasVariant(color) || isSelected(color)" class="selected"></div>
-            </div>
-            <div (click)="addColor()" *ngIf="!hideColorPicker" class="circle button">
-                <div class="add">
-                    <icons icon="add"></icons>
-                </div>
-            </div>
+  <ng-container *ngIf="menu == 1">
+    <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
+      <div
+        (click)="onColorClick(color)"
+        *ngFor="let color of palette"
+        class="circle circle-border"
+        [ngStyle]="getBackgroundColor(color)"
+      >
+        <div
+          *ngIf="hasVariant(color) || isSelected(color)"
+          class="selected"
+        ></div>
+      </div>
+      <div (click)="addColor()" *ngIf="!hideColorPicker" class="circle button">
+        <div class="add">
+          <icons icon="add"></icons>
         </div>
-    </ng-container>
-    <ng-container *ngIf="menu == 2">
-        <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-
-            <div class="circle">
-                <div (click)="showColors()" class="add">
-                    <icons icon="back"></icons>
-                </div>
-            </div>
-            <div (click)="changeColor(variant)" *ngFor="let variant of variants" class="circle circle-border"
-                [ngStyle]="{'background': variant}">
-                <div *ngIf="isSelected(variant)" class="selected"></div>
-            </div>
-
-        </div>
-
-    </ng-container>
-    <ng-container *ngIf="menu == 3">
-        <div class="nav-wrapper">
-            <div (click)="showColors()" class="round-button button" style="float:left;">
-                <icons icon="back"></icons>
-            </div>
-            <button (click)="emitClose()" style="float:right;">{{acceptLabel}}</button>
-        </div>
-        <div class="color-picker-wrapper">
-
-            <!-- <span [(colorPicker)]="color"></span> -->
-            <color-picker [color]="hsva" (colorChange)="onChangeColorPicker($event)"></color-picker>
-        </div>
-    </ng-container>
-    <div class="manual-input-wrapper" *ngIf="!hideTextInput">
-        <p (click)="nextFormat()">{{colorFormats[format]}}</p>
-        <div class="g-input">
-            <input placeholder="#FFFFFF" type="text" [value]="color" [style.font-size.px]="color.length > 23 ? 9 : 10" [style.letter-spacing.px]="color.length > 16 ? 0 : 1.5" (keyup)="changeColorManual(paintInput.value)"
-                (keydown.enter)="emitClose()" #paintInput />
-        </div>
+      </div>
     </div>
+  </ng-container>
+  <ng-container *ngIf="menu == 2">
+    <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
+      <div class="circle">
+        <div (click)="showColors()" class="add">
+          <icons icon="back"></icons>
+        </div>
+      </div>
+      <div
+        (click)="changeColor(variant)"
+        *ngFor="let variant of variants"
+        class="circle circle-border"
+        [ngStyle]="{ background: variant }"
+      >
+        <div *ngIf="isSelected(variant)" class="selected"></div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="menu == 3">
+    <div class="nav-wrapper">
+      <div
+        (click)="showColors()"
+        class="round-button button"
+        style="float: left"
+      >
+        <icons icon="back"></icons>
+      </div>
+      <button (click)="emitClose()" style="float: right">
+        {{ acceptLabel }}
+      </button>
+    </div>
+    <div class="color-picker-wrapper">
+      <!-- <span [(colorPicker)]="color"></span> -->
+      <color-picker
+        [color]="hsva"
+        (colorChange)="onChangeColorPicker($event)"
+      ></color-picker>
+    </div>
+  </ng-container>
+  <div class="manual-input-wrapper" *ngIf="!hideTextInput">
+    <p (click)="nextFormat()">{{ colorFormats[format] }}</p>
+    <div class="g-input">
+      <input
+        placeholder="#FFFFFF"
+        type="text"
+        [value]="color"
+        [style.font-size.px]="color && color.length > 23 ? 9 : 10"
+        [style.letter-spacing.px]="color && color.length > 16 ? 0 : 1.5"
+        (keyup)="changeColorManual(paintInput.value)"
+        (keydown.enter)="emitClose()"
+        #paintInput
+      />
+    </div>
+  </div>
 </div>

@@ -172,6 +172,15 @@
         ]
     },
     {
+        "version":"2.6.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Null values are now allowed and represented with a red line on the trigger."
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

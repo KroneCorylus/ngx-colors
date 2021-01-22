@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HideElementsExampleComponent } from './hide-elements-example.component';
 
@@ -6,7 +6,7 @@ describe('HideElementsExampleComponent', () => {
   let component: HideElementsExampleComponent;
   let fixture: ComponentFixture<HideElementsExampleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HideElementsExampleComponent ]
     })

@@ -278,6 +278,7 @@ export class ConverterService {
   }
 
   public getFormatByString(color: string): string {
+    if(color){
       color = color.toLowerCase();
       let regexHex:RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/
       let regexRGBA:RegExp = /(rgba\((\d{1,3},\s?){3}(1|0?\.\d+)\)|rgb\(\d{1,3}(,\s?\d{1,3}){2}\))/
@@ -291,5 +292,7 @@ export class ConverterService {
       else if(regexHSLA.test(color)){
         return 'hsla'
       }
+    }
+    return 'hex'
   }
 }

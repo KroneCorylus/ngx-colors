@@ -140,10 +140,16 @@ export class PanelComponent implements OnInit {
     }
   }
   public hasVariant(color):boolean{
+    if(!this.previewColor){
+      return false;
+    }
     return typeof color != 'string' && color.variants.some(v => v.toUpperCase() == this.previewColor.toUpperCase() );
   }
 
   public isSelected(color){
+    if(!this.previewColor){
+      return false;
+    }
     return typeof color == 'string' && color.toUpperCase() == this.previewColor.toUpperCase();
   }
 

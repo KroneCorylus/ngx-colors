@@ -181,6 +181,19 @@
         ]
     },
     {
+        "version":"2.6.1",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"Preview colors now have a background for transparent colors"
+            },
+            {
+                "type":"fix",
+                "details":" 8-Digit Hex colors on custom palette no longer break the panel selection."
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

@@ -1,17 +1,20 @@
 <div class="opened" #dialog>
   <ng-container *ngIf="menu == 1">
     <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-      <div
-        (click)="onColorClick(color)"
-        *ngFor="let color of palette"
-        class="circle circle-border"
-        [ngStyle]="getBackgroundColor(color)"
-      >
-        <div
-          *ngIf="hasVariant(color) || isSelected(color)"
-          class="selected"
-        ></div>
-      </div>
+      <ng-container *ngFor="let color of palette">
+        <div class="circle wrapper color">
+          <div
+            (click)="onColorClick(color)"
+            class="circle color circle-border"
+            [ngStyle]="getBackgroundColor(color)"
+          >
+            <div
+              *ngIf="hasVariant(color) || isSelected(color)"
+              class="selected"
+            ></div>
+          </div>
+        </div>
+      </ng-container>
       <div (click)="addColor()" *ngIf="!hideColorPicker" class="circle button">
         <div class="add">
           <icons icon="add"></icons>
@@ -21,19 +24,23 @@
   </ng-container>
   <ng-container *ngIf="menu == 2">
     <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-      <div class="circle">
+      <div class="circle wrapper">
         <div (click)="showColors()" class="add">
           <icons icon="back"></icons>
         </div>
       </div>
-      <div
-        (click)="changeColor(variant)"
-        *ngFor="let variant of variants"
-        class="circle circle-border"
-        [ngStyle]="{ background: variant }"
-      >
-        <div *ngIf="isSelected(variant)" class="selected"></div>
-      </div>
+
+      <ng-container *ngFor="let variant of variants">
+        <div class="circle wrapper color">
+          <div
+            (click)="changeColor(variant)"
+            class="circle circle-border"
+            [ngStyle]="{ background: variant }"
+          >
+            <div *ngIf="isSelected(variant)" class="selected"></div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </ng-container>
   <ng-container *ngIf="menu == 3">

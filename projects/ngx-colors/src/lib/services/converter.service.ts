@@ -194,7 +194,7 @@ export class ConverterService {
     return new Rgba(Math.round(rgba.r * 255), Math.round(rgba.g * 255), Math.round(rgba.b * 255), rgba.a);
   }
 
-  public stringToHsva(colorString: string = '', allowHex8: boolean = false): Hsva | null {
+  public stringToHsva(colorString: string = '', allowHex8: boolean = true): Hsva | null {
     let hsva: Hsva | null = null;
 
     colorString = (colorString || '').toLowerCase();

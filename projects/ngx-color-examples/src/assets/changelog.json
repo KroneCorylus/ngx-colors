@@ -194,6 +194,24 @@
         ]
     },
     {
+        "version":"2.6.2",
+        "changelog":[
+            {
+                "type":"fix",
+                "details":"Alignment of the + button"
+            }
+        ]
+    },
+    {
+        "version":"2.7.0",
+        "changelog":[
+            {
+                "type":"feature",
+                "details":"update to angular 12"
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

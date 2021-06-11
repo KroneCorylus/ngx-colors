@@ -68,7 +68,6 @@
             "main": "projects/ngx-color-examples/src/main.ts",
             "polyfills": "projects/ngx-color-examples/src/polyfills.ts",
             "tsConfig": "projects/ngx-color-examples/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/ngx-color-examples/src/favicon.ico",
               "projects/ngx-color-examples/src/google5eb9cb8e74ff5434.html",
@@ -79,7 +78,13 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/ngx-color-examples/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -110,7 +115,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

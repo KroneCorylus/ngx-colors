@@ -1,6 +1,7 @@
 import { Injectable, ComponentFactoryResolver, Injector, Inject, TemplateRef, Type, ComponentFactory, ApplicationRef, EmbeddedViewRef, ComponentRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { PanelComponent } from '../components/panel/panel.component';
+import { OVERLAY_STYLES } from './overlay-styles';
 
 @Injectable()
 export class PanelFactoryService {
@@ -32,6 +33,9 @@ export class PanelFactoryService {
     this.overlay = document.createElement('div');
     this.overlay.id = "ngx-colors-overlay";
     this.overlay.classList.add('ngx-colors-overlay');
+    Object.keys(OVERLAY_STYLES).forEach((attr: string) => {
+      this.overlay.style[attr] = OVERLAY_STYLES[attr];
+    });
     document.body.appendChild(this.overlay);
     this.overlay.appendChild(domElem);
 

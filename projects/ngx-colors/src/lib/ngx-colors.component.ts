@@ -5,8 +5,6 @@ import { NgxColorsTriggerDirective } from './directives/ngx-colors-trigger.direc
   selector: 'ngx-colors',
   templateUrl: './ngx-colors.component.html',
   styleUrls: ['./ngx-colors.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  
 })
 export class NgxColorsComponent implements OnInit{
 

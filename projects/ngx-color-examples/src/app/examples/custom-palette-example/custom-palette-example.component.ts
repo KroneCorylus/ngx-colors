@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxColor } from '../../../../../../dist/ngx-colors/public-api';
+import { NgxColor } from '../../../../../ngx-colors/src/public-api'
 
 @Component({
   selector: 'app-custom-palette-example',

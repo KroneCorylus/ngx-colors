@@ -212,6 +212,15 @@
         ]
     },
     {
+        "version":"2.7.1",
+        "changelog":[
+            {
+                "type":"bug",
+                "details":"Unable to close panel with just clicking outside using a custom trigger. Fixed now."
+            }
+        ]
+    },
+    {
         "version":"x.x.x",
         "changelog":[
             {

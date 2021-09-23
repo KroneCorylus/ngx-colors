@@ -37,6 +37,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   @Input() palette: Array<string> | Array<NgxColor>;
 
   @Input() format: string;
+  @Input() position: "top" | "bottom" = "bottom";
   @Input() hideTextInput: boolean;
   @Input() hideColorPicker: boolean;
   @Input() colorPickerControls: "default" | "only-alpha" | "no-alpha" =
@@ -72,7 +73,8 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
       this.hideTextInput,
       this.hideColorPicker,
       this.acceptLabel,
-      this.colorPickerControls
+      this.colorPickerControls,
+      this.position
     );
   }
 

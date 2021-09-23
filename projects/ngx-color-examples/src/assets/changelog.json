@@ -237,6 +237,15 @@
     ]
   },
   {
+    "version": "2.8.1",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "New Property 'position' indicates if the dialog should be opened up (top) or down (bottom)"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

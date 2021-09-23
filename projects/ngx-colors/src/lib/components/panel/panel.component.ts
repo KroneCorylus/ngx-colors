@@ -126,7 +126,7 @@ export class PanelComponent implements OnInit {
   private triggerElementRef;
   public isSelectedColorInPalette: boolean;
   public indexSeleccionado;
-
+  public positionString;
   public ngOnInit() {
     this.setPosition();
     this.hsva = this.service.stringToHsva(this.color);
@@ -163,7 +163,8 @@ export class PanelComponent implements OnInit {
     hideTextInput: boolean,
     hideColorPicker: boolean,
     acceptLabel: string,
-    colorPickerControls: "default" | "only-alpha" | "no-alpha"
+    colorPickerControls: "default" | "only-alpha" | "no-alpha",
+    position: "top" | "bottom"
   ) {
     this.colorPickerControls = colorPickerControls;
     this.triggerInstance = triggerInstance;
@@ -192,6 +193,14 @@ export class PanelComponent implements OnInit {
     this.previewColor = this.color;
     this.palette = palette ?? defaultColors;
     this.colorsAnimationEffect = animation;
+    if (position == "top") {
+      let viewportOffset =
+        this.triggerElementRef.nativeElement.getBoundingClientRect();
+      this.positionString =
+        "transform: translateY(calc( -100% - " +
+        viewportOffset.height +
+        "px ))";
+    }
   }
 
   public setPosition() {

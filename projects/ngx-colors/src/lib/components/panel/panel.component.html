@@ -1,4 +1,4 @@
-<div class="opened" #dialog>
+<div class="opened" [style]="positionString" #dialog>
   <ng-container *ngIf="menu == 1">
     <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
       <ng-container *ngFor="let color of palette; let i = index">

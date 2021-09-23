@@ -42,9 +42,7 @@
               "projects/ngx-colors/tsconfig.lib.json",
               "projects/ngx-colors/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -161,9 +159,7 @@
               "projects/ngx-color-examples/tsconfig.spec.json",
               "projects/ngx-color-examples/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

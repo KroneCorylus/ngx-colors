@@ -1,32 +1,74 @@
 <div class="opened" #dialog>
   <ng-container *ngIf="menu == 1">
     <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-      <ng-container *ngFor="let color of palette">
+      <ng-container *ngFor="let color of palette; let i = index">
         <div class="circle wrapper color">
           <div
             (click)="onColorClick(color)"
             class="circle color circle-border"
             [ngStyle]="getBackgroundColor(color)"
           >
-            <div
-              *ngIf="hasVariant(color) || isSelected(color)"
-              class="selected"
-            ></div>
+            <div *ngIf="i == this.indexSeleccionado" class="selected"></div>
           </div>
         </div>
       </ng-container>
-      <div (click)="addColor()" *ngIf="!hideColorPicker" class="circle button">
-        <div class="add">
+      <div
+        style="background: rgb(245 245 245); position: relative"
+        (click)="addColor()"
+        *ngIf="!hideColorPicker && this.colorPickerControls != 'only-alpha'"
+        class="circle button"
+      >
+        <div
+          *ngIf="!this.indexSeleccionado"
+          style="
+            position: absolute;
+            height: 7px;
+            width: 7px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            border-radius: 100%;
+            top: 0;
+            right: 0;
+          "
+          [ngStyle]="getBackgroundColor(color)"
+        ></div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 0 24 24"
+          width="24px"
+          fill="#222222"
+        >
+          <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
+          <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
+        </svg>
+        <!-- <div class="add">
           <icons icon="add"></icons>
-        </div>
+        </div> -->
       </div>
+      <color-picker
+        *ngIf="!hideColorPicker && this.colorPickerControls == 'only-alpha'"
+        [controls]="colorPickerControls"
+        [color]="hsva"
+        (colorChange)="onChangeColorPicker($event)"
+        (onAlphaChange)="onAlphaChange($event)"
+      ></color-picker>
     </div>
   </ng-container>
   <ng-container *ngIf="menu == 2">
     <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
       <div class="circle wrapper">
-        <div (click)="showColors()" class="add">
-          <icons icon="back"></icons>
+        <div (click)="onClickBack()" class="add">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+            />
+          </svg>
         </div>
       </div>
 
@@ -46,11 +88,21 @@
   <ng-container *ngIf="menu == 3">
     <div class="nav-wrapper">
       <div
-        (click)="showColors()"
+        (click)="onClickBack()"
         class="round-button button"
         style="float: left"
       >
-        <icons icon="back"></icons>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          />
+        </svg>
       </div>
       <button (click)="emitClose()" style="float: right">
         {{ acceptLabel }}
@@ -59,6 +111,7 @@
     <div class="color-picker-wrapper">
       <!-- <span [(colorPicker)]="color"></span> -->
       <color-picker
+        [controls]="colorPickerControls"
         [color]="hsva"
         (colorChange)="onChangeColorPicker($event)"
       ></color-picker>

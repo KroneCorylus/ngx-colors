@@ -6,6 +6,11 @@
 .hidden {
   display: none;
 }
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 $radius: 5px;
 .opened {
   box-sizing: border-box;

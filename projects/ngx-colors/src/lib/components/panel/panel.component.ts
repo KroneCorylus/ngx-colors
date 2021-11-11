@@ -148,18 +148,20 @@ export class PanelComponent implements OnInit {
 
   private findIndexSelectedColor(colors): number {
     let resultIndex = undefined;
-    for (let i = 0; i < colors.length; i++) {
-      const color = colors[i];
-      if (typeof color == "string") {
-        if (
-          this.service.stringToFormat(this.color, ColorFormats.HEX) ==
-          this.service.stringToFormat(color, ColorFormats.HEX)
-        ) {
-          resultIndex = i;
-        }
-      } else {
-        if (this.findIndexSelectedColor(color.variants) != undefined) {
-          resultIndex = i;
+    if (this.color) {
+      for (let i = 0; i < colors.length; i++) {
+        const color = colors[i];
+        if (typeof color == "string") {
+          if (
+            this.service.stringToFormat(this.color, ColorFormats.HEX) ==
+            this.service.stringToFormat(color, ColorFormats.HEX)
+          ) {
+            resultIndex = i;
+          }
+        } else {
+          if (this.findIndexSelectedColor(color.variants) != undefined) {
+            resultIndex = i;
+          }
         }
       }
     }
@@ -276,7 +278,7 @@ export class PanelComponent implements OnInit {
     if (typeof color == "string") {
       return { background: color };
     } else {
-      return { background: color.preview };
+      return { background: color?.preview };
     }
   }
 

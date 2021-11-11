@@ -99,7 +99,7 @@ export class PanelComponent implements OnInit {
 
   @HostBinding("style.top.px") public top: number;
   @HostBinding("style.left.px") public left: number;
-  @ViewChild("dialog", { static: false }) panelRef: ElementRef;
+  @ViewChild("dialog") panelRef: ElementRef;
   constructor(
     public service: ConverterService,
     private cdr: ChangeDetectorRef
@@ -137,7 +137,6 @@ export class PanelComponent implements OnInit {
     this.indexSeleccionado = this.findIndexSelectedColor(this.palette);
   }
   public ngAfterViewInit() {
-    console.log(this.panelRef);
     this.setPositionY();
   }
 
@@ -237,21 +236,14 @@ export class PanelComponent implements OnInit {
 
     //Check for space above the trigger
     if (0 > panelBBox.top - 5) {
-      console.log("no space above");
       this.positionString = "";
     }
     //Check for space below the trigger
     if (panelHeight > window.innerHeight - (panelBBox.top - 5)) {
       //there is no space, move panel over the trigger
-      console.log("no space below");
       this.positionString =
         "transform: translateY(calc( -100% - " + triggerBBox.height + "px ));";
     }
-    console.log(
-      panelHeight,
-      window.innerHeight - (panelBBox.top + 5),
-      panelBBox
-    );
     this.cdr.detectChanges();
   }
 

@@ -144,6 +144,9 @@ export class PanelComponent implements OnInit {
   private onScreenMovement() {
     this.setPosition();
     this.setPositionY();
+    if (!this.panelRef.nativeElement.style.transition) {
+      this.panelRef.nativeElement.style.transition = "transform 0.5s ease-out";
+    }
   }
 
   private findIndexSelectedColor(colors): number {
@@ -208,12 +211,11 @@ export class PanelComponent implements OnInit {
     this.previewColor = this.color;
     this.palette = palette ?? defaultColors;
     this.colorsAnimationEffect = animation;
-
-    // if (position == "top") {
-    //   let TriggerBBox = this.TriggerBBox.nativeElement.getBoundingClientRect();
-    //   this.positionString =
-    //     "transform: translateY(calc( -100% - " + TriggerBBox.height + "px ))";
-    // }
+    if (position == "top") {
+      let TriggerBBox = this.TriggerBBox.nativeElement.getBoundingClientRect();
+      this.positionString =
+        "transform: translateY(calc( -100% - " + TriggerBBox.height + "px ))";
+    }
   }
 
   public setPosition() {
@@ -243,7 +245,7 @@ export class PanelComponent implements OnInit {
       //there is no space, move panel over the trigger
       console.log("no space below");
       this.positionString =
-        "transform: translateY(calc( -100% - " + triggerBBox.height + "px ))";
+        "transform: translateY(calc( -100% - " + triggerBBox.height + "px ));";
     }
     console.log(
       panelHeight,
@@ -252,6 +254,7 @@ export class PanelComponent implements OnInit {
     );
     this.cdr.detectChanges();
   }
+
   public hasVariant(color): boolean {
     if (!this.previewColor) {
       return false;

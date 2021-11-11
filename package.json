@@ -8,14 +8,14 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-lib": "ng build --prod ngx-colors",
+    "build-lib": "ng build --configuration production ngx-colors",
     "npm-pack": "cd dist/ngx-colors && npm pack",
     "package": "npm run build-lib && npm run npm-pack",
     "publishLib": "cp -f README.md dist/ngx-colors && cp -f README.md projects/ngx-colors && cd dist/ngx-colors && npm publish",
     "XUX": "npm version minor && cd projects/ngx-colors && npm version minor",
     "XXU": "npm version patch && cd projects/ngx-colors && npm version patch",
     "BPP": "npm run package && npm run publishLib #BUILD PACKAGE n PUBLISH",
-    "BFD": "ng build --prod ngx-color-examples && cd dist/ngx-color-examples && firebase deploy #BUILD n FIREBASE DEPLOY"
+    "BFD": "ng build --configuration production ngx-color-examples && cd dist/ngx-color-examples && firebase deploy #BUILD n FIREBASE DEPLOY"
   },
   "private": true,
   "dependencies": {

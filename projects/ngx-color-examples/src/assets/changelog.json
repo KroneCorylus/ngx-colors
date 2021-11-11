@@ -246,6 +246,23 @@
     ]
   },
   {
+    "version": "2.10.0",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "Property 'position' indicates if the dialog should start opened above (top) or below (bottom) the trigger, this is overridden if there is no space in that position"
+      },
+      {
+        "type": "feature",
+        "details": "Now the panel moves above or below the trigger depending on whether there is space or not"
+      },
+      {
+        "type": "fix",
+        "details": "Fixing errors when the selected color was null"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

@@ -51,7 +51,10 @@ export class ColorPickerComponent
   @ViewChild("hueSlider", { static: false }) hueSlider: ElementRef;
   @ViewChild("alphaSlider", { static: false }) alphaSlider: ElementRef;
 
-  constructor(private service: ConverterService) {}
+  constructor(
+    private service: ConverterService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     if (!this.color) {
@@ -131,6 +134,7 @@ export class ColorPickerComponent
         (1 - this.hsva.v) * this.sliderDimMax.v - 8,
         this.hsva.a * this.sliderDimMax.a - 5
       );
+      this.cdr.detectChanges();
     }
   }
 }

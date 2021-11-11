@@ -90,17 +90,20 @@ export class PanelComponent implements OnInit {
 
   @HostListener("document:scroll")
   onScroll() {
-    this.setPosition();
+    this.onScreenMovement();
   }
   @HostListener("window:resize")
   onResize() {
-    this.setPosition();
+    this.onScreenMovement();
   }
 
   @HostBinding("style.top.px") public top: number;
   @HostBinding("style.left.px") public left: number;
-
-  constructor(public service: ConverterService) {}
+  @ViewChild("dialog", { static: false }) panelRef: ElementRef;
+  constructor(
+    public service: ConverterService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   public color = "#000000";
   public previewColor: string = "#000000";
@@ -123,14 +126,24 @@ export class PanelComponent implements OnInit {
   public acceptLabel: string;
   public colorPickerControls: "default" | "only-alpha" | "no-alpha" = "default";
   private triggerInstance: NgxColorsTriggerDirective;
-  private triggerElementRef;
+  private TriggerBBox;
   public isSelectedColorInPalette: boolean;
   public indexSeleccionado;
   public positionString;
+
   public ngOnInit() {
     this.setPosition();
     this.hsva = this.service.stringToHsva(this.color);
     this.indexSeleccionado = this.findIndexSelectedColor(this.palette);
+  }
+  public ngAfterViewInit() {
+    console.log(this.panelRef);
+    this.setPositionY();
+  }
+
+  private onScreenMovement() {
+    this.setPosition();
+    this.setPositionY();
   }
 
   private findIndexSelectedColor(colors): number {
@@ -168,7 +181,7 @@ export class PanelComponent implements OnInit {
   ) {
     this.colorPickerControls = colorPickerControls;
     this.triggerInstance = triggerInstance;
-    this.triggerElementRef = triggerElementRef;
+    this.TriggerBBox = triggerElementRef;
     this.color = color;
     this.hideColorPicker = hideColorPicker;
     this.hideTextInput = hideTextInput;
@@ -193,26 +206,49 @@ export class PanelComponent implements OnInit {
     this.previewColor = this.color;
     this.palette = palette ?? defaultColors;
     this.colorsAnimationEffect = animation;
-    if (position == "top") {
-      let viewportOffset =
-        this.triggerElementRef.nativeElement.getBoundingClientRect();
-      this.positionString =
-        "transform: translateY(calc( -100% - " +
-        viewportOffset.height +
-        "px ))";
-    }
+
+    // if (position == "top") {
+    //   let TriggerBBox = this.TriggerBBox.nativeElement.getBoundingClientRect();
+    //   this.positionString =
+    //     "transform: translateY(calc( -100% - " + TriggerBBox.height + "px ))";
+    // }
   }
 
   public setPosition() {
-    if (this.triggerElementRef) {
+    if (this.TriggerBBox) {
       var viewportOffset =
-        this.triggerElementRef.nativeElement.getBoundingClientRect();
+        this.TriggerBBox.nativeElement.getBoundingClientRect();
       this.top = viewportOffset.top + viewportOffset.height;
       this.left =
         viewportOffset.left + 250 > window.innerWidth
           ? viewportOffset.right - 250
           : viewportOffset.left;
     }
+  }
+
+  private setPositionY() {
+    var triggerBBox = this.TriggerBBox.nativeElement.getBoundingClientRect();
+    var panelBBox = this.panelRef.nativeElement.getBoundingClientRect();
+    var panelHeight = panelBBox.height;
+
+    //Check for space above the trigger
+    if (0 > panelBBox.top - 5) {
+      console.log("no space above");
+      this.positionString = "";
+    }
+    //Check for space below the trigger
+    if (panelHeight > window.innerHeight - (panelBBox.top - 5)) {
+      //there is no space, move panel over the trigger
+      console.log("no space below");
+      this.positionString =
+        "transform: translateY(calc( -100% - " + triggerBBox.height + "px ))";
+    }
+    console.log(
+      panelHeight,
+      window.innerHeight - (panelBBox.top + 5),
+      panelBBox
+    );
+    this.cdr.detectChanges();
   }
   public hasVariant(color): boolean {
     if (!this.previewColor) {

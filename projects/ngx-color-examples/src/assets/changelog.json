@@ -263,6 +263,15 @@
     ]
   },
   {
+    "version": "2.10.2",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Disabled property is now working"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

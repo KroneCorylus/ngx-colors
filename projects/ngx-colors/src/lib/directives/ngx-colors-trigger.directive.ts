@@ -57,25 +57,28 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   ) {}
 
   panelRef: ComponentRef<PanelComponent>;
+  isDisabled:boolean = false;
 
   onTouchedCallback: () => void = () => {};
   onChangeCallback: (_: any) => void = () => {};
 
   open() {
-    this.panelRef = this.panelFactory.createPanel();
-    this.panelRef.instance.iniciate(
-      this,
-      this.triggerRef,
-      this.color,
-      this.palette,
-      this.colorsAnimation,
-      this.format,
-      this.hideTextInput,
-      this.hideColorPicker,
-      this.acceptLabel,
-      this.colorPickerControls,
-      this.position
-    );
+    if(!this.isDisabled){
+      this.panelRef = this.panelFactory.createPanel();
+      this.panelRef.instance.iniciate(
+        this,
+        this.triggerRef,
+        this.color,
+        this.palette,
+        this.colorsAnimation,
+        this.format,
+        this.hideTextInput,
+        this.hideColorPicker,
+        this.acceptLabel,
+        this.colorPickerControls,
+        this.position
+      );
+    }
   }
 
   public close() {
@@ -84,6 +87,11 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   public onChange() {
     this.onChangeCallback(this.color);
+  }
+
+  public setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+    this.triggerRef.nativeElement.style.opacity = isDisabled  ? 0.5 : undefined
   }
 
   public setColor(color) {

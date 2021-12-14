@@ -1,5 +1,13 @@
 export var snippets = {
     overview:{
+        installdeps:{
+            "leng":"npm",
+            "code":`npm install @angular/animations`
+        },
+        install:{
+            "leng":"npm",
+            "code":`npm install ngx-colors`
+        },
         import:{
             "leng":"Typescript",
             "code":`import { NgxColorsModule } from 'ngx-colors';

@@ -63,10 +63,10 @@
         <h2>Install & Import</h2>
         <h3>Npm</h3>
         Install dependency
-        <pre><code highlight>npm install @angular/animations</code></pre>
+        <pre><code [highlight]="snippets['overview']['installdeps'].code"></code></pre>
         <br />
         Install ngx-colors
-        <pre><code highlight >npm install ngx-colors</code></pre>
+        <pre><code [highlight]="snippets['overview']['install'].code"></code></pre>
 
         <h3>Import</h3>
 
@@ -90,6 +90,7 @@
           <mat-form-field>
             <input matInput [(ngModel)]="leftColor" />
           </mat-form-field>
+          
         </div>
         <pre><code [highlight]="snippets['overview']['ngmodel'].code"></code></pre>
 
@@ -110,7 +111,7 @@
             ></ngx-colors>
           </form>
           Value: {{ colorFormControl.value }}
-        </div>
+          </div>
 
         <pre><code [highlight]="snippets['overview']['formcontrol'].code"></code></pre>
 

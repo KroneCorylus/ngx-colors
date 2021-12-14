@@ -40,9 +40,10 @@ export class AppComponent implements OnInit {
   snippets = snippets;
   examples = examples;
   api = api;
-  colorFormControl = new FormControl(null);
+  colorFormControl = new FormControl('#c2185b');
   navbar = false;
   versions:Array<any>;
+  
   ngOnInit(){
     this.randomBrackground();
     this.updateGradient();

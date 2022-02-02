@@ -40,6 +40,8 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   @Input() position: "top" | "bottom" = "bottom";
   @Input() hideTextInput: boolean;
   @Input() hideColorPicker: boolean;
+  @Input() appendToID: string | undefined = undefined;
+  @Input() overlayClassName: string | undefined = undefined;
   @Input() colorPickerControls: "default" | "only-alpha" | "no-alpha" =
     "default";
   @Input() acceptLabel: string = "ACCEPT";
@@ -67,7 +69,10 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   open() {
     if (!this.isDisabled) {
-      this.panelRef = this.panelFactory.createPanel();
+      this.panelRef = this.panelFactory.createPanel(
+        this.appendToID,
+        this.overlayClassName
+      );
       this.panelRef.instance.iniciate(
         this,
         this.triggerRef,

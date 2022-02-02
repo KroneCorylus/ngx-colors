@@ -272,6 +272,27 @@
     ]
   },
   {
+    "version": "3.0.0",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "Color picker sliders do not changes value until the user clicks on accept button"
+      },
+      {
+        "type": "feature",
+        "details": "New event 'slider' to indicate when hue,alpha or Lightness sliders are moved"
+      },
+      {
+        "type": "feature",
+        "details": "set a custom class name for overlay using the property 'overlayClassName'"
+      },
+      {
+        "type": "feature",
+        "details": "Indicate to which element the overlay is attached using the property 'attachTo'"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

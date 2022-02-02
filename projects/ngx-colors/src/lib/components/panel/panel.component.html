@@ -104,7 +104,10 @@
           />
         </svg>
       </div>
-      <button (click)="emitClose()" style="float: right">
+      <button (click)="emitClose('cancel')" style="float: right">
+        {{ cancelLabel }}
+      </button>
+      <button (click)="emitClose('accept')" style="float: right">
         {{ acceptLabel }}
       </button>
     </div>
@@ -113,7 +116,7 @@
       <color-picker
         [controls]="colorPickerControls"
         [color]="hsva"
-        (colorChange)="onChangeColorPicker($event)"
+        (sliderChange)="onChangeColorPicker($event)"
       ></color-picker>
     </div>
   </ng-container>
@@ -127,7 +130,7 @@
         [style.font-size.px]="color && color.length > 23 ? 9 : 10"
         [style.letter-spacing.px]="color && color.length > 16 ? 0 : 1.5"
         (keyup)="changeColorManual(paintInput.value)"
-        (keydown.enter)="emitClose()"
+        (keydown.enter)="emitClose('accept')"
         #paintInput
       />
     </div>

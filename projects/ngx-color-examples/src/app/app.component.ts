@@ -104,12 +104,6 @@ export class AppComponent implements OnInit {
     );
   }
 
-  updateGradient2(event) {
-    this.gradient = this.domSanitizer.bypassSecurityTrustStyle(
-      "linear-gradient(45deg, " + this.leftColor + " 0%," + event + " 100%)"
-    );
-  }
-
   scrollIntoView() {
     this.menuView.nativeElement.scrollIntoView({ behavior: "smooth" });
   }

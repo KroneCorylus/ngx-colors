@@ -321,9 +321,11 @@ export class PanelComponent implements OnInit {
 
   public onChangeColorPicker(event: Hsva) {
     this.temporalColor = event;
-    this.color = this.color = this.service.toFormat(event, this.format);
+    this.color = this.service.toFormat(event, this.format);
     // this.setColor(event);
-    this.triggerInstance.sliderChange(event);
+    this.triggerInstance.sliderChange(
+      this.service.toFormat(event, this.format)
+    );
   }
 
   public changeColorManual(color: string): void {

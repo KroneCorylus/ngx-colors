@@ -42,8 +42,9 @@ export var api = {
         description: "Set the class for the overlay",
       },
       {
-        name: "appendToID",
-        description: "Set the element to append the overlay, Default is body",
+        name: "attachTo",
+        description:
+          "Set the element(ID) to append the overlay, Default is body",
       },
     ],
     output: [
@@ -58,7 +59,7 @@ export var api = {
       {
         name: "slider",
         description:
-          "Gets triggered when the the alpha, hue or Hue sliders are changed",
+          "Gets triggered when the the alpha, hue or Lightness sliders are changed",
       },
     ],
   },

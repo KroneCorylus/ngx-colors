@@ -38,12 +38,12 @@ export var api = {
         description: "Set the label for the cancel button",
       },
       {
-        name: "overlayClass",
+        name: "overlayClassName",
         description: "Set the class for the overlay",
       },
       {
         name: "appendToID",
-        description: "Set the element to append the overlay",
+        description: "Set the element to append the overlay, Default is body",
       },
     ],
     output: [

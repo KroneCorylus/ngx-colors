@@ -1,25 +1,40 @@
-import { Component, ViewEncapsulation, Host, OnInit } from '@angular/core';
-import { NgxColorsTriggerDirective } from './directives/ngx-colors-trigger.directive';
+import {
+  Component,
+  Host,
+  OnInit,
+  ChangeDetectorRef,
+  OnDestroy,
+} from "@angular/core";
+import { Subscription } from "rxjs";
+import { NgxColorsTriggerDirective } from "./directives/ngx-colors-trigger.directive";
 
 @Component({
-  selector: 'ngx-colors',
-  templateUrl: './ngx-colors.component.html',
-  styleUrls: ['./ngx-colors.component.scss'],
+  selector: "ngx-colors",
+  templateUrl: "./ngx-colors.component.html",
+  styleUrls: ["./ngx-colors.component.scss"],
 })
-export class NgxColorsComponent implements OnInit{
+export class NgxColorsComponent implements OnInit, OnDestroy {
+  private triggerDirectiveColorChangeSubscription: Subscription | null = null;
 
   constructor(
-    @Host() private triggerDirective: NgxColorsTriggerDirective,
-  )
-  {
+    private cdRef: ChangeDetectorRef,
+    @Host() private triggerDirective: NgxColorsTriggerDirective
+  ) {}
+
+  ngOnInit(): void {
+    this.triggerDirectiveColorChangeSubscription =
+      this.triggerDirective.change.subscribe((color) => {
+        this.color = color;
+        this.cdRef.markForCheck();
+      });
   }
 
-  // @ViewChild(NgxColorsTriggerDirective) triggerDirective;
-  ngOnInit(): void {
-    this.triggerDirective.change.subscribe(
-      color => {this.color = color;}
-    );
+  ngOnDestroy(): void {
+    if (this.triggerDirectiveColorChangeSubscription) {
+      this.triggerDirectiveColorChangeSubscription.unsubscribe();
+    }
   }
+
   //IO color
   color: string = this.triggerDirective.color;
 }

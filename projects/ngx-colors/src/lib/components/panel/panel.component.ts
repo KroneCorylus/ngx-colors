@@ -376,7 +376,7 @@ export class PanelComponent implements OnInit {
     if (this.menu == 3) {
       if (status == "cancel") {
       } else if (status == "accept") {
-        this.setColor(this.temporalColor);
+        this.setColor(this.temporalColor ?? this.hsva);
       }
     }
     this.triggerInstance.close();

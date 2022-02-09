@@ -293,6 +293,15 @@
     ]
   },
   {
+    "version": "3.0.1",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Fix error when ACCEPT button was pressed in custom color selector before change any value on sliders or picker"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

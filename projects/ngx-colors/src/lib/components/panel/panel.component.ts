@@ -363,6 +363,8 @@ export class PanelComponent implements OnInit {
   public addColor() {
     this.menu = 3;
     this.backupColor = this.color;
+    this.color = "#FF0000";
+    this.temporalColor = this.service.stringToHsva(this.color);
   }
 
   public nextFormat() {
@@ -376,7 +378,7 @@ export class PanelComponent implements OnInit {
     if (this.menu == 3) {
       if (status == "cancel") {
       } else if (status == "accept") {
-        this.setColor(this.temporalColor ?? this.hsva);
+        this.setColor(this.temporalColor);
       }
     }
     this.triggerInstance.close();

@@ -302,6 +302,15 @@
     ]
   },
   {
+    "version": "3.0.1",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Fix error when ACCEPT button was pressed in custom color selector before change any value on sliders or picker and the value is undefined or null"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

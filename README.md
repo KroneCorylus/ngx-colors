@@ -1,3 +1,5 @@
+![size](https://img.shields.io/bundlephobia/min/ngx-colors?style=for-the-badge)
+![download](https://img.shields.io/npm/dm/ngx-colors?style=for-the-badge)
 <p align="center">
   <h1 align="center">ngx-colors</h1>
   <p align="center">A beautiful color picker for angular that let you choose from a 

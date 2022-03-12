@@ -324,6 +324,15 @@
     ]
   },
   {
+    "version": "3.0.4",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Trigger not updating when value es changed from outside"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

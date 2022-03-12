@@ -81,7 +81,7 @@ import { NgxColor } from "../../clases/color";
   ],
 })
 export class PanelComponent implements OnInit {
-  @HostListener("document:click", ["$event"])
+  @HostListener("document:mousedown", ["$event"])
   click(event) {
     if (this.isOutside(event)) {
       this.emitClose("cancel");

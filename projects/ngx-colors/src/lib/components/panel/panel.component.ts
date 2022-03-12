@@ -81,10 +81,10 @@ import { NgxColor } from "../../clases/color";
   ],
 })
 export class PanelComponent implements OnInit {
-  @HostListener("document:click", ["$event"])
+  @HostListener("document:mousedown", ["$event"])
   click(event) {
     if (this.isOutside(event)) {
-      this.emitClose();
+      this.emitClose("cancel");
     }
   }
 
@@ -124,12 +124,15 @@ export class PanelComponent implements OnInit {
   public hideColorPicker: boolean = false;
   public hideTextInput: boolean = false;
   public acceptLabel: string;
+  public cancelLabel: string;
   public colorPickerControls: "default" | "only-alpha" | "no-alpha" = "default";
   private triggerInstance: NgxColorsTriggerDirective;
   private TriggerBBox;
   public isSelectedColorInPalette: boolean;
   public indexSeleccionado;
   public positionString;
+  public temporalColor;
+  public backupColor;
 
   public ngOnInit() {
     this.setPosition();
@@ -180,6 +183,7 @@ export class PanelComponent implements OnInit {
     hideTextInput: boolean,
     hideColorPicker: boolean,
     acceptLabel: string,
+    cancelLabel: string,
     colorPickerControls: "default" | "only-alpha" | "no-alpha",
     position: "top" | "bottom"
   ) {
@@ -190,6 +194,7 @@ export class PanelComponent implements OnInit {
     this.hideColorPicker = hideColorPicker;
     this.hideTextInput = hideTextInput;
     this.acceptLabel = acceptLabel;
+    this.cancelLabel = cancelLabel;
     if (format) {
       if (formats.includes(format)) {
         this.format = formats.indexOf(format.toLowerCase());
@@ -311,12 +316,16 @@ export class PanelComponent implements OnInit {
   public changeColor(color: string): void {
     this.setColor(this.service.stringToHsva(color));
     // this.triggerInstance.onChange();
-    this.emitClose();
+    this.emitClose("accept");
   }
 
   public onChangeColorPicker(event: Hsva) {
-    this.setColor(event);
-    // this.triggerInstance.onChange();
+    this.temporalColor = event;
+    this.color = this.service.toFormat(event, this.format);
+    // this.setColor(event);
+    this.triggerInstance.sliderChange(
+      this.service.toFormat(event, this.format)
+    );
   }
 
   public changeColorManual(color: string): void {
@@ -342,11 +351,6 @@ export class PanelComponent implements OnInit {
     // this.triggerInstance.onChange();
   }
 
-  onClickBack() {
-    this.menu = 1;
-    this.indexSeleccionado = this.findIndexSelectedColor(this.palette);
-  }
-
   public onColorClick(color) {
     if (typeof color == "string") {
       this.changeColor(color);
@@ -358,6 +362,9 @@ export class PanelComponent implements OnInit {
 
   public addColor() {
     this.menu = 3;
+    this.backupColor = this.color;
+    this.color = "#FF0000";
+    this.temporalColor = this.service.stringToHsva(this.color);
   }
 
   public nextFormat() {
@@ -367,8 +374,23 @@ export class PanelComponent implements OnInit {
     }
   }
 
-  public emitClose() {
+  public emitClose(status: "cancel" | "accept") {
+    if (this.menu == 3) {
+      if (status == "cancel") {
+      } else if (status == "accept") {
+        this.setColor(this.temporalColor);
+      }
+    }
     this.triggerInstance.close();
+  }
+
+  public onClickBack() {
+    if (this.menu == 3) {
+      this.color = this.backupColor;
+      this.hsva = this.service.stringToHsva(this.color);
+    }
+    this.indexSeleccionado = this.findIndexSelectedColor(this.palette);
+    this.menu = 1;
   }
 
   isOutside(event) {

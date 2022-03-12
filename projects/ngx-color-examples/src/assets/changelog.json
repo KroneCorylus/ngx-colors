@@ -272,6 +272,67 @@
     ]
   },
   {
+    "version": "3.0.0",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "Color picker sliders do not changes value until the user clicks on accept button"
+      },
+      {
+        "type": "feature",
+        "details": "New event 'slider' to indicate when hue,alpha or Lightness sliders are moved"
+      },
+      {
+        "type": "feature",
+        "details": "set a custom class name for overlay using the property 'overlayClassName'"
+      },
+      {
+        "type": "feature",
+        "details": "Indicate to which element the overlay is attached using the property 'attachTo'"
+      }
+    ]
+  },
+  {
+    "version": "3.0.1",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Fix error when ACCEPT button was pressed in custom color selector before change any value on sliders or picker"
+      }
+    ]
+  },
+  {
+    "version": "3.0.1",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Fix error when ACCEPT button was pressed in custom color selector before change any value on sliders or picker and the value is undefined or null"
+      }
+    ]
+  },
+  {
+    "version": "3.0.3",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Removing all data:image/png;base64 images for security reasons."
+      },
+      {
+        "type": "fix",
+        "details": "Fix accidental close of the panel when click inside but draging outside the panel"
+      }
+    ]
+  },
+  {
+    "version": "3.0.4",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Trigger not updating when value es changed from outside"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

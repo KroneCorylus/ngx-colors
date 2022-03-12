@@ -40,13 +40,18 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   @Input() position: "top" | "bottom" = "bottom";
   @Input() hideTextInput: boolean;
   @Input() hideColorPicker: boolean;
+  @Input() attachTo: string | undefined = undefined;
+  @Input() overlayClassName: string | undefined = undefined;
   @Input() colorPickerControls: "default" | "only-alpha" | "no-alpha" =
     "default";
   @Input() acceptLabel: string = "ACCEPT";
+  @Input() cancelLabel: string = "CANCEL";
   // This event is trigger every time the selected color change
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
   // This event is trigger every time the user change the color using the panel
   @Output() input: EventEmitter<string> = new EventEmitter<string>();
+  // This event is trigger every time the user change the color using the panel
+  @Output() slider: EventEmitter<string> = new EventEmitter<string>();
 
   @HostListener("click") onClick() {
     this.open();
@@ -57,14 +62,17 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   ) {}
 
   panelRef: ComponentRef<PanelComponent>;
-  isDisabled:boolean = false;
+  isDisabled: boolean = false;
 
   onTouchedCallback: () => void = () => {};
   onChangeCallback: (_: any) => void = () => {};
 
   open() {
-    if(!this.isDisabled){
-      this.panelRef = this.panelFactory.createPanel();
+    if (!this.isDisabled) {
+      this.panelRef = this.panelFactory.createPanel(
+        this.attachTo,
+        this.overlayClassName
+      );
       this.panelRef.instance.iniciate(
         this,
         this.triggerRef,
@@ -75,6 +83,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
         this.hideTextInput,
         this.hideColorPicker,
         this.acceptLabel,
+        this.cancelLabel,
         this.colorPickerControls,
         this.position
       );
@@ -91,12 +100,16 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   public setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;
-    this.triggerRef.nativeElement.style.opacity = isDisabled  ? 0.5 : undefined
+    this.triggerRef.nativeElement.style.opacity = isDisabled ? 0.5 : undefined;
   }
 
   public setColor(color) {
     this.writeValue(color);
     this.input.emit(color);
+  }
+
+  public sliderChange(color) {
+    this.slider.emit(color);
   }
 
   get value(): string {

@@ -15,7 +15,12 @@
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2),
         0 1px 1px 1px rgba(0, 0, 0, 0.14), 0 1px 1px 1px rgba(0, 0, 0, 0.12);
       .preview-background {
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw1AUhU/TSkUqDnYQEclQnSyIijhqFYpQIdQKrTqYvPQPmjQkKS6OgmvBwZ/FqoOLs64OroIg+APi5Oik6CIl3pcUWsR44fE+zrvn8N59gNCoMM0KjQOabpvpZELM5lbF8CsCCCGKYQzIzDLmJCkF3/q6p26quzjP8u/7s3rVvMWAgEg8ywzTJt4gnt60Dc77xFFWklXic+Ixky5I/Mh1xeM3zkWXBZ4ZNTPpeeIosVjsYKWDWcnUiKeIY6qmU76Q9VjlvMVZq9RY6578hZG8vrLMdVpDSGIRS5AgQkENZVRgI067ToqFNJ0nfPyDrl8il0KuMhg5FlCFBtn1g//B79lahckJLymSALpeHOdjBAjvAs2643wfO07zBAg+A1d6219tADOfpNfbWuwI6NsGLq7bmrIHXO4AA0+GbMquFKQlFArA+xl9Uw7ovwV61ry5tc5x+gBkaFapG+DgEBgtUva6z7u7O+f2b09rfj8vXnKMvOB8PQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QBBBQmO5r5LH8AAAArSURBVDjLY/z///9/Bjzg7Nmz+KQZmBgoBKMGDAYDWAjFs7Gx8WggDn8DAOBdCYVQIsgKAAAAAElFTkSuQmCC");
+        background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+          linear-gradient(-45deg, #ccc 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #ccc 75%),
+          linear-gradient(-45deg, transparent 75%, #ccc 75%);
+        background-size: 16px 16px;
+        background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
         border-radius: 100%;
       }
       .circle {
@@ -38,7 +43,12 @@
       }
 
       .noselected {
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw1AUhU/TSkUqDnYQEclQnSyIijhqFYpQIdQKrTqYvPQPmjQkKS6OgmvBwZ/FqoOLs64OroIg+APi5Oik6CIl3pcUWsR44fE+zrvn8N59gNCoMM0KjQOabpvpZELM5lbF8CsCCCGKYQzIzDLmJCkF3/q6p26quzjP8u/7s3rVvMWAgEg8ywzTJt4gnt60Dc77xFFWklXic+Ixky5I/Mh1xeM3zkWXBZ4ZNTPpeeIosVjsYKWDWcnUiKeIY6qmU76Q9VjlvMVZq9RY6578hZG8vrLMdVpDSGIRS5AgQkENZVRgI067ToqFNJ0nfPyDrl8il0KuMhg5FlCFBtn1g//B79lahckJLymSALpeHOdjBAjvAs2643wfO07zBAg+A1d6219tADOfpNfbWuwI6NsGLq7bmrIHXO4AA0+GbMquFKQlFArA+xl9Uw7ovwV61ry5tc5x+gBkaFapG+DgEBgtUva6z7u7O+f2b09rfj8vXnKMvOB8PQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QBBBQmO5r5LH8AAAArSURBVDjLY/z///9/Bjzg7Nmz+KQZmBgoBKMGDAYDWAjFs7Gx8WggDn8DAOBdCYVQIsgKAAAAAElFTkSuQmCC");
+        background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+          linear-gradient(-45deg, #ccc 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #ccc 75%),
+          linear-gradient(-45deg, transparent 75%, #ccc 75%);
+        background-size: 16px 16px;
+        background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
       }
     }
   }

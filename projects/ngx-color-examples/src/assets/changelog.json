@@ -311,6 +311,19 @@
     ]
   },
   {
+    "version": "3.0.2",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Removing all data:image/png;base64 images for security reasons."
+      },
+      {
+        "type": "fix",
+        "details": "Fix accidental close of the panel when click inside but draging outside the panel"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

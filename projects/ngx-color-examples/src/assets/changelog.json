@@ -333,6 +333,15 @@
     ]
   },
   {
+    "version": "3.0.5",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "Error that prevents the color picker from opening when color value was not a valid (hex,rgb,hsl) color"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

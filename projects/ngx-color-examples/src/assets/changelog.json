@@ -342,6 +342,15 @@
     ]
   },
   {
+    "version": "3.1.0",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "Update to angular 13"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

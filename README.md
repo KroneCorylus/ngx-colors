@@ -21,11 +21,11 @@ https://ngx-colors.web.app/
 
 #### Dependencies
 
-## ngx-colors < v3.1.0
+##### ngx-colors < v3.1.0
 
 Angular > v10.0.0 < 13.1.1
 
-## ngx-colors >= v3.1.0
+##### ngx-colors >= v3.1.0
 
 Angular > v13.1.1
 

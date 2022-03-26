@@ -4,10 +4,10 @@
   "license": "MIT",
   "description": "A beautiful color picker for angular that let you choose from a color palette, using sliders (Hue, Lightness, Alpha sliders) or through text input(hex, rgba, hsla)",
   "peerDependencies": {
-    "@angular/common": ">=13.3.0",
-    "@angular/core": ">=13.3.0",
-    "@angular/animations": ">=13.3.0",
-    "@angular/forms": ">=13.3.0"
+    "@angular/common": ">=13.1.1",
+    "@angular/core": ">=13.1.1",
+    "@angular/animations": ">=13.1.1",
+    "@angular/forms": ">=13.1.1"
   },
   "author": "Krone",
   "repository": {

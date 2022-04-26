@@ -222,32 +222,32 @@ export class PanelComponent implements OnInit {
     }
   }
 
-  public setPosition() {
+  public setPosition(): void {
     if (this.TriggerBBox) {
-      var viewportOffset =
-        this.TriggerBBox.nativeElement.getBoundingClientRect();
+      const panelWidth = 250;
+      const viewportOffset = this.TriggerBBox.nativeElement.getBoundingClientRect();
       this.top = viewportOffset.top + viewportOffset.height;
-      this.left =
-        viewportOffset.left + 250 > window.innerWidth
-          ? viewportOffset.right - 250
-          : viewportOffset.left;
+      if (viewportOffset.left + panelWidth > window.innerWidth) {
+        this.left = viewportOffset.right < panelWidth ? window.innerWidth / 2 - panelWidth / 2 : viewportOffset.right - panelWidth;
+      } else {
+        this.left = viewportOffset.left;
+      }
     }
   }
 
-  private setPositionY() {
-    var triggerBBox = this.TriggerBBox.nativeElement.getBoundingClientRect();
-    var panelBBox = this.panelRef.nativeElement.getBoundingClientRect();
-    var panelHeight = panelBBox.height;
-
-    //Check for space above the trigger
-    if (0 > panelBBox.top - 5) {
-      this.positionString = "";
-    }
-    //Check for space below the trigger
-    if (panelHeight > window.innerHeight - (panelBBox.top - 5)) {
-      //there is no space, move panel over the trigger
+  private setPositionY(): void {
+    const triggerBBox = this.TriggerBBox.nativeElement.getBoundingClientRect();
+    const panelBBox = this.panelRef.nativeElement.getBoundingClientRect();
+    const panelHeight = panelBBox.height;
+    // Check for space below the trigger
+    if (triggerBBox.bottom + panelHeight > window.innerHeight) {
+      // there is no space, move panel over the trigger
       this.positionString =
-        "transform: translateY(calc( -100% - " + triggerBBox.height + "px ));";
+        triggerBBox.top < panelBBox.height
+          ? 'transform: translateY(-' + triggerBBox.bottom + 'px );'
+          : 'transform: translateY(calc( -100% - ' + triggerBBox.height + 'px ));';
+    } else {
+      this.positionString = '';
     }
     this.cdr.detectChanges();
   }

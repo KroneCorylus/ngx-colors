@@ -1,6 +1,6 @@
 {
   "name": "ngx-colors",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",

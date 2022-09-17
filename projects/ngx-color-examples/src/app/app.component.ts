@@ -10,7 +10,7 @@ import { HttpClient } from "@angular/common/http";
 import { examples } from "./const/examples";
 import { snippets } from "./const/snippets";
 import { api } from "./const/api";
-import { FormGroup, FormControl } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormControl } from "@angular/forms";
 import { NgxColor } from "projects/ngx-colors/src/public-api";
 @Component({
   selector: "app-root",
@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
 
   constructor(public domSanitizer: DomSanitizer, public http: HttpClient) {}
 
-  testForm = new FormGroup({
-    testCtrl: new FormControl(""),
+  testForm = new UntypedFormGroup({
+    testCtrl: new UntypedFormControl(""),
   });
 
   customPalette = [
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   snippets = snippets;
   examples = examples;
   api = api;
-  colorFormControl = new FormControl("#c2185b");
+  colorFormControl = new UntypedFormControl("#c2185b");
   navbar = false;
   versions: Array<any>;
 

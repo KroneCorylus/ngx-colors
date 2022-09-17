@@ -360,6 +360,19 @@
     ]
   },
   {
+    "version": "3.1.3",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "#63 Fixed, Manual hex value on color picker panel reseting to default after accept"
+      },
+      {
+        "type": "feature",
+        "details": "Allow undefined as a color for the custom palette"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

@@ -163,6 +163,8 @@ export class PanelComponent implements OnInit {
           ) {
             resultIndex = i;
           }
+        } else if (color === undefined) {
+          this.color = undefined;
         } else {
           if (this.findIndexSelectedColor(color.variants) != undefined) {
             resultIndex = i;
@@ -225,10 +227,14 @@ export class PanelComponent implements OnInit {
   public setPosition(): void {
     if (this.TriggerBBox) {
       const panelWidth = 250;
-      const viewportOffset = this.TriggerBBox.nativeElement.getBoundingClientRect();
+      const viewportOffset =
+        this.TriggerBBox.nativeElement.getBoundingClientRect();
       this.top = viewportOffset.top + viewportOffset.height;
       if (viewportOffset.left + panelWidth > window.innerWidth) {
-        this.left = viewportOffset.right < panelWidth ? window.innerWidth / 2 - panelWidth / 2 : viewportOffset.right - panelWidth;
+        this.left =
+          viewportOffset.right < panelWidth
+            ? window.innerWidth / 2 - panelWidth / 2
+            : viewportOffset.right - panelWidth;
       } else {
         this.left = viewportOffset.left;
       }
@@ -244,10 +250,12 @@ export class PanelComponent implements OnInit {
       // there is no space, move panel over the trigger
       this.positionString =
         triggerBBox.top < panelBBox.height
-          ? 'transform: translateY(-' + triggerBBox.bottom + 'px );'
-          : 'transform: translateY(calc( -100% - ' + triggerBBox.height + 'px ));';
+          ? "transform: translateY(-" + triggerBBox.bottom + "px );"
+          : "transform: translateY(calc( -100% - " +
+            triggerBBox.height +
+            "px ));";
     } else {
-      this.positionString = '';
+      this.positionString = "";
     }
     this.cdr.detectChanges();
   }
@@ -344,7 +352,9 @@ export class PanelComponent implements OnInit {
   }
 
   setPreviewColor(value: Hsva) {
-    this.previewColor = this.service.hsvaToRgba(value).toString();
+    this.previewColor = value
+      ? this.service.hsvaToRgba(value).toString()
+      : undefined;
   }
   hsvaToRgba;
   onChange() {
@@ -352,7 +362,7 @@ export class PanelComponent implements OnInit {
   }
 
   public onColorClick(color) {
-    if (typeof color == "string") {
+    if (typeof color == "string" || color === undefined) {
       this.changeColor(color);
     } else {
       this.variants = color.variants;

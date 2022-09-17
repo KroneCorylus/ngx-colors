@@ -6,6 +6,7 @@
           <div
             (click)="onColorClick(color)"
             class="circle color circle-border"
+            [class.colornull]="!color"
             [ngStyle]="getBackgroundColor(color)"
           >
             <div *ngIf="i == this.indexSeleccionado" class="selected"></div>
@@ -75,6 +76,7 @@
       <ng-container *ngFor="let variant of variants">
         <div class="circle wrapper color">
           <div
+            [class.colornull]="!variant"
             (click)="changeColor(variant)"
             class="circle circle-border"
             [ngStyle]="{ background: variant }"

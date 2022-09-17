@@ -78,7 +78,18 @@ $radius: 5px;
         box-sizing: border-box;
         margin: 2px;
       }
+      &.colornull {
+        background: linear-gradient(
+          135deg,
+          rgba(236, 236, 236, 0.7) 0%,
+          rgba(236, 236, 236, 0.7) 45%,
+          #de0f00 50%,
+          rgba(236, 236, 236, 0.7) 55%,
+          rgba(236, 236, 236, 0.7) 100%
+        );
+      }
     }
+
     .circle.wrapper {
       margin: 0 5px;
       margin-bottom: 5px;

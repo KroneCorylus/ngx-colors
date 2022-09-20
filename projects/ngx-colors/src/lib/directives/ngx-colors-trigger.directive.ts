@@ -100,7 +100,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   public setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;
-    this.triggerRef.nativeElement.style.opacity = isDisabled ? 0.5 : undefined;
+    this.triggerRef.nativeElement.style.opacity = isDisabled ? 0.5 : 1;
   }
 
   public setColor(color) {

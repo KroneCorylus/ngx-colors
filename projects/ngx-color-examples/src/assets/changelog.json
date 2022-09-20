@@ -373,6 +373,15 @@
     ]
   },
   {
+    "version": "3.1.4",
+    "changelog": [
+      {
+        "type": "fix",
+        "details": "fixing disabled styles not reverting when reenabled"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

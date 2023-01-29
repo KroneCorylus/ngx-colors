@@ -1,7 +1,0 @@
-{
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "compilationMode": "partial"
-  }
-}

@@ -11,25 +11,17 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"],
     "paths": {
-      "ngx-colors": [
-        "dist/ngx-colors"
-      ],
-      "ngx-colors/*": [
-        "dist/ngx-colors/*"
-      ]
+      "ngx-colors": ["dist/ngx-colors"],
+      "ngx-colors/*": ["dist/ngx-colors/*"]
     },
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "compilationMode": "partial"
   }
 }

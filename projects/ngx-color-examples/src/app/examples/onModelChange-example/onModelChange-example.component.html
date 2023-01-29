@@ -1,0 +1,15 @@
+<div [ngStyle]="style">test</div>
+
+<ngx-colors
+  ngx-colors-trigger
+  [(ngModel)]="bColor"
+  (ngModelChange)="onChangeBackground($event)"
+>
+</ngx-colors>
+
+<ngx-colors
+  ngx-colors-trigger
+  [(ngModel)]="fColor"
+  (ngModelChange)="onChangeFontColor($event)"
+>
+</ngx-colors>

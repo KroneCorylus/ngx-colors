@@ -1,14 +1,12 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-custom-trigger-example',
-  templateUrl: './custom-trigger-example.component.html',
-  styleUrls: ['./custom-trigger-example.component.scss']
+  selector: "app-custom-trigger-example",
+  templateUrl: "./custom-trigger-example.component.html",
+  styleUrls: ["./custom-trigger-example.component.scss"],
 })
-export class CustomTriggerExampleComponent{
+export class CustomTriggerExampleComponent {
+  constructor() {}
 
-  constructor() { }
-
-  selectedColor:string = '#c32af3';
-
+  input1: string = "#00897B";
 }

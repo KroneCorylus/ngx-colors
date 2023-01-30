@@ -1,0 +1,12 @@
+.example-palette-button {
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  &:hover {
+    background: #0000000d;
+  }
+}

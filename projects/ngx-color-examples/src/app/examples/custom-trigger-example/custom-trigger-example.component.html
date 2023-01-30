@@ -1,6 +1,13 @@
-<div 
-    ngx-colors-trigger
-    style="width: 50px;height: 50px;margin:10px"
-    [style.background]="selectedColor"
-    [(ngModel)]="selectedColor">
+<div
+  class="example-palette-button"
+  ngx-colors-trigger
+  [(ngModel)]="input1"
+  [style.color]="input1"
+>
+  <mat-icon
+    aria-hidden="false"
+    aria-label="Example home icon"
+    fontIcon="palette"
+  >
+  </mat-icon>
 </div>

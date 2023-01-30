@@ -1,15 +1,27 @@
-<div [ngStyle]="style">test</div>
+<div class="flex">
+  <div class="flex center-content direction-column mr-2">
+    <div class="flex center-content mb-2">
+      <ngx-colors
+        ngx-colors-trigger
+        [(ngModel)]="color"
+        (ngModelChange)="eventAlert($event, 'ngModelChange')"
+        (change)="eventAlert($event, 'change')"
+        (input)="eventAlert($event, 'input')"
+      >
+      </ngx-colors>
+      <div>{{ color }}</div>
+    </div>
 
-<ngx-colors
-  ngx-colors-trigger
-  [(ngModel)]="bColor"
-  (ngModelChange)="onChangeBackground($event)"
->
-</ngx-colors>
-
-<ngx-colors
-  ngx-colors-trigger
-  [(ngModel)]="fColor"
-  (ngModelChange)="onChangeFontColor($event)"
->
-</ngx-colors>
+    <button mat-raised-button (click)="rotateColor()">
+      Change color externally
+    </button>
+  </div>
+  <div class="logs">
+    <div class="row" @inOutAnimation *ngFor="let log of logs; let i = index">
+      <div class="number">{{ log[0] }}</div>
+      <div>
+        <span>{{ log[1] }}: </span><b>{{ log[2] }}</b>
+      </div>
+    </div>
+  </div>
+</div>

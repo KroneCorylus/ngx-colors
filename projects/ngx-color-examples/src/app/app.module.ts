@@ -52,6 +52,7 @@ export function getHighlightLanguages() {
     MatSlideToggleModule,
     MatIconModule,
     MatButtonToggleModule,
+    MatButtonModule,
   ],
   providers: [
     {

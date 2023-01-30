@@ -116,23 +116,24 @@
 
         <br />
         <hr />
+        <!-- EXAMPLE BLOCK -->
         <h3>Detecting changes</h3>
-        <span class="text"
-          >The change event will be triggered when the value is change</span
+        <span
+          >For this component the "change" and "ngModelChange" events are
+          interchangeable, and called every time the component's value changes.
+          Instead the "input" event is called only when the user manually
+          interacts with the component.</span
         >
 
-        <pre><code [highlight]="snippets['overview']['detectchanges'].code"></code></pre>
-
+        <div class="showcase">
+          <app-onModelChange-example></app-onModelChange-example>
+        </div>
+        <app-document-viewer
+          [documents]="examples.onModelChange"
+        ></app-document-viewer>
         <br />
-
-        <span class="text"
-          >The input event will be triggered when the user change the color
-          intereacting with this component</span
-        >
-
-        <pre><code [highlight]="snippets['overview']['inputevent'].code"></code></pre>
-
-        <br />
+        <hr />
+        <!-- END EXAMPLE BLOCK -->
       </div>
     </mat-tab>
     <mat-tab>
@@ -236,19 +237,6 @@
         </div>
         <app-document-viewer
           [documents]="examples.changelabel"
-        ></app-document-viewer>
-        <br />
-        <hr />
-        <!-- END EXAMPLE BLOCK -->
-
-        <!-- EXAMPLE BLOCK -->
-        <h3>Using ngModelChange</h3>
-
-        <div class="showcase">
-          <app-onModelChange-example></app-onModelChange-example>
-        </div>
-        <app-document-viewer
-          [documents]="examples.onModelChange"
         ></app-document-viewer>
         <br />
         <hr />

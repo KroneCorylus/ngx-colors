@@ -1,30 +1,34 @@
+import { animate, style, transition, trigger } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
   selector: "app-onModelChange-example",
   templateUrl: "./onModelChange-example.component.html",
+  animations: [
+    trigger("inOutAnimation", [
+      transition(":enter", [
+        style({ background: "red" }),
+        animate("1s ease-out", style({})),
+      ]),
+    ]),
+  ],
   styleUrls: ["./onModelChange-example.style.scss"],
 })
 export class onModelChangeComponent {
   constructor() {}
 
-  style = {
-    color: "black",
-    "background-color": "#0070f3",
-    width: "30px",
-    height: "30px",
-  };
+  color = "#0070f3";
+  colorIndex = 0;
+  colors = ["#0070f3", "#00796B", "#D81B60", "#7986CB"];
 
-  bColor = "#0070f3";
-  fColor = "#000000";
+  logs = [];
 
-  onChangeBackground(event) {
-    console.log("onChangeBackground", event);
-    this.style["background-color"] = event;
+  public rotateColor(): void {
+    this.colorIndex = (this.colorIndex + 1) % this.colors.length;
+    this.color = this.colors[this.colorIndex];
   }
 
-  onChangeFontColor(event) {
-    console.log("onChangeFontColor", event);
-    this.style.color = event;
+  public eventAlert(event, trigger) {
+    this.logs.unshift([this.logs.length + 1, trigger, event]);
   }
 }

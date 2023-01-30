@@ -19,6 +19,7 @@ import { CustomPaletteExampleComponent } from "./examples/custom-palette-example
 import { ChangeAcceptLabelExampleComponent } from "./examples/change-accept-label/change-accept-label.component";
 import { onModelChangeComponent } from "./examples/onModelChange-example/onModelChange-example.component";
 import { MatIconModule } from "@angular/material/icon";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 export function getHighlightLanguages() {
   return {
     typescript: () => import("highlight.js/lib/languages/typescript"),
@@ -50,6 +51,7 @@ export function getHighlightLanguages() {
     MatInputModule,
     MatSlideToggleModule,
     MatIconModule,
+    MatButtonToggleModule,
   ],
   providers: [
     {

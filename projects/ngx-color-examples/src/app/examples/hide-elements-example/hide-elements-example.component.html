@@ -3,6 +3,7 @@
     ngx-colors-trigger
     [hideTextInput]="hideTextInput"
     [hideColorPicker]="hideColorPicker"
+    [colorPickerControls]="colorPickerControls"
     [(ngModel)]="color"
   >
   </ngx-colors>
@@ -12,4 +13,14 @@
   <mat-slide-toggle [(ngModel)]="hideColorPicker"
     >Hide color picker</mat-slide-toggle
   >
+</div>
+<div class="example-flex-container">
+  <mat-button-toggle-group
+    [(ngModel)]="colorPickerControls"
+    [disabled]="hideColorPicker"
+  >
+    <mat-button-toggle value="default">default</mat-button-toggle>
+    <mat-button-toggle value="only-alpha">Only Alpha</mat-button-toggle>
+    <mat-button-toggle value="no-alpha">No Alpha</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>

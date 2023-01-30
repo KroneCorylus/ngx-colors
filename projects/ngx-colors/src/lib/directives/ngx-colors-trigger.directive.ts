@@ -92,6 +92,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   public close() {
     this.panelFactory.removePanel();
+    this.onTouchedCallback();
   }
 
   public onChange() {

@@ -391,6 +391,15 @@
     ]
   },
   {
+    "version": "3.2.0",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "add support for updateOn: 'blur' using reactive forms"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

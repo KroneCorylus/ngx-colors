@@ -49,14 +49,14 @@ export var examples = {
   ],
   onModelChange: [
     {
-      label: "HTML",
-      leng: ["html"],
-      file: "/app/examples/onModelChange-example/onModelChange-example.component.html",
-    },
-    {
       label: "TS",
       leng: ["typescript"],
       file: "/app/examples/onModelChange-example/onModelChange-example.component.ts",
+    },
+    {
+      label: "HTML",
+      leng: ["html"],
+      file: "/app/examples/onModelChange-example/onModelChange-example.component.html",
     },
   ],
 };

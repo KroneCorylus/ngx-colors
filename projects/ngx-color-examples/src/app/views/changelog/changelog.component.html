@@ -1,0 +1,15 @@
+<div class="documentation">
+  <div *ngFor="let version of versions">
+    <ng-container *ngIf="version.version != 'x.x.x'">
+      <div class="version-number">{{ version.version }}</div>
+      <div *ngFor="let change of version.changelog">
+        <div
+          [class.fix]="change.type == 'fix'"
+          [class.feature]="change.type == 'feature'"
+          [class.performance]="change.type == 'performance'"
+        ></div>
+        <span>{{ change.details }}</span>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -4,18 +4,31 @@ import {
   ViewChild,
   ElementRef,
   APP_ID,
+  AfterViewInit,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { HttpClient } from "@angular/common/http";
 import { examples } from "./const/examples";
 import { snippets } from "./const/snippets";
 import { api } from "./const/api";
-import { UntypedFormGroup, UntypedFormControl } from "@angular/forms";
+import {
+  UntypedFormGroup,
+  UntypedFormControl,
+  FormControl,
+} from "@angular/forms";
 import { NgxColor } from "projects/ngx-colors/src/public-api";
+import { validColorValidator } from "projects/ngx-colors/src/public-api";
+import {
+  ChildrenOutletContexts,
+  Router,
+  RoutesRecognized,
+} from "@angular/router";
+import { slideInAnimation } from "./const/router.animations";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
+  animations: [slideInAnimation],
 })
 export class AppComponent implements OnInit {
   title = "ngx-color-examples";
@@ -25,7 +38,26 @@ export class AppComponent implements OnInit {
 
   @ViewChild("tabmenu") menuView: ElementRef;
 
-  constructor(public domSanitizer: DomSanitizer, public http: HttpClient) {}
+  constructor(
+    public domSanitizer: DomSanitizer,
+    public http: HttpClient,
+    private contexts: ChildrenOutletContexts,
+    private router: Router
+  ) {}
+
+  getRouteAnimationData() {
+    return this.contexts.getContext("primary")?.route?.snapshot?.data?.[
+      "tabIndex"
+    ];
+  }
+
+  links = [
+    { text: "OVERVIEW", url: "/overview" },
+    { text: "API", url: "/api" },
+    { text: "EXAMPLES", url: "/examples" },
+    { text: "CHANGELOG", url: "/changelog" },
+  ];
+  activeLink = undefined;
 
   testForm = new UntypedFormGroup({
     testCtrl: new UntypedFormControl(""),
@@ -54,32 +86,18 @@ export class AppComponent implements OnInit {
   examples = examples;
   api = api;
   colorFormControl = new UntypedFormControl("#c2185b");
+
   navbar = false;
   versions: Array<any>;
 
   ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof RoutesRecognized) {
+        this.activeLink = event.url;
+      }
+    });
     this.randomBrackground();
     this.updateGradient();
-    this.http.get("/assets/changelog.json").subscribe((data: Array<any>) => {
-      this.versions = Array.from(data);
-      this.versions = this.versions.sort((a, b) => {
-        let diff;
-        var segmentsA: Array<string> = a.version.split(".");
-        var segmentsB: Array<string> = b.version.split(".");
-        for (let index = 0; index < segmentsA.length; index++) {
-          if (segmentsA[index].includes("x")) {
-            return 1;
-          }
-          diff =
-            Number.parseInt(segmentsA[index]) -
-            Number.parseInt(segmentsB[index]);
-          if (diff != 0) {
-            return -diff;
-          }
-        }
-        return 0;
-      });
-    });
   }
 
   randomBrackground() {

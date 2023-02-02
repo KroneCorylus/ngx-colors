@@ -14,3 +14,100 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.documentation {
+  min-height: 100vh;
+  padding: 20px 20px 20px 20px;
+  background: #fafafa;
+  font-family: inherit;
+  color: #404040;
+  h2 {
+    color: #111111;
+    letter-spacing: 3px;
+    font-variant: petite-caps;
+    // font-variant: all-petite-caps;
+  }
+  h3 {
+    color: #111111;
+    letter-spacing: 2px;
+    font-variant: all-petite-caps;
+  }
+  .codeblock {
+    color: #111111;
+    padding: 0px 20px;
+    background-color: #e8e8e8;
+    width: auto;
+    overflow: auto;
+    .pl-k {
+      color: #673ab7;
+    }
+    .pl-en {
+      color: #2196f3;
+    }
+    .pl-smi {
+      color: #2196f3;
+    }
+    .pl-pds {
+      color: #ef6c00;
+    }
+
+    .pl-ent {
+      color: #22863a;
+    }
+
+    .pl-c1,
+    .pl-s .pl-v {
+      color: #005cc5;
+    }
+    .pl-pds,
+    .pl-s,
+    .pl-s .pl-pse .pl-s1,
+    .pl-sr,
+    .pl-sr .pl-cce,
+    .pl-sr .pl-sra,
+    .pl-sr .pl-sre {
+      color: #032f62;
+    }
+  }
+  .exampleblock {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f7f7f7;
+  }
+  .version-number {
+    background: #e6e6e6;
+    text-align: center;
+    margin: 10px 0px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .fix {
+    width: 5px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 0 5px 0 10px;
+    background: #ff80ab;
+  }
+  .feature {
+    width: 5px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 0 5px 0 10px;
+    background: #03a9f4;
+  }
+  .performance {
+    width: 5px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 0 5px 0 10px;
+    background: #c0ca33;
+  }
+}
+.showcase {
+  padding: 20px 10px;
+  margin: 10px 0;
+}

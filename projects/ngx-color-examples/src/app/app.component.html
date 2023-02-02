@@ -35,234 +35,38 @@
       ><img src="../assets/img/logos/npm-logo-red.svg"
     /></a>
   </div>
-  <mat-tab-group (selectedTabChange)="scrollIntoView()">
-    <mat-tab label="OVERVIEW">
-      <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()" class="tabLabel">OVERVIEW</span>
-      </ng-template>
-      <div class="documentation">
-        <h2>Overview</h2>
-        <p>
-          ngx-colors is an angular component that allows users to select a color
-          either through text input(hex, rgba, hsla), by choosing a pre set
-          color from the palette, or a color picker with using Hue, Lightness
-          and Alpha sliders.
-        </p>
-        It is composed of two parts:
-        <ul>
-          <li>
-            <b>ngx-colors-trigger</b>: This directive can be applied to any html
-            element turning it into a trigger that when clicked will open the
-            color picker
-          </li>
-          <li>
-            <b>ngx-colors</b>: This component is a premade button that will
-            display the selected color.
-          </li>
-        </ul>
-        <h2>Install & Import</h2>
-        <h3>Npm</h3>
-        Install dependency
-        <pre><code [highlight]="snippets['overview']['installdeps'].code"></code></pre>
-        <br />
-        Install ngx-colors
-        <pre><code [highlight]="snippets['overview']['install'].code"></code></pre>
-
-        <h3>Import</h3>
-
-        <pre><code [highlight]="snippets['overview']['import'].code"></code></pre>
-
-        <h2>Basic usage</h2>
-        <h3>Getting and setting a color</h3>
-        <span class="text"
-          >The <b>ngx-colors-trigger</b> directive supports 2-way binding using
-          <a href="https://angular.io/api/forms/NgModel">ngModel</a>
-          property.</span
-        >
-
-        <div class="exampleblock">
-          <ngx-colors
-            ngx-colors-trigger
-            style="display: inline-block; margin: 5px"
-            (change)="updateGradient()"
-            [(ngModel)]="leftColor"
-          ></ngx-colors>
-          <mat-form-field>
-            <input matInput [(ngModel)]="leftColor" />
-          </mat-form-field>
-        </div>
-        <pre><code [highlight]="snippets['overview']['ngmodel'].code"></code></pre>
-
-        <br />
-        <span class="text"
-          >Or it can be used it inside a
-          <a href="https://angular.io/guide/reactive-forms"
-            >ReactiveForm</a
-          ></span
-        >
-
-        <div class="exampleblock">
-          <form class="example-form">
-            <ngx-colors
-              ngx-colors-trigger
-              style="display: inline-block; margin: 5px"
-              [formControl]="colorFormControl"
-            ></ngx-colors>
-          </form>
-          Value: {{ colorFormControl.value }}
-        </div>
-
-        <pre><code [highlight]="snippets['overview']['formcontrol'].code"></code></pre>
-
-        <br />
-        <hr />
-        <!-- EXAMPLE BLOCK -->
-        <h3>Detecting changes</h3>
-        <span
-          >For this component the "change" and "ngModelChange" events are
-          interchangeable, and called every time the component's value changes.
-          Instead the "input" event is called only when the user manually
-          interacts with the component.</span
-        >
-
-        <div class="showcase">
-          <app-onModelChange-example></app-onModelChange-example>
-        </div>
-        <app-document-viewer
-          [documents]="examples.onModelChange"
-        ></app-document-viewer>
-        <br />
-        <hr />
-        <!-- END EXAMPLE BLOCK -->
-      </div>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()">API</span>
-      </ng-template>
-      <div class="documentation">
-        <h2>Reference for ngx-colors</h2>
-        <pre><code [highlight]="snippets['api']['reference'].code"></code></pre>
-        <h2>Directive <b>ngx-colors-trigger</b></h2>
-        <h3>@Inputs</h3>
-        <table class="api-table">
-          <tr>
-            <th>name</th>
-            <th>description</th>
-          </tr>
-          <tr *ngFor="let row of api.directive.input">
-            <td class="name">{{ row.name }}</td>
-            <td [innerHtml]="row.description"></td>
-          </tr>
-        </table>
-        <h3>@outputs</h3>
-        <table class="api-table">
-          <tr>
-            <th>name</th>
-            <th>description</th>
-          </tr>
-          <tr *ngFor="let row of api.directive.output">
-            <td class="name">{{ row.name }}</td>
-            <td [innerHtml]="row.description"></td>
-          </tr>
-        </table>
-      </div>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()">EXAMPLES</span>
-      </ng-template>
-      <div class="documentation">
-        <h2>More usage examples</h2>
-        <!-- EXAMPLE BLOCK -->
-        <h3>Custom Trigger</h3>
-        <span class="text"
-          >The ngx-colors-trigger directive can be apply to any element to make
-          a custom trigger</span
-        >
-        <div class="showcase">
-          <app-custom-trigger-example></app-custom-trigger-example>
-        </div>
-        <app-document-viewer
-          [documents]="examples.customtrigger"
-        ></app-document-viewer>
-        <br />
-        <hr />
-        <!-- END EXAMPLE BLOCK -->
-
-        <!-- EXAMPLE BLOCK -->
-        <h3>Hide some parts of the component</h3>
-        <span class="text"
-          >You can hide the text input or the Color Picker if want. try playing
-          with the toggles here.</span
-        >
-        <div class="showcase">
-          <app-hide-elements-example></app-hide-elements-example>
-        </div>
-        <app-document-viewer
-          [documents]="examples.hideelements"
-        ></app-document-viewer>
-        <br />
-        <hr />
-        <!-- END EXAMPLE BLOCK -->
-
-        <!-- EXAMPLE BLOCK -->
-        <h3>Custom palette (simple)</h3>
-        <p class="text">
-          You can provide your own palette with the parameter <b>palette</b>
-        </p>
-        <p class="text">
-          Try adding new colors to the palette using the color picker
-        </p>
-        <div class="showcase">
-          <app-custom-palette-example></app-custom-palette-example>
-        </div>
-        <app-document-viewer
-          [documents]="examples.custompalette"
-        ></app-document-viewer>
-        <br />
-        <hr />
-        <!-- END EXAMPLE BLOCK -->
-
-        <!-- EXAMPLE BLOCK -->
-        <h3>Change label for the accept/cancel button</h3>
-        <p class="text">
-          You can change the text of the accept/cancel button above the color
-          picker using the attribute <b>acceptLabel</b>/<b>cancelLabel</b>.
-        </p>
-
-        <div class="showcase">
-          <app-change-label-example></app-change-label-example>
-        </div>
-        <app-document-viewer
-          [documents]="examples.changelabel"
-        ></app-document-viewer>
-        <br />
-        <hr />
-        <!-- END EXAMPLE BLOCK -->
-      </div>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <span (click)="scrollIntoView()">CHANGELOG</span>
-      </ng-template>
-      <div class="documentation">
-        <div *ngFor="let version of versions">
-          <ng-container *ngIf="version.version != 'x.x.x'">
-            <div class="version-number">{{ version.version }}</div>
-            <div *ngFor="let change of version.changelog">
-              <div
-                [class.fix]="change.type == 'fix'"
-                [class.feature]="change.type == 'feature'"
-                [class.performance]="change.type == 'performance'"
-              ></div>
-              <span>{{ change.details }}</span>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+  <!-- <nav mat-tab-nav-bar ngClass="tabs">
+    <a mat-tab-link routerLink="/overview" routerLinkActive="active-link"
+      >OVERVIEW</a
+    >
+    <a mat-tab-link routerLink="/api" routerLinkActive="active-link">API</a>
+    <a mat-tab-link routerLink="/examples" routerLinkActive="active-link"
+      >EXAMPLES</a
+    >
+    <a mat-tab-link routerLink="/changelog" routerLinkActive="active-link"
+      >CHANGELOG</a
+    >
+  </nav>
+  <div>
+    <router-outlet></router-outlet>
+  </div> -->
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    <a
+      mat-tab-link
+      *ngFor="let link of links"
+      [active]="activeLink == link.url"
+      [routerLink]="link.url"
+    >
+      {{ link.text }}
+    </a>
+  </nav>
+  <!-- <div [@routeAnimations]="getRouteAnimationData()">
+    <router-outlet></router-outlet>
+  </div> -->
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+  <div [@routerTransition]="getRouteAnimationData()">
+    <router-outlet></router-outlet>
+  </div>
 </div>
 
 <!-- <div class="rlink">

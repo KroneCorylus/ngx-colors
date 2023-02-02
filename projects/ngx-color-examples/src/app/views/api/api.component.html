@@ -1,0 +1,39 @@
+<div class="documentation">
+  <h2>Reference for ngx-colors</h2>
+  <pre><code [highlight]="snippets['api']['reference'].code"></code></pre>
+  <h2>Directive <b>ngx-colors-trigger</b></h2>
+  <h3>@Inputs</h3>
+  <table class="api-table">
+    <tr>
+      <th>name</th>
+      <th>description</th>
+    </tr>
+    <tr *ngFor="let row of api.directive.input">
+      <td class="name">{{ row.name }}</td>
+      <td [innerHtml]="row.description"></td>
+    </tr>
+  </table>
+  <h3>@outputs</h3>
+  <table class="api-table">
+    <tr>
+      <th>name</th>
+      <th>description</th>
+    </tr>
+    <tr *ngFor="let row of api.directive.output">
+      <td class="name">{{ row.name }}</td>
+      <td [innerHtml]="row.description"></td>
+    </tr>
+  </table>
+  <h2>Validator <b>validColorValidator</b></h2>
+  <pre><code [highlight]="snippets['api']['validatorImport'].code"></code></pre>
+  <table class="api-table">
+    <tr>
+      <th>name</th>
+      <th>description</th>
+    </tr>
+    <tr>
+      <td class="name">Error</td>
+      <td>invalidColor</td>
+    </tr>
+  </table>
+</div>

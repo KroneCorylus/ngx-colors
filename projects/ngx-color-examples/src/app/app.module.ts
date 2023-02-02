@@ -17,9 +17,14 @@ import { HideElementsExampleComponent } from "./examples/hide-elements-example/h
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { CustomPaletteExampleComponent } from "./examples/custom-palette-example/custom-palette-example.component";
 import { ChangeAcceptLabelExampleComponent } from "./examples/change-accept-label/change-accept-label.component";
-import { onModelChangeComponent } from "./examples/onModelChange-example/onModelChange-example.component";
+import { DetectChangeExampleComponent } from "./examples/detect-change-example/detect-change-example.component";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { ValidatorExampleComponent } from "./examples/validator-example/validator-example.component";
+import { OverviewComponent } from "./views/overview/overview.component";
+import { ApiComponent } from "./views/api/api.component";
+import { ExamplesComponent } from "./views/examples/examples.component";
+import { ChangelogComponent } from "./views/changelog/changelog.component";
 export function getHighlightLanguages() {
   return {
     typescript: () => import("highlight.js/lib/languages/typescript"),
@@ -36,7 +41,14 @@ export function getHighlightLanguages() {
     HideElementsExampleComponent,
     CustomPaletteExampleComponent,
     ChangeAcceptLabelExampleComponent,
-    onModelChangeComponent,
+    DetectChangeExampleComponent,
+    ValidatorExampleComponent,
+
+    //views
+    OverviewComponent,
+    ApiComponent,
+    ExamplesComponent,
+    ChangelogComponent,
   ],
   imports: [
     HighlightModule,

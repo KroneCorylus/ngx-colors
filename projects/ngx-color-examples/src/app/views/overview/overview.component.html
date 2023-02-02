@@ -1,0 +1,92 @@
+<div class="documentation">
+  <h2>Overview</h2>
+  <p>
+    ngx-colors is an angular component that allows users to select a color
+    either through text input(hex, rgba, hsla), by choosing a pre set color from
+    the palette, or a color picker with using Hue, Lightness and Alpha sliders.
+  </p>
+  It is composed of two parts:
+  <ul>
+    <li>
+      <b>ngx-colors-trigger</b>: This directive can be applied to any html
+      element turning it into a trigger that when clicked will open the color
+      picker
+    </li>
+    <li>
+      <b>ngx-colors</b>: This component is a premade button that will display
+      the selected color.
+    </li>
+  </ul>
+  <h2>Install & Import</h2>
+  <h3>Npm</h3>
+  Install dependency
+  <pre><code [highlight]="snippets['overview']['installdeps'].code"></code></pre>
+  <br />
+  Install ngx-colors
+  <pre><code [highlight]="snippets['overview']['install'].code"></code></pre>
+
+  <h3>Import</h3>
+
+  <pre><code [highlight]="snippets['overview']['import'].code"></code></pre>
+
+  <h2>Basic usage</h2>
+  <h3>Getting and setting a color</h3>
+  <span class="text"
+    >The <b>ngx-colors-trigger</b> directive supports 2-way binding using
+    <a href="https://angular.io/api/forms/NgModel">ngModel</a>
+    property.</span
+  >
+
+  <div class="exampleblock">
+    <ngx-colors
+      ngx-colors-trigger
+      style="display: inline-block; margin: 5px"
+      (change)="updateGradient()"
+      [(ngModel)]="color"
+    ></ngx-colors>
+    <mat-form-field>
+      <input matInput [(ngModel)]="color" />
+    </mat-form-field>
+  </div>
+  <pre><code [highlight]="snippets['overview']['ngmodel'].code"></code></pre>
+
+  <br />
+  <span class="text"
+    >Or it can be used it inside a
+    <a href="https://angular.io/guide/reactive-forms">ReactiveForm</a></span
+  >
+
+  <div class="exampleblock">
+    <form class="example-form">
+      <ngx-colors
+        ngx-colors-trigger
+        style="display: inline-block; margin: 5px"
+        [formControl]="colorFormControl"
+      ></ngx-colors>
+    </form>
+    Value: {{ colorFormControl.value }}
+  </div>
+
+  <pre><code [highlight]="snippets['overview']['formcontrol'].code"></code></pre>
+
+  <br />
+  <hr />
+  <!-- EXAMPLE BLOCK -->
+  <h3>Detecting changes</h3>
+  <span
+    >For this component the "change" and "ngModelChange" events are
+    interchangeable, and called every time the component's value changes.
+    Instead the "input" event is called only when the user manually interacts
+    with the component.</span
+  >
+
+  <div class="showcase">
+    <app-detect-change-example></app-detect-change-example>
+  </div>
+  <app-document-viewer
+    [documents]="examples.detectChange"
+  ></app-document-viewer>
+  <br />
+  <hr />
+  <!-- END EXAMPLE BLOCK -->
+</div>

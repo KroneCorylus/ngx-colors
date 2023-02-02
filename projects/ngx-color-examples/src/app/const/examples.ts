@@ -47,16 +47,28 @@ export var examples = {
       file: "/app/examples/change-accept-label/change-accept-label.component.ts",
     },
   ],
-  onModelChange: [
+  detectChange: [
     {
       label: "TS",
       leng: ["typescript"],
-      file: "/app/examples/onModelChange-example/onModelChange-example.component.ts",
+      file: "/app/examples/detect-change-example/detect-change-example.component.ts",
     },
     {
       label: "HTML",
       leng: ["html"],
-      file: "/app/examples/onModelChange-example/onModelChange-example.component.html",
+      file: "/app/examples/detect-change-example/detect-change-example.component.html",
+    },
+  ],
+  validator: [
+    {
+      label: "TS",
+      leng: ["typescript"],
+      file: "/app/examples/validator-example/validator-example.component.ts",
+    },
+    {
+      label: "HTML",
+      leng: ["html"],
+      file: "/app/examples/validator-example/validator-example.component.html",
     },
   ],
 };

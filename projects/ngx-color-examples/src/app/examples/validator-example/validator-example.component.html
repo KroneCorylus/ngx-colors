@@ -1,0 +1,17 @@
+<form class="example-form2" [formGroup]="exampleForm">
+  <mat-form-field class="example-full-width">
+    <mat-label>Color</mat-label>
+    <input matInput formControlName="inputCtrl" />
+    <ngx-colors
+      class="suffix"
+      matSuffix
+      ngx-colors-trigger
+      formControlName="pickerCtrl"
+    ></ngx-colors>
+    <mat-error
+      *ngIf="this.exampleForm.controls['inputCtrl'].hasError('invalidColor')"
+    >
+      The color is invalid.
+    </mat-error>
+  </mat-form-field>
+</form>

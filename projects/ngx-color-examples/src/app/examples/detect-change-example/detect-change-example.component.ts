@@ -2,8 +2,8 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-onModelChange-example",
-  templateUrl: "./onModelChange-example.component.html",
+  selector: "app-detect-change-example",
+  templateUrl: "./detect-change-example.component.html",
   animations: [
     trigger("inOutAnimation", [
       transition(":enter", [
@@ -12,9 +12,9 @@ import { Component, OnInit } from "@angular/core";
       ]),
     ]),
   ],
-  styleUrls: ["./onModelChange-example.style.scss"],
+  styleUrls: ["./detect-change-example.style.scss"],
 })
-export class onModelChangeComponent {
+export class DetectChangeExampleComponent {
   constructor() {}
 
   color = "#0070f3";

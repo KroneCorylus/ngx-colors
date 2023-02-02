@@ -400,6 +400,15 @@
     ]
   },
   {
+    "version": "3.4.0",
+    "changelog": [
+      {
+        "type": "feature",
+        "details": "add validator validColorValidator"
+      }
+    ]
+  },
+  {
     "version": "x.x.x",
     "changelog": [
       {

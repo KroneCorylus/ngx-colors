@@ -21,14 +21,14 @@ export class DetectChangeExampleComponent {
   colorIndex = 0;
   colors = ["#0070f3", "#00796B", "#D81B60", "#7986CB"];
 
-  logs = [];
+  logs: Array<Array<any>> = [];
 
   public rotateColor(): void {
     this.colorIndex = (this.colorIndex + 1) % this.colors.length;
     this.color = this.colors[this.colorIndex];
   }
 
-  public eventAlert(event, trigger) {
+  public logEvent(event, trigger) {
     this.logs.unshift([this.logs.length + 1, trigger, event]);
   }
 }

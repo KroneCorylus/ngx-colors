@@ -4,9 +4,10 @@
       <ngx-colors
         ngx-colors-trigger
         [(ngModel)]="color"
-        (ngModelChange)="eventAlert($event, 'ngModelChange')"
-        (change)="eventAlert($event, 'change')"
-        (input)="eventAlert($event, 'input')"
+        (ngModelChange)="logEvent($event, 'ngModelChange')"
+        (change)="logEvent($event, 'change')"
+        (input)="logEvent($event, 'input')"
+        (slider)="logEvent($event, 'slider')"
       >
       </ngx-colors>
       <div>{{ color }}</div>

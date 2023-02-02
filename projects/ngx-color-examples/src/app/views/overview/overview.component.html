@@ -41,7 +41,6 @@
     <ngx-colors
       ngx-colors-trigger
       style="display: inline-block; margin: 5px"
-      (change)="updateGradient()"
       [(ngModel)]="color"
     ></ngx-colors>
     <mat-form-field>
@@ -74,11 +73,18 @@
   <!-- EXAMPLE BLOCK -->
   <h3>Detecting changes</h3>
   <span
-    >For this component the "change" and "ngModelChange" events are
-    interchangeable, and called every time the component's value changes.
-    Instead the "input" event is called only when the user manually interacts
-    with the component.</span
+    >For this component the "<b>change</b>" and "<b>ngModelChange</b>" events
+    are interchangeable, and called every time the component's value changes.
+    Instead the "<b>input</b>" event is called only when the user manually
+    interacts with the component.</span
   >
+  <br />
+  <span
+    >The "<b>slider</b>" event will fire every time the user moves a slider in
+    the color picker</span
+  >
+  <br />
+  <p>Try it out here:</p>
 
   <div class="showcase">
     <app-detect-change-example></app-detect-change-example>

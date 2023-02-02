@@ -14,8 +14,4 @@ export class OverviewComponent {
   examples = examples;
   color = "#42A5F5";
   colorFormControl = new FormControl<string>("#c2185b");
-
-  public updateGradient() {
-    console.log("updateGradient");
-  }
 }

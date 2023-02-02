@@ -35,24 +35,11 @@
       ><img src="../assets/img/logos/npm-logo-red.svg"
     /></a>
   </div>
-  <!-- <nav mat-tab-nav-bar ngClass="tabs">
-    <a mat-tab-link routerLink="/overview" routerLinkActive="active-link"
-      >OVERVIEW</a
-    >
-    <a mat-tab-link routerLink="/api" routerLinkActive="active-link">API</a>
-    <a mat-tab-link routerLink="/examples" routerLinkActive="active-link"
-      >EXAMPLES</a
-    >
-    <a mat-tab-link routerLink="/changelog" routerLinkActive="active-link"
-      >CHANGELOG</a
-    >
-  </nav>
-  <div>
-    <router-outlet></router-outlet>
-  </div> -->
+
   <nav mat-tab-nav-bar [tabPanel]="tabPanel">
     <a
       mat-tab-link
+      (click)="scrollIntoView()"
       *ngFor="let link of links"
       [active]="activeLink == link.url"
       [routerLink]="link.url"
@@ -60,24 +47,10 @@
       {{ link.text }}
     </a>
   </nav>
-  <!-- <div [@routeAnimations]="getRouteAnimationData()">
-    <router-outlet></router-outlet>
-  </div> -->
   <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
   <div [@routerTransition]="getRouteAnimationData()">
     <router-outlet></router-outlet>
   </div>
 </div>
 
-<!-- <div class="rlink">
-  <a class="github" href="https://github.com/KroneCorylus/ngx-colors">
-    <img src="assets/img/logos/GitHub_Logo.png"></a>
-  <a class="npm" href="https://www.npmjs.com/package/ngx-colors">
-    <svg viewBox="0 0 780 250">
-      <path fill="#231F20"
-        d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z">
-      </path>
-    </svg>
-  </a>
-
-</div> -->
+<

@@ -52,9 +52,11 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   @Output() input: EventEmitter<string> = new EventEmitter<string>();
   // This event is trigger every time the user change the color using the panel
   @Output() slider: EventEmitter<string> = new EventEmitter<string>();
+  @Output() close: EventEmitter<string> = new EventEmitter<string>();
+  @Output() open: EventEmitter<string> = new EventEmitter<string>();
 
   @HostListener("click") onClick() {
-    this.open();
+    this.openPanel();
   }
   constructor(
     private triggerRef: ElementRef,
@@ -67,7 +69,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   onTouchedCallback: () => void = () => {};
   onChangeCallback: (_: any) => void = () => {};
 
-  open() {
+  public openPanel() {
     if (!this.isDisabled) {
       this.panelRef = this.panelFactory.createPanel(
         this.attachTo,
@@ -88,11 +90,13 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
         this.position
       );
     }
+    this.open.emit(this.color);
   }
 
-  public close() {
+  public closePanel() {
     this.panelFactory.removePanel();
     this.onTouchedCallback();
+    this.close.emit(this.color);
   }
 
   public onChange() {

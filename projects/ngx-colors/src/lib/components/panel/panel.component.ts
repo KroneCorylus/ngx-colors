@@ -392,7 +392,7 @@ export class PanelComponent implements OnInit {
         this.setColor(this.temporalColor);
       }
     }
-    this.triggerInstance.close();
+    this.triggerInstance.closePanel();
   }
 
   public onClickBack() {

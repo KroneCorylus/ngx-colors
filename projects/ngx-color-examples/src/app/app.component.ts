@@ -126,7 +126,7 @@ export class AppComponent implements OnInit {
     this.menuView.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
-  test(event) {
+  log(event) {
     console.log(event);
   }
 }

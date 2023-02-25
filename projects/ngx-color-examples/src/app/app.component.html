@@ -4,6 +4,8 @@
     <div class="selector-wrapper">
       <ngx-colors
         ngx-colors-trigger
+        (open)="log('open: ' + $event)"
+        (close)="log('close: ' + $event)"
         (change)="updateGradient()"
         style="float: left"
         [(ngModel)]="leftColor"

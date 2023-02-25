@@ -46,6 +46,11 @@ export var api = {
         description:
           "Set the element(ID) to append the overlay, Default is body",
       },
+      {
+        name: "attachTo",
+        description:
+          "Set the element(ID) to append the overlay, Default is body",
+      },
     ],
     output: [
       {
@@ -60,6 +65,14 @@ export var api = {
         name: "slider",
         description:
           "Gets triggered when the the alpha, hue or Lightness sliders are changed",
+      },
+      {
+        name: "open",
+        description: "Gets triggered when the panel is opened.",
+      },
+      {
+        name: "close",
+        description: "Gets triggered when the panel is closed.",
       },
     ],
   },

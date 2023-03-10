@@ -3,9 +3,7 @@
 
 <p align="center">
   <h1 align="center">ngx-colors</h1>
-  <p align="center">A beautiful color picker for angular that let you choose from a 
-color palette, using sliders (Hue, Lightness, Alpha sliders) or through text input(hex, rgba, hsla)
-
+  <p align="center">ngx-colors is a colorpicker component of angular with a material design style, allows users to select a color via text input (hexadecimal, rgba, hsla), choosing a preset color from the palette, or a color picker using the Hue, Lightness, and Alpha sliders.
   </p>
 </p>
 
@@ -19,15 +17,16 @@ https://ngx-colors.web.app/
 
 ## Installation
 
-#### Dependencies
+#### Compatibility
 
-##### ngx-colors < v3.1.0
-
-Angular > v10.0.0 < 13.1.1
-
-##### ngx-colors >= v3.1.0
-
-Angular > v13.1.1
+| Angular | Latest ngx-colors compatible |
+| ------- | ---------------------------- |
+| 15      | Latest                       |
+| 14      | 3.1.4                        |
+| 13      | 3.1.4                        |
+| 12      | 3.0.5                        |
+| 11      | 3.0.5                        |
+| 10      | 3.0.5                        |
 
 #### Npm
 

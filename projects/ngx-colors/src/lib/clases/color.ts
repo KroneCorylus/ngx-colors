@@ -1,4 +1,4 @@
-export class NgxColor {
+export class NgxColorsColor {
   preview: string;
   variants: Array<string>;
   constructor(params?) {

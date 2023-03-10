@@ -11,7 +11,7 @@ import {
 import { PanelFactoryService } from "../services/panel-factory.service";
 import { PanelComponent } from "../components/panel/panel.component";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { NgxColor } from "../clases/color";
+import { NgxColorsColor } from "../clases/color";
 
 @Directive({
   selector: "[ngx-colors-trigger]",
@@ -34,7 +34,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   @Input() colorsAnimation: "slide-in" | "popup" = "slide-in";
 
   //This is used to set a custom palette of colors in the panel;
-  @Input() palette: Array<string> | Array<NgxColor>;
+  @Input() palette: Array<string> | Array<NgxColorsColor>;
 
   @Input() format: string;
   @Input() position: "top" | "bottom" = "bottom";

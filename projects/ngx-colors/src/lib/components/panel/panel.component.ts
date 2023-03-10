@@ -26,7 +26,7 @@ import { defaultColors } from "../../helpers/default-colors";
 import { formats } from "../../helpers/formats";
 import { NgxColorsTriggerDirective } from "../../directives/ngx-colors-trigger.directive";
 import { Hsva } from "../../clases/formats";
-import { NgxColor } from "../../clases/color";
+import { NgxColorsColor } from "../../clases/color";
 
 @Component({
   selector: "ngx-colors-panel",
@@ -296,7 +296,7 @@ export class PanelComponent implements OnInit {
 
   private ChangeAlphaOnPalette(
     alpha,
-    colors: Array<string | NgxColor>
+    colors: Array<string | NgxColorsColor>
   ): Array<any> {
     var result = [];
     for (let i = 0; i < colors.length; i++) {
@@ -306,7 +306,7 @@ export class PanelComponent implements OnInit {
         newColor.onAlphaChange(alpha);
         result.push(this.service.toFormat(newColor, this.format));
       } else {
-        let newColor = new NgxColor();
+        let newColor = new NgxColorsColor();
         let newColorPreview = this.service.stringToHsva(color.preview);
         newColorPreview.onAlphaChange(alpha);
         newColor.preview = this.service.toFormat(newColorPreview, this.format);

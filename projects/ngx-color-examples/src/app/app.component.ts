@@ -16,7 +16,7 @@ import {
   UntypedFormControl,
   FormControl,
 } from "@angular/forms";
-import { NgxColor } from "projects/ngx-colors/src/public-api";
+import { NgxColorsColor } from "projects/ngx-colors/src/public-api";
 import { validColorValidator } from "projects/ngx-colors/src/public-api";
 import {
   ChildrenOutletContexts,

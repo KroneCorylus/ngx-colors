@@ -17,7 +17,7 @@ import { NgxColorsTriggerDirective } from "./directives/ngx-colors-trigger.direc
     PanelComponent,
     NgxColorsTriggerDirective,
   ],
-  imports: [CommonModule, BrowserAnimationsModule],
+  imports: [CommonModule],
   providers: [ConverterService, PanelFactoryService],
   exports: [NgxColorsComponent, NgxColorsTriggerDirective],
 })

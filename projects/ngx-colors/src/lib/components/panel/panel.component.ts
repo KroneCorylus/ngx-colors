@@ -324,7 +324,6 @@ export class PanelComponent implements OnInit {
   public changeColor(color: string): void {
     this.setColor(this.service.stringToHsva(color));
     // this.triggerInstance.onChange();
-    this.emitClose("accept");
   }
 
   public onChangeColorPicker(event: Hsva) {

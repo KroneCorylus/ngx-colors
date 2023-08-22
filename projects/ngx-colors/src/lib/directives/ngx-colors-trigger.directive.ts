@@ -99,10 +99,6 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
     this.close.emit(this.color);
   }
 
-  public onChange() {
-    this.onChangeCallback(this.color);
-  }
-
   public setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;
     this.triggerRef.nativeElement.style.opacity = isDisabled ? 0.5 : 1;
@@ -110,6 +106,7 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   public setColor(color) {
     this.writeValue(color);
+    this.onChangeCallback(color);
     this.input.emit(color);
   }
 
@@ -129,7 +126,6 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   writeValue(value) {
     if (value !== this.color) {
       this.color = value;
-      this.onChange();
       this.change.emit(value);
     }
   }

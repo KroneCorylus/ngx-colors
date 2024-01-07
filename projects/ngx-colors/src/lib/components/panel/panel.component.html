@@ -126,7 +126,7 @@
     <p (click)="nextFormat()">{{ colorFormats[format] }}</p>
     <div class="g-input">
       <input
-        placeholder="#FFFFFF"
+        [placeholder]="placeholder"
         type="text"
         [value]="color"
         [style.font-size.px]="color && color.length > 23 ? 9 : 10"

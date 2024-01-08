@@ -7,6 +7,7 @@ import {
   ComponentRef,
   HostListener,
   forwardRef,
+  OnDestroy,
 } from '@angular/core';
 import { PanelFactoryService } from '../services/panel-factory.service';
 import { PanelComponent } from '../components/panel/panel.component';
@@ -25,7 +26,9 @@ import { formats } from '../helpers/formats';
     },
   ],
 })
-export class NgxColorsTriggerDirective implements ControlValueAccessor {
+export class NgxColorsTriggerDirective
+  implements ControlValueAccessor, OnDestroy
+{
   //Main input/output of the color picker
   // @Input() color = '#000000';
   // @Output() colorChange:EventEmitter<string> = new EventEmitter<string>();
@@ -71,6 +74,12 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   onTouchedCallback: () => void = () => {};
   onChangeCallback: (_: any) => void = () => {};
+
+  public ngOnDestroy(): void {
+    if (this.panelRef) {
+      this.panelFactory.removePanel();
+    }
+  }
 
   public openPanel() {
     if (!this.isDisabled) {

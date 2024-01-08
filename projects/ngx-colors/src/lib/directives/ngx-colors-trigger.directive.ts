@@ -7,14 +7,16 @@ import {
   ComponentRef,
   HostListener,
   forwardRef,
-} from "@angular/core";
-import { PanelFactoryService } from "../services/panel-factory.service";
-import { PanelComponent } from "../components/panel/panel.component";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { NgxColorsColor } from "../clases/color";
+} from '@angular/core';
+import { PanelFactoryService } from '../services/panel-factory.service';
+import { PanelComponent } from '../components/panel/panel.component';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgxColorsColor } from '../clases/color';
+import { ConverterService } from '../services/converter.service';
+import { formats } from '../helpers/formats';
 
 @Directive({
-  selector: "[ngx-colors-trigger]",
+  selector: '[ngx-colors-trigger]',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -28,24 +30,24 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   // @Input() color = '#000000';
   // @Output() colorChange:EventEmitter<string> = new EventEmitter<string>();
 
-  color = "";
+  color = '';
 
   //This defines the type of animation for the palatte.(slide-in | popup)
-  @Input() colorsAnimation: "slide-in" | "popup" = "slide-in";
+  @Input() colorsAnimation: 'slide-in' | 'popup' = 'slide-in';
 
   //This is used to set a custom palette of colors in the panel;
   @Input() palette: Array<string> | Array<NgxColorsColor>;
 
   @Input() format: string;
-  @Input() position: "top" | "bottom" = "bottom";
+  @Input() position: 'top' | 'bottom' = 'bottom';
   @Input() hideTextInput: boolean;
   @Input() hideColorPicker: boolean;
   @Input() attachTo: string | undefined = undefined;
   @Input() overlayClassName: string | undefined = undefined;
-  @Input() colorPickerControls: "default" | "only-alpha" | "no-alpha" =
-    "default";
-  @Input() acceptLabel: string = "ACCEPT";
-  @Input() cancelLabel: string = "CANCEL";
+  @Input() colorPickerControls: 'default' | 'only-alpha' | 'no-alpha' =
+    'default';
+  @Input() acceptLabel: string = 'ACCEPT';
+  @Input() cancelLabel: string = 'CANCEL';
   // This event is trigger every time the selected color change
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
   // This event is trigger every time the user change the color using the panel
@@ -55,12 +57,13 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   @Output() close: EventEmitter<string> = new EventEmitter<string>();
   @Output() open: EventEmitter<string> = new EventEmitter<string>();
 
-  @HostListener("click") onClick() {
+  @HostListener('click') onClick() {
     this.openPanel();
   }
   constructor(
     private triggerRef: ElementRef,
-    private panelFactory: PanelFactoryService
+    private panelFactory: PanelFactoryService,
+    private service: ConverterService
   ) {}
 
   panelRef: ComponentRef<PanelComponent>;
@@ -128,6 +131,10 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   writeValue(value) {
     if (value !== this.color) {
+      if (this.format) {
+        let format = formats.indexOf(this.format.toLowerCase());
+        value = this.service.stringToFormat(value, format);
+      }
       this.color = value;
       this.onChange();
       this.change.emit(value);

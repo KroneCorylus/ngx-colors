@@ -34,8 +34,8 @@ export class ConverterService {
           var output = rgba.toString();
           break;
         case ColorFormats.CMYK:
-          var rgba: Rgba = this.hsvaToRgba(hsva);
-          var cmyk: Cmyk = this.rgbaToCmyk(rgba);
+          var cmyk: Cmyk = this.hsvaToCmyk(hsva);
+          var output = cmyk.toString();
           break;
       }
     }
@@ -140,6 +140,13 @@ export class ConverterService {
       return new Cmyk(c, m, y, k, rgba.a);
     }
   }
+
+  public hsvaToCmyk(hsva: Hsva): Cmyk {
+    let rgba = this.hsvaToRgba(hsva);
+    let cmyk = this.rgbaToCmyk(rgba);
+    
+    return cmyk;
+}
 
   public rgbaToHsva(rgba: Rgba): Hsva {
     let h: number, s: number;
@@ -256,6 +263,17 @@ export class ConverterService {
           );
         },
       },
+      {
+        re: /cmyk?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*%?,\s*(\d{1,3})\s*%?(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parse: function (execResult: any) {
+          return new Cmyk(
+            parseInt(execResult[1], 10) / 100,
+            parseInt(execResult[2], 10) / 100,
+            parseInt(execResult[3], 10) / 100,
+            parseInt(execResult[4], 10) / 100
+          );
+        },
+      },
     ];
 
     if (allowHex8) {
@@ -308,6 +326,9 @@ export class ConverterService {
             hsva = this.rgbaToHsva(color);
           } else if (color instanceof Hsla) {
             hsva = this.hsla2hsva(color);
+          } else if (color instanceof Cmyk) {
+            let rgb = this.cmykToRgb(color);
+            hsva = this.rgbaToHsva(rgb);
           }
 
           return hsva;
@@ -330,12 +351,16 @@ export class ConverterService {
         /(rgba\((\d{1,3},\s?){3}(1|0?\.\d+)\)|rgb\(\d{1,3}(,\s?\d{1,3}){2}\))/;
       let regexHSLA: RegExp =
         /(hsla\((\d{1,3}%?,\s?){3}(1|0?\.\d+)\)|hsl\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
+      let regexCMYK: RegExp =
+        /(cmyk\(\d{1,3}(,\s?\d{1,3}){3}\))/;
       if (regexHex.test(color)) {
         return "hex";
       } else if (regexRGBA.test(color)) {
         return "rgba";
       } else if (regexHSLA.test(color)) {
         return "hsla";
+      } else if (regexCMYK.test(color)) {
+        return "cmyk";
       }
     }
     return "hex";

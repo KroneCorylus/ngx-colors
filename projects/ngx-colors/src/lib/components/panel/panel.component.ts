@@ -341,8 +341,9 @@ export class PanelComponent implements OnInit {
     this.previewColor = color;
     this.color = color;
     this.hsva = this.service.stringToHsva(color);
+    this.setPreviewColor(this.hsva);
     this.temporalColor = this.hsva;
-    this.triggerInstance.setColor(this.color);
+    this.triggerInstance.setColor(this.color, this.previewColor);
     // this.triggerInstance.onChange();
   }
 
@@ -350,7 +351,7 @@ export class PanelComponent implements OnInit {
     this.hsva = value;
     this.color = this.service.toFormat(value, this.format);
     this.setPreviewColor(value);
-    this.triggerInstance.setColor(this.color);
+    this.triggerInstance.setColor(this.color, this.previewColor);
   }
 
   setPreviewColor(value: Hsva) {

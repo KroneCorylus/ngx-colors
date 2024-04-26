@@ -116,8 +116,8 @@ export class NgxColorsTriggerDirective
     this.triggerRef.nativeElement.style.opacity = isDisabled ? 0.5 : 1;
   }
 
-  public setColor(color) {
-    this.writeValue(color);
+  public setColor(color, previewColor = "") {
+    this.writeValue(color, previewColor);
     this.onChangeCallback(color);
     this.input.emit(color);
   }
@@ -135,14 +135,15 @@ export class NgxColorsTriggerDirective
     this.onChangeCallback(value);
   }
 
-  writeValue(value) {
+  writeValue(value, previewColor = "") {
     if (value !== this.color) {
       if (this.format) {
         let format = formats.indexOf(this.format.toLowerCase());
         value = this.service.stringToFormat(value, format);
       }
       this.color = value;
-      this.change.emit(value);
+      let isCmyk = value.startsWith('cmyk'); 
+      this.change.emit( isCmyk ? previewColor : value);
     }
   }
 

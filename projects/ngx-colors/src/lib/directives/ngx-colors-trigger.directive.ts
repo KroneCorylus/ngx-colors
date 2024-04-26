@@ -42,6 +42,7 @@ export class NgxColorsTriggerDirective
   @Input() palette: Array<string> | Array<NgxColorsColor>;
 
   @Input() format: string;
+  @Input() formats: string[];
   @Input() position: 'top' | 'bottom' = 'bottom';
   @Input() hideTextInput: boolean;
   @Input() hideColorPicker: boolean;
@@ -99,7 +100,8 @@ export class NgxColorsTriggerDirective
         this.acceptLabel,
         this.cancelLabel,
         this.colorPickerControls,
-        this.position
+        this.position,
+        this.formats
       );
     }
     this.open.emit(this.color);

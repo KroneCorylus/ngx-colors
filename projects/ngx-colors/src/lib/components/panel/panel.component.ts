@@ -213,6 +213,9 @@ export class PanelComponent implements OnInit {
       }
     } else {
       this.format = formats.indexOf(this.service.getFormatByString(this.color));
+      if( this.format < 0 ) {
+        this.format = 0;
+      }
     }
 
     this.previewColor = this.color;

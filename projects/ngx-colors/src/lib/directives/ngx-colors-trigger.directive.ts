@@ -15,6 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxColorsColor } from '../clases/color';
 import { ConverterService } from '../services/converter.service';
 import { formats } from '../helpers/formats';
+import { ColorFormats } from '../enums/formats';
 
 @Directive({
   selector: '[ngx-colors-trigger]',
@@ -144,7 +145,15 @@ export class NgxColorsTriggerDirective
         value = this.service.stringToFormat(value, format);
       }
       this.color = value;
-      let isCmyk = value.startsWith('cmyk'); 
+
+      let isCmyk = false;
+      if( value && value.startsWith('cmyk')) {
+        isCmyk = true;
+        if( !previewColor ) {
+          previewColor = this.service.stringToFormat(value, ColorFormats.RGBA);
+        }
+      }
+
       this.change.emit( isCmyk ? previewColor : value);
     }
   }

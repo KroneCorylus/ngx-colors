@@ -368,7 +368,13 @@ export class PanelComponent implements OnInit {
 
   setColor(value: Hsva, colorIndex: number = -1) {
     this.hsva = value;
-    let index = (colorIndex >= 0) ? colorIndex : this.format;
+
+    let formatName = this.colorFormats[this.format];
+    let index = colorIndex
+    if( index < 0){
+      index = this.formatMap[formatName];
+    }
+    
     this.color = this.service.toFormat(value, index);
     this.setPreviewColor(value);
     this.triggerInstance.setColor(this.color, this.previewColor);

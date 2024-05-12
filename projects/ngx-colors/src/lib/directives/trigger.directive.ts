@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { OverlayService } from '../services/overlay.service';
 
 @Directive({
   selector: '[ngx-colors-trigger]',
@@ -21,7 +22,7 @@ import { Subject } from 'rxjs';
   ],
 })
 export class NgxColorsTriggerDirective implements ControlValueAccessor {
-  constructor() {}
+  constructor(private overlayService: OverlayService) {}
   @HostListener('click') onClick() {
     this.openPanel();
   }
@@ -31,7 +32,10 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   >();
   destroy$: Subject<void> = new Subject<void>();
 
-  public openPanel() {}
+  public openPanel() {
+    console.log('openPanel');
+    this.overlayService.createOverlay(undefined, 'pepe');
+  }
 
   ngOnInit(): void {}
 

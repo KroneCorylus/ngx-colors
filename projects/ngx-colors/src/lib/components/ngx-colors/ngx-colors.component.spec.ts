@@ -11,7 +11,7 @@ describe('NgxColorsComponent', () => {
       imports: [NgxColorsComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(NgxColorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

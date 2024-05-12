@@ -1,16 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lib-ngx-colors',
+  selector: 'ngx-colors',
   standalone: true,
   imports: [],
-  template: `
-    <p>
-      ngx-colors works!
-    </p>
-  `,
-  styles: ``
+  templateUrl: './ngx-colors.component.html',
+  styleUrls: ['./ngx-colors.component.scss', '../../shared/shared.scss'],
 })
 export class NgxColorsComponent {
-
+  public previewColor: string = 'rgba(255,0,255,0.3)';
 }

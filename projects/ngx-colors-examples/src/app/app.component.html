@@ -1,4 +1,49 @@
-{{testCtrl.value}}
-<ngx-colors ngx-colors-trigger style="" [formControl]="testCtrl"></ngx-colors>
-{{test}}
-<ngx-colors ngx-colors-trigger style="" [(ngModel)]="test"></ngx-colors>
+<table>
+  <tr>
+    <th>Tipo</th>
+    <th>ngx-colors</th>
+    <th>Value</th>
+    <th>Touched</th>
+    <th>Dirty</th>
+    <th>set value</th>
+  </tr>
+  <tr>
+    <td>Control</td>
+    <td>
+      <ngx-colors
+        ngx-colors-trigger
+        style=""
+        [formControl]="testCtrl"
+        (change)="onChange($event, 'control')"
+        (ngModelChange)="onModelChanges($event, 'control')"
+      ></ngx-colors>
+    </td>
+    <td>{{testCtrl.value}}</td>
+    <td>{{testCtrl.dirty}}</td>
+    <td>{{testCtrl.touched}}</td>
+    <td>
+      <input #inputCtrl />
+      <button (click)="testCtrl.setValue(inputCtrl.value)">aplicar</button>
+    </td>
+  </tr>
+  <tr>
+    <td>NgModel</td>
+    <td>
+      <ngx-colors
+        ngx-colors-trigger
+        style=""
+        [(ngModel)]="test"
+        (change)="onChange($event,'ngModel')"
+        (ngModelChange)="onModelChanges($event,'ngModel')"
+      ></ngx-colors>
+    </td>
+    <td>{{test}}</td>
+    <td>-</td>
+    <td>-</td>
+    <td>
+      <input #inputModel />
+      <button (click)="test = inputModel.value">aplicar</button>
+    </td>
+  </tr>
+</table>
+<div *ngFor="let event of events">{{event | json}}</div>

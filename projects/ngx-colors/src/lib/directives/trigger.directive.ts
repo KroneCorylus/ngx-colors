@@ -1,4 +1,11 @@
-import { Directive, HostListener, Input, forwardRef } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 
@@ -16,9 +23,15 @@ import { Subject } from 'rxjs';
 export class NgxColorsTriggerDirective implements ControlValueAccessor {
   constructor() {}
   @HostListener('click') onClick() {
-    console.log('click');
+    this.openPanel();
   }
+  @Input() disabled: boolean = false;
+  @Output() change: EventEmitter<string | undefined> = new EventEmitter<
+    string | undefined
+  >();
   destroy$: Subject<void> = new Subject<void>();
+
+  public openPanel() {}
 
   ngOnInit(): void {}
 
@@ -31,9 +44,9 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
 
   writeValue(obj: any): void {
     this.value = obj;
+    this.change.emit(obj);
   }
 
-  @Input() disabled: boolean = false;
   onChange = (_: any) => {};
   onTouch = () => {};
 

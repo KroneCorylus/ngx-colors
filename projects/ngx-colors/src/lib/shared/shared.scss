@@ -4,7 +4,12 @@
     0 1px 1px 1px #00000024,
     0 1px 1px 1px #0000001f;
 }
-
+.elevation-z2 {
+  box-shadow:
+    0 2px 4px -1px #0003,
+    0 4px 5px #00000024,
+    0 1px 10px #0000001f;
+}
 .circle {
   border-radius: 50%;
 }
@@ -15,9 +20,33 @@
 .h-100 {
   height: 100%;
 }
-
+.bg-white {
+  background: white;
+}
 .overflow-h {
   overflow: hidden;
+}
+
+.flex {
+  display: flex;
+}
+.justify-center {
+  justify-content: center;
+}
+.align-center {
+  align-items: center;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.pointer {
+  cursor: pointer;
+}
+.mt-3 {
+  margin-top: 12px;
 }
 
 .bg-transparent {

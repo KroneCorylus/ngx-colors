@@ -15,6 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxColorsColor } from '../clases/color';
 import { ConverterService } from '../services/converter.service';
 import { formats } from '../helpers/formats';
+import { ColorFormats } from '../enums/formats';
 
 @Directive({
   selector: '[ngx-colors-trigger]',
@@ -42,6 +43,7 @@ export class NgxColorsTriggerDirective
   @Input() palette: Array<string> | Array<NgxColorsColor>;
 
   @Input() format: string;
+  @Input() formats: string[];
   @Input() position: 'top' | 'bottom' = 'bottom';
   @Input() hideTextInput: boolean;
   @Input() hideColorPicker: boolean;
@@ -99,7 +101,8 @@ export class NgxColorsTriggerDirective
         this.acceptLabel,
         this.cancelLabel,
         this.colorPickerControls,
-        this.position
+        this.position,
+        this.formats
       );
     }
     this.open.emit(this.color);
@@ -116,8 +119,8 @@ export class NgxColorsTriggerDirective
     this.triggerRef.nativeElement.style.opacity = isDisabled ? 0.5 : 1;
   }
 
-  public setColor(color) {
-    this.writeValue(color);
+  public setColor(color, previewColor = "") {
+    this.writeValue(color, previewColor);
     this.onChangeCallback(color);
     this.input.emit(color);
   }
@@ -135,14 +138,23 @@ export class NgxColorsTriggerDirective
     this.onChangeCallback(value);
   }
 
-  writeValue(value) {
+  writeValue(value, previewColor = "") {
     if (value !== this.color) {
       if (this.format) {
         let format = formats.indexOf(this.format.toLowerCase());
         value = this.service.stringToFormat(value, format);
       }
       this.color = value;
-      this.change.emit(value);
+
+      let isCmyk = false;
+      if( value && value.startsWith('cmyk')) {
+        isCmyk = true;
+        if( !previewColor ) {
+          previewColor = this.service.stringToFormat(value, ColorFormats.RGBA);
+        }
+      }
+
+      this.change.emit( isCmyk ? previewColor : value);
     }
   }
 

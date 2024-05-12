@@ -123,7 +123,7 @@
     </div>
   </ng-container>
   <div class="manual-input-wrapper" *ngIf="!hideTextInput">
-    <p (click)="nextFormat()">{{ colorFormats[format] }}</p>
+    <p (click)="nextFormat()" style="cursor: pointer;">{{ colorFormats[format] }}</p>
     <div class="g-input">
       <input
         [placeholder]="placeholder"

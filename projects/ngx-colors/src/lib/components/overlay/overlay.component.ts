@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { PanelFactoryService } from '../../services/panel-factory.service';
 import { PanelComponent } from '../panel/panel.component';
+import { OverlayService } from '../../services/overlay.service';
 
 @Component({
   selector: 'ngx-colors-overlay',
@@ -10,10 +10,10 @@ import { PanelComponent } from '../panel/panel.component';
   styleUrl: './overlay.component.scss',
 })
 export class OverlayComponent implements OnInit {
-  constructor(private panelFactory: PanelFactoryService) {}
+  constructor(private overlayService: OverlayService) {}
   @HostListener('click', ['$event'])
   public onClick(event: any): void {
-    this.panelFactory.removePanel();
+    this.overlayService.removePanel();
   }
 
   ngOnInit(): void {}

@@ -36,6 +36,7 @@ export class OverlayService {
       hostElement,
       environmentInjector: injector,
     });
+    this.applicationRef.attachView(this.componentRef.hostView);
     return this.componentRef;
   }
 

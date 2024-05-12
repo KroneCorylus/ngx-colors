@@ -3,4 +3,5 @@
  */
 
 export * from './lib/components/ngx-colors/ngx-colors.component';
+export * from './lib/components/panel/panel.component';
 export * from './lib/directives/trigger.directive';

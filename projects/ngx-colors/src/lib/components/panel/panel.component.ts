@@ -114,8 +114,15 @@ export class PanelComponent implements OnInit {
   public palette = defaultColors;
   public variants = [];
 
+  public userFormats: string[] = [];
   public colorFormats = formats;
   public format: ColorFormats = ColorFormats.HEX;
+  public formatMap = {
+    'hex': ColorFormats.HEX,
+    'rgba': ColorFormats.RGBA,
+    'hsla': ColorFormats.HSLA,
+    'cmyk': ColorFormats.CMYK
+  }
 
   public canChangeFormat: boolean = true;
 
@@ -188,7 +195,8 @@ export class PanelComponent implements OnInit {
     acceptLabel: string,
     cancelLabel: string,
     colorPickerControls: 'default' | 'only-alpha' | 'no-alpha',
-    position: 'top' | 'bottom'
+    position: 'top' | 'bottom',
+    userFormats: string[] = [],
   ) {
     this.colorPickerControls = colorPickerControls;
     this.triggerInstance = triggerInstance;
@@ -198,9 +206,17 @@ export class PanelComponent implements OnInit {
     this.hideTextInput = hideTextInput;
     this.acceptLabel = acceptLabel;
     this.cancelLabel = cancelLabel;
+
+    if(userFormats.length) {
+      const allFormatsValid = userFormats.every(frt => formats.includes(frt));
+      if( allFormatsValid ) {
+        this.colorFormats = userFormats;
+      }
+    }
+
     if (format) {
-      if (formats.includes(format)) {
-        this.format = formats.indexOf(format.toLowerCase());
+      if (this.colorFormats.includes(format)) {
+        this.format = this.colorFormats.indexOf(format.toLowerCase());
         this.canChangeFormat = false;
         if (
           this.service.getFormatByString(this.color) != format.toLowerCase()
@@ -212,7 +228,7 @@ export class PanelComponent implements OnInit {
         this.format = ColorFormats.HEX;
       }
     } else {
-      this.format = formats.indexOf(this.service.getFormatByString(this.color));
+      this.format = this.colorFormats.indexOf(this.service.getFormatByString(this.color));
       if( this.format < 0 ) {
         this.format = 0;
       }
@@ -350,9 +366,16 @@ export class PanelComponent implements OnInit {
     // this.triggerInstance.onChange();
   }
 
-  setColor(value: Hsva) {
+  setColor(value: Hsva, colorIndex: number = -1) {
     this.hsva = value;
-    this.color = this.service.toFormat(value, this.format);
+
+    let formatName = this.colorFormats[this.format];
+    let index = colorIndex
+    if( index < 0){
+      index = this.formatMap[formatName];
+    }
+    
+    this.color = this.service.toFormat(value, index);
     this.setPreviewColor(value);
     this.triggerInstance.setColor(this.color, this.previewColor);
   }
@@ -386,10 +409,14 @@ export class PanelComponent implements OnInit {
   public nextFormat() {
     if (this.canChangeFormat) {
       this.format = (this.format + 1) % this.colorFormats.length;
-      this.setColor(this.hsva);
+
+      let formatName = this.colorFormats[this.format];
+      let index = this.formatMap[formatName];
+
+      this.setColor(this.hsva, index);
       this.placeholder = this.service.toFormat(
         new Hsva(0, 0, 1, 1),
-        this.format
+        index
       );
     }
   }

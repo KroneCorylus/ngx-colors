@@ -1,1 +1,35 @@
-<p>panel works!</p>
+<div class="elevation-z2 bg-white main flex flex-col">
+  <div class="palette">
+    @for(color of colors;track color.preview){
+    <div class="circle color-option bg-transparent overflow-h pointer">
+      <div class="w-100 circle h-100" [style.background]="color.preview">
+        @if(selected == color.preview){
+        <div class="circle selected"></div>
+        }
+      </div>
+    </div>
+    }
+    <div
+      class="circle color-option overflow-h flex justify-center align-center pointer"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 0 24 24"
+        width="24px"
+        fill="#5f6368"
+      >
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path
+          d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"
+        />
+      </svg>
+    </div>
+  </div>
+  <div class="flex mt-3">
+    <div class="flex justify-center align-center format">RGBA</div>
+    <div class="flex justify-center align-center value">
+      <input value="rgba(100,255,123,0.2312)" />
+    </div>
+  </div>
+</div>

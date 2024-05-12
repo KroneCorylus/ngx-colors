@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import {
   NgxColorsComponent,
   NgxColorsTriggerDirective,
+  PanelComponent,
 } from '../../../ngx-colors/src/public-api';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
     NgxColorsTriggerDirective,
     ReactiveFormsModule,
     FormsModule,
+    PanelComponent,
     CommonModule,
   ],
   templateUrl: './app.component.html',

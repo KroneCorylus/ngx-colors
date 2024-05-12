@@ -33,6 +33,15 @@
               "zone.js/testing"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/ngx-colors/**/*.ts",
+              "projects/ngx-colors/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -126,6 +135,15 @@
               "projects/ngx-colors-examples/src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/ngx-colors-examples/**/*.ts",
+              "projects/ngx-colors-examples/**/*.html"
+            ]
           }
         }
       }

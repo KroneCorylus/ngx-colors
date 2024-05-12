@@ -1,6 +1,0 @@
-{
-  "typescript.preferences.quoteStyle": "single",
-  "prettier.useTabs": true,
-  "javascript.preferences.quoteStyle": "single",
-  "prettier.singleQuote": true
-}

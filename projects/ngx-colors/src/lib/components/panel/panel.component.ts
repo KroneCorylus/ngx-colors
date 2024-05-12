@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'ngx-colors-panel',
@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss', '../../shared/shared.scss'],
 })
-export class PanelComponent {}
+export class PanelComponent {
+  @HostListener('click', ['$event'])
+  public onClick(event: any): void {
+    event.stopPropagation();
+  }
+}

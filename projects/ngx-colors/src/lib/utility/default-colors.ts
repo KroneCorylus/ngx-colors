@@ -1,23 +1,42 @@
-export const defaultColors = [
+import { ColorGroup } from '../interfaces/color-group';
+
+export const defaultColors: Array<ColorGroup> = [
   {
-    color: 'rojo',
-    preview: '#E57373',
-    variants: [
-      '#FFEBEE',
-      '#FFCDD2',
-      '#EF9A9A',
-      '#E57373',
-      '#EF5350',
-      '#F44336',
-      '#E53935',
-      '#D32F2F',
-      '#C62828',
+    color: '#E57373',
+    childs: [
+      {
+        color: '#E57373',
+        childs: [
+          '#FFEBEE',
+          '#FFCDD2',
+          '#EF9A9A',
+          '#E57373',
+          '#EF5350',
+          '#F44336',
+          '#E53935',
+          '#D32F2F',
+          '#C62828',
+        ],
+      },
+      {
+        color: '#F06292',
+        childs: [
+          '#FCE4EC',
+          '#F8BBD0',
+          '#F48FB1',
+          '#F06292',
+          '#EC407A',
+          '#E91E63',
+          '#D81B60',
+          '#C2185B',
+          '#AD1457',
+        ],
+      },
     ],
   },
   {
-    color: 'rosa',
-    preview: '#F06292',
-    variants: [
+    color: '#F06292',
+    childs: [
       '#FCE4EC',
       '#F8BBD0',
       '#F48FB1',
@@ -30,9 +49,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'purpura',
-    preview: '#BA68C8',
-    variants: [
+    color: '#BA68C8',
+    childs: [
       '#F3E5F5',
       '#E1BEE7',
       '#CE93D8',
@@ -45,9 +63,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'purpura oscuro',
-    preview: '#9575CD',
-    variants: [
+    color: '#9575CD',
+    childs: [
       '#EDE7F6',
       '#D1C4E9',
       '#B39DDB',
@@ -60,9 +77,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'indigo',
-    preview: '#7986CB',
-    variants: [
+    color: '#7986CB',
+    childs: [
       '#E8EAF6',
       '#C5CAE9',
       '#9FA8DA',
@@ -75,9 +91,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'azul',
-    preview: '#64B5F6',
-    variants: [
+    color: '#64B5F6',
+    childs: [
       '#E3F2FD',
       '#BBDEFB',
       '#90CAF9',
@@ -90,9 +105,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'celeste',
-    preview: '#4FC3F7',
-    variants: [
+    color: '#4FC3F7',
+    childs: [
       '#E1F5FE',
       '#B3E5FC',
       '#81D4FA',
@@ -105,9 +119,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'cyan',
-    preview: '#4DD0E1',
-    variants: [
+    color: '#4DD0E1',
+    childs: [
       '#E0F7FA',
       '#B2EBF2',
       '#80DEEA',
@@ -120,9 +133,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'color',
-    preview: '#4DB6AC',
-    variants: [
+    color: '#4DB6AC',
+    childs: [
       '#E0F2F1',
       '#B2DFDB',
       '#80CBC4',
@@ -135,9 +147,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'verde',
-    preview: '#81C784',
-    variants: [
+    color: '#81C784',
+    childs: [
       '#E8F5E9',
       '#C8E6C9',
       '#A5D6A7',
@@ -150,9 +161,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'verde claro',
-    preview: '#AED581',
-    variants: [
+    color: '#AED581',
+    childs: [
       '#F1F8E9',
       '#DCEDC8',
       '#C5E1A5',
@@ -165,9 +175,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'lima',
-    preview: '#DCE775',
-    variants: [
+    color: '#DCE775',
+    childs: [
       '#F9FBE7',
       '#F0F4C3',
       '#E6EE9C',
@@ -180,9 +189,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'amarillo',
-    preview: '#FFF176',
-    variants: [
+    color: '#FFF176',
+    childs: [
       '#FFFDE7',
       '#FFF9C4',
       '#FFF59D',
@@ -195,9 +203,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'ambar',
-    preview: '#FFD54F',
-    variants: [
+    color: '#FFD54F',
+    childs: [
       '#FFF8E1',
       '#FFECB3',
       '#FFE082',
@@ -210,9 +217,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'naranja',
-    preview: '#FFB74D',
-    variants: [
+    color: '#FFB74D',
+    childs: [
       '#FFF3E0',
       '#FFE0B2',
       '#FFCC80',
@@ -225,9 +231,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'naranja oscuro',
-    preview: '#FF8A65',
-    variants: [
+    color: '#FF8A65',
+    childs: [
       '#FBE9E7',
       '#FFCCBC',
       '#FFAB91',
@@ -240,9 +245,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'marron',
-    preview: '#A1887F',
-    variants: [
+    color: '#A1887F',
+    childs: [
       '#EFEBE9',
       '#D7CCC8',
       '#BCAAA4',
@@ -255,9 +259,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'escala de grises',
-    preview: '#E0E0E0',
-    variants: [
+    color: '#E0E0E0',
+    childs: [
       '#FFFFFF',
       '#FAFAFA',
       '#F5F5F5',
@@ -272,9 +275,8 @@ export const defaultColors = [
     ],
   },
   {
-    color: 'azul gris',
-    preview: '#90A4AE',
-    variants: [
+    color: '#90A4AE',
+    childs: [
       '#ECEFF1',
       '#CFD8DC',
       '#B0BEC5',

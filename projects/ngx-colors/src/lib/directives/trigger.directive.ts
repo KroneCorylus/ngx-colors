@@ -32,8 +32,9 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
   >();
   destroy$: Subject<void> = new Subject<void>();
 
+  value: string | undefined = undefined;
+
   public openPanel() {
-    console.log('openPanel');
     this.overlayService.createOverlay(undefined, 'pepe');
   }
 
@@ -43,8 +44,6 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  value: string | undefined = undefined;
 
   writeValue(obj: any): void {
     this.value = obj;

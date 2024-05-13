@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 20.13.1
+    - name: Intall Angular
+      run: npm install -g @angular/cli
     - name: Install dependencies
       run: npm install
     - name: Test

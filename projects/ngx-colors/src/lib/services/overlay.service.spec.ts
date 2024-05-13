@@ -23,7 +23,7 @@ describe('OverlayService', () => {
     expect(overlay).toBeTruthy();
   });
 
-  it('should not append another overlay', () => {
+  it('should not append multiple overlays', () => {
     service.createOverlay(undefined, undefined);
     service.createOverlay(undefined, undefined);
     let overlayCount =

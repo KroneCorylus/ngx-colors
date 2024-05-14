@@ -1,0 +1,30 @@
+.bg-saturation-lightness {
+  background-image: linear-gradient(to top, #000 0%, transparent 100%),
+    linear-gradient(to right, #fff 0%, transparent 100%);
+}
+
+.bg-hue {
+  background: linear-gradient(
+    to right,
+    red 0%,
+    #ff0 17%,
+    lime 33%,
+    cyan 50%,
+    blue 66%,
+    #f0f 83%,
+    red 100%
+  );
+}
+.bg-alpha {
+}
+
+._preview {
+  height: 40px;
+  width: 40px;
+}
+._sl-box {
+  height: 63%;
+}
+._hue-alpha-box {
+  gap: 10px;
+}

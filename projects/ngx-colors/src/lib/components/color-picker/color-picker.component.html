@@ -1,1 +1,17 @@
-<p>color-picker works!</p>
+<div class="flex flex-col h-100">
+  <div
+    class="_sl-box bg-saturation-lightness mb-4"
+    [style.background-color]="hue"
+  ></div>
+  <div class="flex grow-1">
+    <div class="justify-center align-center flex ml-4">
+      <div class="_preview circle red elevation"></div>
+    </div>
+    <div class="flex flex-col grow-1 mr-4 ml-4 _hue-alpha-box">
+      <div class="grow-1 bg-hue radius-4"></div>
+      <div class="grow-1 radius-4 bg-transparent">
+        <div class="h-100 w-100 radius-4" [ngStyle]="alphaGradient"></div>
+      </div>
+    </div>
+  </div>
+</div>

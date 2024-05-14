@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
+  ColorPickerComponent,
   NgxColorsComponent,
   NgxColorsTriggerDirective,
   PanelComponent,
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     NgxColorsComponent,
     NgxColorsTriggerDirective,
+    ColorPickerComponent,
     ReactiveFormsModule,
     FormsModule,
     PanelComponent,

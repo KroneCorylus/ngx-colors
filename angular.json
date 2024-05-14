@@ -5,6 +5,11 @@
   "projects": {
     "ngx-colors": {
       "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "projects/ngx-colors",
       "sourceRoot": "projects/ngx-colors/src",
       "prefix": "lib",

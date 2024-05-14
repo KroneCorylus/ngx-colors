@@ -22,4 +22,4 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Test
-      run: ng test ngx-colors
+      run: ng test ngx-colors --browsers ChromeHeadless --no-watch

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { SliderDirective } from '../../directives/slider.directive';
 
 @Component({
   selector: 'ngx-colors-color-picker',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SliderDirective],
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss', '../../shared/shared.scss'],
 })
@@ -16,4 +17,8 @@ export class ColorPickerComponent {
   };
 
   constructor() {}
+
+  public onChangeCoord(sliderCode: string, coord: any) {
+    console.log(sliderCode, coord);
+  }
 }

@@ -81,16 +81,16 @@ export class SliderDirective implements OnInit, OnDestroy {
   private getCoordFromEvent(event: MouseEvent | TouchEvent): [number, number] {
     const position = this.elRef.nativeElement.getBoundingClientRect();
     const x =
-      ((event as MouseEvent).pageX
+      ((event as MouseEvent).pageX !== undefined
         ? (event as MouseEvent).pageX
         : (event as TouchEvent).touches[0].pageX) -
       position.left -
       window.scrollX; // Using type assertion for performance.
     const y =
-      ((event as MouseEvent).pageY
+      ((event as MouseEvent).pageY !== undefined
         ? (event as MouseEvent).pageY
-        : (event as TouchEvent).touches[0].pageX) -
-      position.left -
+        : (event as TouchEvent).touches[0].pageY) -
+      position.top -
       window.scrollY;
     return [x, y];
   }

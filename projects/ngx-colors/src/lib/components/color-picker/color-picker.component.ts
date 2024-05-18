@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { SliderDirective } from '../../directives/slider.directive';
+import { ThumbComponent } from '../thumb/thumb.component';
 
 @Component({
   selector: 'ngx-colors-color-picker',
   standalone: true,
-  imports: [CommonModule, SliderDirective],
+  imports: [CommonModule, SliderDirective, ThumbComponent],
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss', '../../shared/shared.scss'],
 })

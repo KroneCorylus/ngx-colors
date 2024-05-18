@@ -1,6 +1,7 @@
 :host {
   position: absolute;
   height: 100%;
+  transition: 50ms ease-out;
 }
 ._circle {
   border-radius: 15px;

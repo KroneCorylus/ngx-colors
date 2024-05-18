@@ -14,20 +14,20 @@
     <div class="flex flex-col grow-1 mr-4 ml-4 _hue-alpha-box">
       <div
         ngxColorsSlider
-        class="grow-1 bg-hue radius-4"
+        class="grow-1 bg-hue radius-4 pointer"
         (change)="onChangeCoord('hue', $event)"
-      >    <ngx-colors-thumb apparence="oval"></ngx-colors-thumb>
-</div>
-      <div
-        class="grow-1 radius-4 bg-transparent"
       >
+        <ngx-colors-thumb apparence="oval"></ngx-colors-thumb>
+      </div>
+      <div class="grow-1 radius-4 bg-transparent pointer">
         <div
-        ngxColorsSlider
-        (change)="onChangeCoord('alpha', $event)"
-
-          class="h-100 w-100 radius-4" [ngStyle]="alphaGradient">
-            <ngx-colors-thumb apparence="oval"></ngx-colors-thumb>
-</div>
+          ngxColorsSlider
+          (change)="onChangeCoord('alpha', $event)"
+          class="h-100 w-100 radius-4"
+          [ngStyle]="alphaGradient"
+        >
+          <ngx-colors-thumb apparence="oval"></ngx-colors-thumb>
+        </div>
       </div>
     </div>
   </div>

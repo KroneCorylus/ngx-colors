@@ -15,8 +15,6 @@
     red 100%
   );
 }
-.bg-alpha {
-}
 
 ._preview {
   height: 40px;
@@ -24,6 +22,7 @@
 }
 ._sl-box {
   height: 63%;
+  cursor: crosshair;
 }
 ._hue-alpha-box {
   gap: 10px;

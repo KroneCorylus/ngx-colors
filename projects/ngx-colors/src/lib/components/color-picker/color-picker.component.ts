@@ -19,7 +19,7 @@ export class ColorPickerComponent {
 
   constructor() {}
 
-  public onChangeCoord(sliderCode: string, coord: any) {
+  public onChangeCoord(sliderCode: string, coord: [number, number]) {
     console.log(sliderCode, coord);
   }
 }

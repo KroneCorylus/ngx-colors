@@ -1,0 +1,40 @@
+:host {
+  position: absolute;
+  height: 100%;
+}
+._circle {
+  border-radius: 15px;
+  border: 3px solid black;
+  position: absolute;
+  display: inline-block;
+  margin-top: -10px;
+  margin-left: -10px;
+  & > div {
+    width: 11px;
+    border: 2px solid white;
+    height: 11px;
+    border-radius: 16px;
+  }
+}
+._oval {
+  margin-left: -5px;
+  border: 1px solid black;
+  height: calc(100% + 8px);
+  margin-top: -4px;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  & > div {
+    border: 2px solid white;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    & > div {
+      height: 100%;
+      width: 4px;
+      border: 1px solid black;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+  }
+}

@@ -11,6 +11,7 @@ import {
 import {
   Observable,
   Subject,
+  auditTime,
   distinctUntilChanged,
   fromEvent,
   map,
@@ -52,7 +53,7 @@ export class SliderDirective implements OnInit, OnDestroy {
         takeUntil(this.pointerUp$)
       )
     ),
-    throttleTime(50),
+    auditTime(50),
     distinctUntilChanged((prev, curr) => {
       return prev.pageY === curr.pageY && prev.pageX === curr.pageX;
     }),

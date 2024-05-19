@@ -1,5 +1,10 @@
 import { ColorFormat } from '../interfaces/color-format';
 
+export function round(num: number, decimalPlaces = 0) {
+  num = Math.round(Number(num + 'e' + decimalPlaces));
+  return Number(num + 'e' + -decimalPlaces);
+}
+
 export class Rgba implements ColorFormat {
   constructor(
     public r: number,
@@ -13,6 +18,23 @@ export class Rgba implements ColorFormat {
     this.g = Math.round(this.g * 255);
     this.b = Math.round(this.b * 255);
     return this;
+  }
+
+  public toNormalized(): Rgba {
+    return new Rgba(
+      Math.round(this.r / 255),
+      Math.round(this.g / 255),
+      Math.round(this.b / 255),
+      this.a
+    );
+  }
+  public toDenormalized(): Rgba {
+    return new Rgba(
+      Math.round(this.r * 255),
+      Math.round(this.g * 255),
+      Math.round(this.b * 255),
+      this.a
+    );
   }
 
   public toString(): string {

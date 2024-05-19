@@ -1,5 +1,9 @@
 import { Convert } from './convert';
 import { ColorFormats } from '../enums/color-formats';
+import { Hsva } from '../models/hsva';
+import { Rgba } from '../models/rgba';
+import { Hsla } from '../models/hsla';
+import { Cmyk } from '../models/cmyk';
 
 export type ColorEquivalence = {
   [x: string]: string | Array<string>;
@@ -93,12 +97,66 @@ let tests: Array<ColorEquivalence> = [
   },
 ];
 
+let hsvaToRgba = () => {
+  for (let i = 0; i < clasesColores.length; i++) {
+    const test = clasesColores[i];
+    let source: Hsva = test.hsva;
+    let target: Rgba = test.rgba;
+    let result: Rgba = Convert.hsvaToRgba(source.toNormalized());
+    it(`HSVA: ${source.toString()} to RGB ${target.toNormalized().toString()}`, () => {
+      expect(result.toDenormalized()).toEqual(test.rgba);
+    });
+  }
+};
+let hsvaToHsla = () => {
+  for (let i = 0; i < clasesColores.length; i++) {
+    const test = clasesColores[i];
+    let source: Hsva = test.hsva;
+    let target: Hsla = test.hsla;
+    let result: Hsla = Convert.hsva2hsla(source.toNormalized());
+    it(`HSVA: ${source.toString()} to HSLA ${target.toNormalized().toString()}`, () => {
+      expect(result.toDenormalized(true)).toEqual(test.hsla);
+    });
+  }
+};
+let clasesColores: Array<any> = [
+  {
+    rgba: new Rgba(255, 255, 255, 1),
+    hsla: new Hsla(0, 0, 1, 1),
+    hsva: new Hsva(0, 0, 1, 1),
+    cmyk: new Cmyk(0, 0, 0, 0),
+  },
+  {
+    rgba: new Rgba(255, 255, 255, 0),
+    hsla: new Hsla(0, 0, 1, 0),
+    hsva: new Hsva(0, 0, 1, 0),
+    cmyk: new Cmyk(0, 0, 0, 0),
+  },
+  {
+    rgba: new Rgba(255, 0, 255, 1),
+    hsla: new Hsla(300, 1, 0.5, 1),
+    hsva: new Hsva(300, 1, 1, 1),
+    cmyk: new Cmyk(0, 100, 0, 0),
+  },
+  {
+    rgba: new Rgba(255, 100, 0, 0.5),
+    hsla: new Hsla(23.53, 1, 0.5, 0.5),
+    hsva: new Hsva(23.53, 1, 1, 0.5),
+    cmyk: new Cmyk(0, 0.6078, 100, 0),
+  },
+  {
+    rgba: new Rgba(214, 87, 62, 0.96),
+    hsla: new Hsla(9.87, 0.6496, 0.5412, 0.96),
+    hsva: new Hsva(9.87, 0.7103, 0.8392, 0.96),
+    cmyk: new Cmyk(0, 0.5935, 0.7103, 0.1608),
+  },
+];
+
 describe('Convert string to RGB string', () => {
   let keys: Array<string> = ['hex', 'hsla', 'cmyk'];
   let convertTo: string = 'rgba';
   iterateTests(keys, convertTo, ColorFormats.RGBA);
 });
-
 describe('Convert string to HEX string', () => {
   let keys = ['rgba', 'hsla', 'cmyk'];
   let convertTo = 'hex';
@@ -109,4 +167,11 @@ describe('Convert string to CYMK string', () => {
   let keys = ['rgba', 'hsla', 'hex'];
   let convertTo = 'cmyk';
   iterateTests(keys, convertTo, ColorFormats.CMYK);
+});
+
+fdescribe('Convert Class Hsva to Class Rgba', () => {
+  hsvaToRgba();
+});
+fdescribe('Convert Class Hsva to Class HSLA', () => {
+  hsvaToHsla();
 });

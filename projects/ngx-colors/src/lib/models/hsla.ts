@@ -14,6 +14,26 @@ export class Hsla implements ColorFormat {
     this.l = Math.round(this.l * 100);
     return this;
   }
+
+  public toDenormalized(percent: boolean = false): Hsla {
+    let multiplier = percent ? 100 : 1;
+    return new Hsla(
+      this.h * 360,
+      this.s * multiplier,
+      this.l * multiplier,
+      this.a
+    );
+  }
+  public toNormalized(percent: boolean = false): Hsla {
+    let multiplier = percent ? 100 : 1;
+    return new Hsla(
+      this.h / 360,
+      this.s / multiplier,
+      this.l / multiplier,
+      this.a
+    );
+  }
+
   public toString(): string {
     let output =
       'hsl' +

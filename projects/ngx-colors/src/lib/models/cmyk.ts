@@ -16,6 +16,14 @@ export class Cmyk implements ColorFormat {
     this.k = Math.round(this.k * 100);
     return this;
   }
+
+  public toNormalized(): Cmyk {
+    return this;
+  }
+  public toDenormalized(): Cmyk {
+    return this;
+  }
+
   public toString(): string {
     this.denormalize();
     let output =

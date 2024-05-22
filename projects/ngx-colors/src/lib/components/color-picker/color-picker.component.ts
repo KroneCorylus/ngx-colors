@@ -30,7 +30,7 @@ export class ColorPickerComponent {
     [x, y] = coord;
     if (sliderCode == 'hue') {
       this.hueHsva.h = x;
-      let rgb: Rgba = Convert.hsvaToRgba(this.hueHsva);
+      let rgb: Rgba = Convert.hsva2Rgba(this.hueHsva);
       this.hue = rgb.toString();
       console.log(this.hueHsva, rgb);
     }

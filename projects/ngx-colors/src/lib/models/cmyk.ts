@@ -1,4 +1,5 @@
 import { ColorFormat } from '../interfaces/color-format';
+import { round } from '../utility/round';
 
 export class Cmyk implements ColorFormat {
   constructor(
@@ -6,26 +7,25 @@ export class Cmyk implements ColorFormat {
     public m: number,
     public y: number,
     public k: number,
-    public a: number = 1
+    public a: number = 1 //CMYK do not have alpha channel, is included here to remember the value when changing formats.
   ) {}
 
-  public denormalize(): Cmyk {
-    this.c = Math.round(this.c * 100);
-    this.m = Math.round(this.m * 100);
-    this.y = Math.round(this.y * 100);
-    this.k = Math.round(this.k * 100);
-    return this;
+  public toRounded(
+    c: number = 4,
+    m: number = 4,
+    y: number = 4,
+    k: number = 4,
+    a: number = 4
+  ): Cmyk {
+    return new Cmyk(
+      round(this.c, c),
+      round(this.m, m),
+      round(this.y, y),
+      round(this.k, k),
+      round(this.a, a)
+    );
   }
-
-  public toNormalized(): Cmyk {
-    return this;
-  }
-  public toDenormalized(): Cmyk {
-    return this;
-  }
-
   public toString(): string {
-    this.denormalize();
     let output =
       'cmyk(' + this.c + ', ' + this.m + ', ' + this.y + ', ' + this.k + ')';
     return output;

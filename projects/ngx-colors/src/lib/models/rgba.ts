@@ -1,9 +1,5 @@
 import { ColorFormat } from '../interfaces/color-format';
-
-export function round(num: number, decimalPlaces = 0) {
-  num = Math.round(Number(num + 'e' + decimalPlaces));
-  return Number(num + 'e' + -decimalPlaces);
-}
+import { round } from '../utility/round';
 
 export class Rgba implements ColorFormat {
   constructor(
@@ -13,32 +9,15 @@ export class Rgba implements ColorFormat {
     public a: number
   ) {}
 
-  public denormalize(): Rgba {
-    this.r = Math.round(this.r * 255);
-    this.g = Math.round(this.g * 255);
-    this.b = Math.round(this.b * 255);
-    return this;
-  }
-
-  public toNormalized(): Rgba {
+  public getRounded(decimalCount: number = 0): Rgba {
     return new Rgba(
-      Math.round(this.r / 255),
-      Math.round(this.g / 255),
-      Math.round(this.b / 255),
-      this.a
+      round(this.r, decimalCount),
+      round(this.g, decimalCount),
+      round(this.b, decimalCount),
+      round(this.a, 4)
     );
   }
-  public toDenormalized(): Rgba {
-    return new Rgba(
-      Math.round(this.r * 255),
-      Math.round(this.g * 255),
-      Math.round(this.b * 255),
-      this.a
-    );
-  }
-
   public toString(): string {
-    this.denormalize();
     let output =
       'rgb' +
       (this.a != 1 ? 'a(' : '(') +

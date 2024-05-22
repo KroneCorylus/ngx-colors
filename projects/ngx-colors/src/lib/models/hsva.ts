@@ -1,9 +1,8 @@
 import { EventEmitter } from '@angular/core';
 import { ColorFormat } from '../interfaces/color-format';
+import { round } from '../utility/round';
 
 export class Hsva implements ColorFormat {
-  public onChange: EventEmitter<Hsva> = new EventEmitter<Hsva>(true);
-
   constructor(
     public h: number,
     public s: number,
@@ -11,37 +10,16 @@ export class Hsva implements ColorFormat {
     public a: number
   ) {}
 
+  toRounded(h: number = 2, s: number = 4, v: number = 4, a: number = 4): Hsva {
+    return new Hsva(
+      round(this.h, h),
+      round(this.s, s),
+      round(this.v, v),
+      round(this.a, a)
+    );
+  }
+
   toString(): string {
     return `hsva(${this.h}, ${this.s},${this.v},${this.a})`;
   }
-  //ONLY FOR TESTING
-  public toNormalized(): Hsva {
-    return new Hsva(this.h / 360, this.s, this.v, this.a);
-  }
-  public toDenormalized(): Hsva {
-    return new Hsva(this.h * 360, this.s, this.v, this.a);
-  }
-
-  // public onColorChange(value: {
-  //   s: number;
-  //   v: number;
-  //   rgX: number;
-  //   rgY: number;
-  // }): void {
-  //   this.s = value.s / value.rgX;
-  //   this.v = value.v / value.rgY;
-  // }
-  //
-  // public onHueChange(value: { v: number; rgX: number }): void {
-  //   this.h = value.v / value.rgX;
-  //   // this.sliderH = this.hsva.h;
-  // }
-  //
-  // public onValueChange(value: { v: number; rgX: number }): void {
-  //   this.v = value.v / value.rgX;
-  // }
-  //
-  // public onAlphaChange(value: { v: number; rgX: number }): void {
-  //   this.a = value.v / value.rgX;
-  // }
 }

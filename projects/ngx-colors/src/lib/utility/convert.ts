@@ -1,78 +1,183 @@
 import { ColorFormats } from '../enums/color-formats';
+import { ColorFormat } from '../interfaces/color-format';
 import { Cmyk } from '../models/cmyk';
 import { Hsla } from '../models/hsla';
 import { Hsva } from '../models/hsva';
 import { Rgba } from '../models/rgba';
 
 export class Convert {
-  public static toFormat(hsva: Hsva, format: ColorFormats) {
-    var output = '';
-    if (hsva) {
-      switch (format) {
-        case ColorFormats.HEX:
-          var rgba: Rgba = this.hsvaToRgba(hsva);
-          rgba.denormalize();
-          var output = this.rgbaToHex(rgba, true);
+  public static rgbaToFormat(
+    rgba: Rgba,
+    format: ColorFormats
+  ): ColorFormat | string {
+    switch (format) {
+      case ColorFormats.HEX:
+        return this.rgba2Hex(rgba);
+      case ColorFormats.HSLA:
+        return this.rgba2Hsla(rgba);
+      case ColorFormats.HSVA:
+        return this.rgba2Hsva(rgba);
+      case ColorFormats.CMYK:
+        return this.rgba2Cmyk(rgba);
+      case ColorFormats.RGBA:
+        return rgba;
+      default:
+        throw 'Invalid output format';
+    }
+  }
+
+  public static rgbaToFormatString(rgba: Rgba, format: ColorFormats): string {
+    return this.rgbaToFormat(rgba, format).toString();
+  }
+
+  //rgba to everything
+  public static rgba2Hsla(rgba: Rgba): Hsla {
+    const rNorm = rgba.r / 255;
+    const gNorm = rgba.g / 255;
+    const bNorm = rgba.b / 255;
+
+    const max = Math.max(rNorm, gNorm, bNorm);
+    const min = Math.min(rNorm, gNorm, bNorm);
+    const delta = max - min;
+
+    let h = 0;
+    let s = 0;
+    let l = (max + min) / 2;
+
+    if (delta !== 0) {
+      s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+
+      switch (max) {
+        case rNorm:
+          h = ((gNorm - bNorm) / delta + (gNorm < bNorm ? 6 : 0)) * 60;
           break;
-        case ColorFormats.HSLA:
-          var hsla: Hsla = this.hsva2hsla(hsva);
-          hsla.denormalize();
-          var output = hsla.toString();
+        case gNorm:
+          h = ((bNorm - rNorm) / delta + 2) * 60;
           break;
-        case ColorFormats.RGBA:
-          var rgba: Rgba = this.hsvaToRgba(hsva);
-          var output = rgba.toString();
-          break;
-        case ColorFormats.CMYK:
-          var cmyk: Cmyk = this.hsvaToCmyk(hsva);
-          var output = cmyk.toString();
+        case bNorm:
+          h = ((rNorm - gNorm) / delta + 4) * 60;
           break;
       }
     }
-    return output;
+    return new Hsla(h, s, l, rgba.a);
   }
 
-  public static stringToFormat(color: string, format: ColorFormats) {
-    var hsva = this.stringToHsva(color, true) ?? new Hsva(0, 0, 0, 1);
-    return this.toFormat(hsva, format);
-  }
+  public static rgba2Hsva(rgba: Rgba): Hsva {
+    let rNorm = rgba.r / 255;
+    let gNorm = rgba.g / 255;
+    let bNorm = rgba.b / 255;
 
-  public static hsva2hsla(hsva: Hsva): Hsla {
-    const h = hsva.h,
-      s = hsva.s,
-      v = hsva.v,
-      a = hsva.a;
+    let max = Math.max(rNorm, gNorm, bNorm);
+    let min = Math.min(rNorm, gNorm, bNorm);
+    let delta = max - min;
 
-    if (v === 0) {
-      return new Hsla(h, 0, 0, a);
-    } else if (s === 0 && v === 1) {
-      return new Hsla(h, 1, 1, a);
+    let h: number;
+    if (delta === 0) {
+      h = 0;
+    } else if (max === rNorm) {
+      h = 60 * (((gNorm - bNorm) / delta) % 6);
+    } else if (max === gNorm) {
+      h = 60 * ((bNorm - rNorm) / delta + 2);
     } else {
-      const l = (v * (2 - s)) / 2;
+      h = 60 * ((rNorm - gNorm) / delta + 4);
+    }
 
-      return new Hsla(h, (v * s) / (1 - Math.abs(2 * l - 1)), l, a);
+    if (h < 0) {
+      h += 360;
+    }
+    let s: number;
+    if (max === 0) {
+      s = 0;
+    } else {
+      s = delta / max;
+    }
+    let v = max;
+
+    return new Hsva(h, s, v, rgba.a);
+  }
+
+  public static rgba2Cmyk(rgba: Rgba): Cmyk {
+    const r = rgba.r / 255;
+    const g = rgba.g / 255;
+    const b = rgba.b / 255;
+    const a = rgba.a;
+
+    const k: number = 1 - Math.max(r, g, b);
+
+    if (k === 1) {
+      return new Cmyk(0, 0, 0, 1, a);
+    } else {
+      const c = (1 - r - k) / (1 - k);
+      const m = (1 - g - k) / (1 - k);
+      const y = (1 - b - k) / (1 - k);
+
+      return new Cmyk(c, m, y, k, a);
     }
   }
 
-  public static hsla2hsva(hsla: Hsla): Hsva {
-    const h = Math.min(hsla.h, 1),
-      s = Math.min(hsla.s, 1);
-    const l = Math.min(hsla.l, 1),
-      a = Math.min(hsla.a, 1);
+  public static rgba2Hex(rgba: Rgba): string {
+    const [r, g, b, a] = [rgba.a / 255, rgba.g / 255, rgba.b / 255, rgba.a];
+    let hex =
+      '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).substr(1);
 
-    if (l === 0) {
-      return new Hsva(h, 0, 0, a);
-    } else {
-      const v = l + (s * (1 - Math.abs(2 * l - 1))) / 2;
-
-      return new Hsva(h, (2 * (v - l)) / v, v, a);
+    if (a != 1) {
+      hex += ((1 << 8) | Math.round(a * 255)).toString(16).substr(1);
     }
+
+    return hex;
+  }
+  //everything to rgba
+  public static hsla2Rgba(hsla: Hsla): Rgba {
+    const { h, s, l, a } = hsla;
+
+    const sNorm = s;
+    const lNorm = l;
+
+    const c = (1 - Math.abs(2 * lNorm - 1)) * sNorm;
+    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+    const m = lNorm - c / 2;
+
+    let rPrime = 0,
+      gPrime = 0,
+      bPrime = 0;
+
+    if (0 <= h && h < 60) {
+      rPrime = c;
+      gPrime = x;
+      bPrime = 0;
+    } else if (60 <= h && h < 120) {
+      rPrime = x;
+      gPrime = c;
+      bPrime = 0;
+    } else if (120 <= h && h < 180) {
+      rPrime = 0;
+      gPrime = c;
+      bPrime = x;
+    } else if (180 <= h && h < 240) {
+      rPrime = 0;
+      gPrime = x;
+      bPrime = c;
+    } else if (240 <= h && h < 300) {
+      rPrime = x;
+      gPrime = 0;
+      bPrime = c;
+    } else if (300 <= h && h < 360) {
+      rPrime = c;
+      gPrime = 0;
+      bPrime = x;
+    }
+
+    const r = Math.round((rPrime + m) * 255);
+    const g = Math.round((gPrime + m) * 255);
+    const b = Math.round((bPrime + m) * 255);
+
+    return new Rgba(r, g, b, a);
   }
 
-  public static hsvaToRgba(hsva: Hsva): Rgba {
+  public static hsva2Rgba(hsva: Hsva): Rgba {
     let r: number, g: number, b: number;
 
-    const h = hsva.h,
+    const h = hsva.h / 360,
       s = hsva.s,
       v = hsva.v,
       a = hsva.a;
@@ -106,133 +211,91 @@ export class Convert {
         (r = 0), (g = 0), (b = 0);
     }
 
-    return new Rgba(r, g, b, a);
+    return new Rgba(r * 255, g * 255, b * 255, a);
+  }
+
+  public static hex2Rgba(hex: string): Rgba {
+    let re: RegExp =
+      /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})?$/;
+    let match: RegExpExecArray | null = re.exec(hex);
+    if (match != null) {
+      return new Rgba(
+        parseInt(match[0], 16),
+        parseInt(match[1], 16),
+        parseInt(match[2], 16),
+        parseInt(match[3] || 'FF', 16)
+      );
+    }
+    return new Rgba(0, 0, 0, 0);
   }
 
   public static cmykToRgb(cmyk: Cmyk): Rgba {
     const r = (1 - cmyk.c) * (1 - cmyk.k);
     const g = (1 - cmyk.m) * (1 - cmyk.k);
     const b = (1 - cmyk.y) * (1 - cmyk.k);
-
-    return new Rgba(r, g, b, cmyk.a);
+    return new Rgba(r * 255, g * 255, b * 255, cmyk.a);
   }
 
-  public static rgbaToCmyk(rgba: Rgba): Cmyk {
-    const k: number = 1 - Math.max(rgba.r, rgba.g, rgba.b);
+  public static stringToFormat(
+    value: string,
+    format: ColorFormats
+  ): ColorFormat | string {
+    let color = this.stringToColor(value);
+    let rgba = this.colorToRgba(color);
+    return this.rgbaToFormat(rgba, format);
+  }
 
-    if (k === 1) {
-      return new Cmyk(0, 0, 0, 1, rgba.a);
+  public static colorToFormat(
+    value: ColorFormat | string,
+    format: ColorFormats
+  ): ColorFormat | string {
+    let rgba = this.colorToRgba(value);
+    return this.rgbaToFormat(rgba, format);
+  }
+
+  public static colorToRgba(value: ColorFormat | string) {
+    if (value instanceof Hsla) {
+      return this.hsla2Rgba(value);
+    } else if (value instanceof Hsva) {
+      return this.hsva2Rgba(value);
+    } else if (value instanceof Cmyk) {
+      return this.cmykToRgb(value);
+    } else if (typeof value == 'string') {
+      return this.hex2Rgba(value);
+    } else if (value instanceof Rgba) {
+      return value;
     } else {
-      const c = (1 - rgba.r - k) / (1 - k);
-      const m = (1 - rgba.g - k) / (1 - k);
-      const y = (1 - rgba.b - k) / (1 - k);
-
-      return new Cmyk(c, m, y, k, rgba.a);
+      throw 'The input value is not a Color';
     }
   }
-  public static hsvaToCmyk(hsva: Hsva): Cmyk {
-    let rgba = this.hsvaToRgba(hsva);
-    let cmyk = this.rgbaToCmyk(rgba);
 
-    return cmyk;
-  }
-
-  public static rgbaToHsva(rgba: Rgba): Hsva {
-    let h: number, s: number;
-
-    const r = Math.min(rgba.r, 1),
-      g = Math.min(rgba.g, 1);
-    const b = Math.min(rgba.b, 1),
-      a = Math.min(rgba.a, 1);
-
-    const max = Math.max(r, g, b),
-      min = Math.min(r, g, b);
-
-    const v: number = max,
-      d = max - min;
-
-    s = max === 0 ? 0 : d / max;
-
-    if (max === min) {
-      h = 0;
-    } else {
-      switch (max) {
-        case r:
-          h = (g - b) / d + (g < b ? 6 : 0);
-          break;
-        case g:
-          h = (b - r) / d + 2;
-          break;
-        case b:
-          h = (r - g) / d + 4;
-          break;
-        default:
-          h = 0;
-      }
-
-      h /= 6;
+  public static stringToRgba(value: string): Rgba {
+    try {
+      return this.stringToFormat(value, ColorFormats.RGBA) as Rgba;
+    } catch (e) {
+      throw e;
     }
-
-    return new Hsva(h, s, v, a);
   }
 
-  public static rgbaToHex(rgba: Rgba, allowHex8?: boolean): string {
-    /* tslint:disable:no-bitwise */
-    let hex =
-      '#' +
-      ((1 << 24) | (rgba.r << 16) | (rgba.g << 8) | rgba.b)
-        .toString(16)
-        .substr(1);
-
-    if (rgba.a != 1) {
-      hex += ((1 << 8) | Math.round(rgba.a * 255)).toString(16).substr(1);
-    }
-    /* tslint:enable:no-bitwise */
-
-    return hex;
+  public static stringToFormatString(
+    value: string,
+    format: ColorFormats
+  ): string {
+    return this.stringToFormat(value, format).toString();
   }
 
-  public static normalizeCMYK(cmyk: Cmyk): Cmyk {
-    return new Cmyk(
-      cmyk.c / 100,
-      cmyk.m / 100,
-      cmyk.y / 100,
-      cmyk.k / 100,
-      cmyk.a
-    );
-  }
-
-  public static denormalizeCMYK(cmyk: Cmyk): Cmyk {
-    return new Cmyk(
-      Math.floor(cmyk.c * 100),
-      Math.floor(cmyk.m * 100),
-      Math.floor(cmyk.y * 100),
-      Math.floor(cmyk.k * 100),
-      cmyk.a
-    );
-  }
-
-  public static denormalizeRGBA(rgba: Rgba): Rgba {
-    return new Rgba(
-      Math.round(rgba.r * 255),
-      Math.round(rgba.g * 255),
-      Math.round(rgba.b * 255),
-      rgba.a
-    );
-  }
-
-  public static stringToHsva(
-    colorString: string = '',
-    allowHex8: boolean = true
-  ): Hsva | null {
-    let hsva: Hsva | null = null;
-
-    colorString = (colorString || '').toLowerCase();
-
-    const stringParsers = [
+  public static stringToColor(value: string): ColorFormat | string {
+    const stringParsers: Array<{
+      regex: RegExp;
+      parseFunction: (
+        execResult: RegExpExecArray,
+        originalValue: string
+      ) => ColorFormat | string;
+    }> = [
       {
-        re: /(rgb)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*%?,\s*(\d{1,3})\s*%?(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
-        parse: function (execResult: any) {
+        regex:
+          /(rgb)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*%?,\s*(\d{1,3})\s*%?(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parseFunction: function (execResult: RegExpExecArray, _: string) {
           return new Rgba(
             parseInt(execResult[2], 10) / 255,
             parseInt(execResult[3], 10) / 255,
@@ -242,8 +305,9 @@ export class Convert {
         },
       },
       {
-        re: /(hsl)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
-        parse: function (execResult: any) {
+        regex:
+          /(hsl)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parseFunction: function (execResult: RegExpExecArray, _: string) {
           return new Hsla(
             parseInt(execResult[2], 10) / 360,
             parseInt(execResult[3], 10) / 100,
@@ -253,8 +317,21 @@ export class Convert {
         },
       },
       {
-        re: /cmyk?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*%?,\s*(\d{1,3})\s*%?(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
-        parse: function (execResult: any) {
+        regex:
+          /(hsv)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parseFunction: function (execResult: RegExpExecArray, _: string) {
+          return new Hsla(
+            parseInt(execResult[2], 10) / 360,
+            parseInt(execResult[3], 10) / 100,
+            parseInt(execResult[4], 10) / 100,
+            isNaN(parseFloat(execResult[5])) ? 1 : parseFloat(execResult[5])
+          );
+        },
+      },
+      {
+        regex:
+          /cmyk?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*%?,\s*(\d{1,3})\s*%?(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parseFunction: function (execResult: RegExpExecArray, _: string) {
           return new Cmyk(
             parseInt(execResult[1], 10) / 100,
             parseInt(execResult[2], 10) / 100,
@@ -263,73 +340,23 @@ export class Convert {
           );
         },
       },
+      {
+        regex:
+          /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})?$/,
+        parseFunction: function (_: any, originalValue: string) {
+          return originalValue;
+        },
+      },
     ];
 
-    if (allowHex8) {
-      stringParsers.push({
-        re: /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})?$/,
-        parse: function (execResult: any) {
-          return new Rgba(
-            parseInt(execResult[1], 16) / 255,
-            parseInt(execResult[2], 16) / 255,
-            parseInt(execResult[3], 16) / 255,
-            parseInt(execResult[4] || 'FF', 16) / 255
-          );
-        },
-      });
-    } else {
-      stringParsers.push({
-        re: /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})$/,
-        parse: function (execResult: any) {
-          return new Rgba(
-            parseInt(execResult[1], 16) / 255,
-            parseInt(execResult[2], 16) / 255,
-            parseInt(execResult[3], 16) / 255,
-            1
-          );
-        },
-      });
-    }
-
-    stringParsers.push({
-      re: /#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])$/,
-      parse: function (execResult: any) {
-        return new Rgba(
-          parseInt(execResult[1] + execResult[1], 16) / 255,
-          parseInt(execResult[2] + execResult[2], 16) / 255,
-          parseInt(execResult[3] + execResult[3], 16) / 255,
-          1
-        );
-      },
-    });
-
-    for (const key in stringParsers) {
-      if (stringParsers.hasOwnProperty(key)) {
-        const parser = stringParsers[key];
-
-        const match = parser.re.exec(colorString),
-          color: any = match && parser.parse(match);
-
-        if (color) {
-          if (color instanceof Rgba) {
-            hsva = this.rgbaToHsva(color);
-          } else if (color instanceof Hsla) {
-            hsva = this.hsla2hsva(color);
-          } else if (color instanceof Cmyk) {
-            let rgb = this.cmykToRgb(color);
-            hsva = this.rgbaToHsva(rgb);
-          }
-
-          return hsva;
-        }
+    for (let i = 0; i < stringParsers.length; i++) {
+      const parser = stringParsers[i];
+      const match = parser.regex.exec(value);
+      if (match) {
+        return parser.parseFunction(match, value);
       }
     }
-
-    return hsva;
-  }
-
-  public static outputFormat(hsva: Hsva): string {
-    return this.hsvaToRgba(hsva).toString();
+    throw 'String no valida';
   }
 
   public static getFormatByString(color: string): string {

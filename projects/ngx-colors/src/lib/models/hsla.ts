@@ -1,4 +1,5 @@
 import { ColorFormat } from '../interfaces/color-format';
+import { round } from '../utility/round';
 
 export class Hsla implements ColorFormat {
   constructor(
@@ -8,32 +9,14 @@ export class Hsla implements ColorFormat {
     public a: number
   ) {}
 
-  public denormalize(): Hsla {
-    this.h = Math.round(this.h * 360);
-    this.s = Math.round(this.s * 100);
-    this.l = Math.round(this.l * 100);
-    return this;
-  }
-
-  public toDenormalized(percent: boolean = false): Hsla {
-    let multiplier = percent ? 100 : 1;
+  public toRounded(h: number = 2, s: number = 4, l: number = 4, a: number = 4) {
     return new Hsla(
-      this.h * 360,
-      this.s * multiplier,
-      this.l * multiplier,
-      this.a
+      round(this.h, h),
+      round(this.s, s),
+      round(this.l, l),
+      round(this.a, a)
     );
   }
-  public toNormalized(percent: boolean = false): Hsla {
-    let multiplier = percent ? 100 : 1;
-    return new Hsla(
-      this.h / 360,
-      this.s / multiplier,
-      this.l / multiplier,
-      this.a
-    );
-  }
-
   public toString(): string {
     let output =
       'hsl' +

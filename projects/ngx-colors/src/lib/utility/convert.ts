@@ -26,9 +26,9 @@ export class Convert {
     }
   }
 
-  public static rgbaToFormatString(rgba: Rgba, format: ColorFormats): string {
-    return this.rgbaToFormat(rgba, format).toString();
-  }
+  // public static rgbaToFormatString(rgba: Rgba, format: ColorFormats): string {
+  //   return this.rgbaToFormat(rgba, format).toString();
+  // }
 
   //rgba to everything
   public static rgba2Hsla(rgba: Rgba): Hsla {
@@ -322,7 +322,7 @@ export class Convert {
         regex:
           /(hsv)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
         parseFunction: function (execResult: RegExpExecArray, _: string) {
-          return new Hsla(
+          return new Hsva(
             parseInt(execResult[2], 10),
             parseInt(execResult[3], 10) / 100,
             parseInt(execResult[4], 10) / 100,

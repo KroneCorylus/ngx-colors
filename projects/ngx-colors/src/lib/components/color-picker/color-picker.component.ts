@@ -29,13 +29,11 @@ export class ColorPickerComponent {
     let x: number, y: number;
     [x, y] = coord;
     if (sliderCode == 'hue') {
-      this.hueHsva.h = x;
+      this.hueHsva.h = x * 360;
       let rgb: Rgba = Convert.hsva2Rgba(this.hueHsva);
       this.hue = rgb.toString();
-      console.log(this.hueHsva, rgb);
     }
 
     this.cdr.detectChanges();
-    console.log(sliderCode, coord);
   }
 }

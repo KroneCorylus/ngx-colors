@@ -220,10 +220,10 @@ export class Convert {
     let match: RegExpExecArray | null = re.exec(hex);
     if (match != null) {
       return new Rgba(
-        parseInt(match[0], 16),
         parseInt(match[1], 16),
         parseInt(match[2], 16),
-        parseInt(match[3] || 'FF', 16)
+        parseInt(match[3], 16),
+        parseInt(match[4] || 'FF', 16) / 255
       );
     }
     return new Rgba(0, 0, 0, 0);

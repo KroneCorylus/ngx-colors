@@ -27,7 +27,7 @@ export class Hsla implements ColorFormat {
       '%, ' +
       this.l +
       '%' +
-      (this.a != 1 ? ', ' + this.a.toPrecision(2) + ')' : ')');
+      (this.a != 1 ? ', ' + this.a + ')' : ')');
     return output;
   }
 }

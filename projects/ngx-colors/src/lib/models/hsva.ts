@@ -20,6 +20,23 @@ export class Hsva implements ColorFormat {
   }
 
   toString(): string {
-    return `hsva(${this.h}, ${this.s},${this.v},${this.a})`;
+    const hsva = this.toRounded(0, 2, 2, 2);
+    if (hsva.a === 1) {
+      return (
+        'hsv(' + hsva.h + ', ' + hsva.s * 100 + '%, ' + hsva.v * 100 + '%)'
+      );
+    } else {
+      return (
+        'hsva(' +
+        hsva.h +
+        ', ' +
+        hsva.s * 100 +
+        '%, ' +
+        hsva.v * 100 +
+        '%, ' +
+        hsva.a +
+        ')'
+      );
+    }
   }
 }

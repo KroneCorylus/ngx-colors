@@ -9,7 +9,7 @@ export class Rgba implements ColorFormat {
     public a: number
   ) {}
 
-  public getRounded(
+  public toRounded(
     r: number = 0,
     g: number = 0,
     b: number = 0,
@@ -23,7 +23,7 @@ export class Rgba implements ColorFormat {
     );
   }
   public toString(): string {
-    const rgba = this.getRounded(0, 0, 0, 2);
+    const rgba = this.toRounded(0, 0, 0, 2);
     let output =
       'rgb' +
       (rgba.a != 1 ? 'a(' : '(') +

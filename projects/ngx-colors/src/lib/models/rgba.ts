@@ -9,24 +9,30 @@ export class Rgba implements ColorFormat {
     public a: number
   ) {}
 
-  public getRounded(decimalCount: number = 0): Rgba {
+  public getRounded(
+    r: number = 0,
+    g: number = 0,
+    b: number = 0,
+    a: number = 4
+  ): Rgba {
     return new Rgba(
-      round(this.r, decimalCount),
-      round(this.g, decimalCount),
-      round(this.b, decimalCount),
-      round(this.a, 4)
+      round(this.r, r),
+      round(this.g, g),
+      round(this.b, b),
+      round(this.a, a)
     );
   }
   public toString(): string {
+    const rgba = this.getRounded(0, 0, 0, 2);
     let output =
       'rgb' +
-      (this.a != 1 ? 'a(' : '(') +
-      this.r +
+      (rgba.a != 1 ? 'a(' : '(') +
+      rgba.r +
       ', ' +
-      this.g +
+      rgba.g +
       ', ' +
-      this.b +
-      (this.a != 1 ? ', ' + this.a.toPrecision(2) + ')' : ')');
+      rgba.b +
+      (rgba.a != 1 ? ', ' + rgba.a.toPrecision(2) + ')' : ')');
     return output;
   }
 }

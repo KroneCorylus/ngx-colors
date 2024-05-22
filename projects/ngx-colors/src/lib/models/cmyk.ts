@@ -26,8 +26,17 @@ export class Cmyk implements ColorFormat {
     );
   }
   public toString(): string {
-    let output =
-      'cmyk(' + this.c + ', ' + this.m + ', ' + this.y + ', ' + this.k + ')';
-    return output;
+    let cmyk = this.toRounded();
+    return (
+      'cmyk(' +
+      cmyk.c * 100 +
+      '%, ' +
+      cmyk.m * 100 +
+      '%, ' +
+      cmyk.y * 100 +
+      '%, ' +
+      cmyk.k * 100 +
+      '%)'
+    );
   }
 }

@@ -116,9 +116,9 @@ export class Convert {
   }
 
   public static rgba2Hex(rgba: Rgba): string {
-    const r = rgba.r.toString(16).padStart(2, '0');
-    const g = rgba.g.toString(16).padStart(2, '0');
-    const b = rgba.b.toString(16).padStart(2, '0');
+    const r = Math.round(rgba.r).toString(16).padStart(2, '0');
+    const g = Math.round(rgba.g).toString(16).padStart(2, '0');
+    const b = Math.round(rgba.b).toString(16).padStart(2, '0');
     const a =
       rgba.a === 1
         ? ''

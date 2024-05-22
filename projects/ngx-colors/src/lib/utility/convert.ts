@@ -116,15 +116,17 @@ export class Convert {
   }
 
   public static rgba2Hex(rgba: Rgba): string {
-    const [r, g, b, a] = [rgba.a / 255, rgba.g / 255, rgba.b / 255, rgba.a];
-    let hex =
-      '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).substr(1);
+    const r = rgba.r.toString(16).padStart(2, '0');
+    const g = rgba.g.toString(16).padStart(2, '0');
+    const b = rgba.b.toString(16).padStart(2, '0');
+    const a =
+      rgba.a === 1
+        ? ''
+        : Math.round(rgba.a * 255)
+            .toString(16)
+            .padStart(2, '0');
 
-    if (a != 1) {
-      hex += ((1 << 8) | Math.round(a * 255)).toString(16).substr(1);
-    }
-
-    return hex;
+    return '#' + r + g + b + a;
   }
   //everything to rgba
   public static hsla2Rgba(hsla: Hsla): Rgba {

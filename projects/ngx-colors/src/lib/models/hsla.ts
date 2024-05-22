@@ -18,7 +18,7 @@ export class Hsla implements ColorFormat {
     );
   }
   public toString(): string {
-    let output =
+    const output =
       'hsl' +
       (this.a != 1 ? 'a(' : '(') +
       this.h +

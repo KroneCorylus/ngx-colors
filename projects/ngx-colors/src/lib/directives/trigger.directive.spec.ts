@@ -50,7 +50,7 @@ describe('NgxColorsTriggerDirective', () => {
   });
   it('should open overlay on click', () => {
     elementsWithDirective[0].triggerEventHandler('click', {});
-    let overlay =
+    const overlay =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlay).toBeTruthy();
   });

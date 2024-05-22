@@ -23,14 +23,14 @@ export class OverlayService {
       this.removePanel();
     }
 
-    let hostElement: HTMLElement = document.createElement('ngx-colors-overlay');
+    const hostElement: HTMLElement = document.createElement('ngx-colors-overlay');
     if (overlayClassName) {
       hostElement.classList.add(overlayClassName);
     }
     (document.getElementById(attachToId ?? '') ?? document.body).appendChild(
       hostElement
     );
-    let injector = this.applicationRef.injector;
+    const injector = this.applicationRef.injector;
 
     this.componentRef = createComponent(OverlayComponent, {
       hostElement,

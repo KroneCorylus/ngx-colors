@@ -24,7 +24,7 @@ export class Rgba implements ColorFormat {
   }
   public toString(): string {
     const rgba = this.toRounded(0, 0, 0, 2);
-    let output =
+    const output =
       'rgb' +
       (rgba.a != 1 ? 'a(' : '(') +
       rgba.r +

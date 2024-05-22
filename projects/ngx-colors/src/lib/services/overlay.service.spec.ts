@@ -18,7 +18,7 @@ describe('OverlayService', () => {
 
   it('should append overlay element to body', () => {
     service.createOverlay(undefined, undefined);
-    let overlay =
+    const overlay =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlay).toBeTruthy();
   });
@@ -26,7 +26,7 @@ describe('OverlayService', () => {
   it('should not append multiple overlays', () => {
     service.createOverlay(undefined, undefined);
     service.createOverlay(undefined, undefined);
-    let overlayCount =
+    const overlayCount =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlayCount).toBeLessThan(2);
   });
@@ -34,7 +34,7 @@ describe('OverlayService', () => {
   it('should remove overlay from the DOM', () => {
     service.createOverlay(undefined, undefined);
     service.removePanel();
-    let overlay =
+    const overlay =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlay).toBeFalsy();
   });

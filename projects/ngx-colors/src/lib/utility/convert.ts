@@ -42,7 +42,7 @@ export class Convert {
 
     let h = 0;
     let s = 0;
-    let l = (max + min) / 2;
+    const l = (max + min) / 2;
 
     if (delta !== 0) {
       s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
@@ -63,13 +63,13 @@ export class Convert {
   }
 
   public static rgba2Hsva(rgba: Rgba): Hsva {
-    let rNorm = rgba.r / 255;
-    let gNorm = rgba.g / 255;
-    let bNorm = rgba.b / 255;
+    const rNorm = rgba.r / 255;
+    const gNorm = rgba.g / 255;
+    const bNorm = rgba.b / 255;
 
-    let max = Math.max(rNorm, gNorm, bNorm);
-    let min = Math.min(rNorm, gNorm, bNorm);
-    let delta = max - min;
+    const max = Math.max(rNorm, gNorm, bNorm);
+    const min = Math.min(rNorm, gNorm, bNorm);
+    const delta = max - min;
 
     let h: number;
     if (delta === 0) {
@@ -91,7 +91,7 @@ export class Convert {
     } else {
       s = delta / max;
     }
-    let v = max;
+    const v = max;
 
     return new Hsva(h, s, v, rgba.a);
   }
@@ -217,9 +217,9 @@ export class Convert {
   }
 
   public static hex2Rgba(hex: string): Rgba {
-    let re: RegExp =
+    const re: RegExp =
       /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})?$/;
-    let match: RegExpExecArray | null = re.exec(hex);
+    const match: RegExpExecArray | null = re.exec(hex);
     if (match != null) {
       return new Rgba(
         parseInt(match[1], 16),
@@ -242,8 +242,8 @@ export class Convert {
     value: string,
     format: ColorFormats
   ): ColorFormat | string {
-    let color = this.stringToColor(value);
-    let rgba = this.colorToRgba(color);
+    const color = this.stringToColor(value);
+    const rgba = this.colorToRgba(color);
     return this.rgbaToFormat(rgba, format);
   }
 
@@ -251,7 +251,7 @@ export class Convert {
     value: ColorFormat | string,
     format: ColorFormats
   ): ColorFormat | string {
-    let rgba = this.colorToRgba(value);
+    const rgba = this.colorToRgba(value);
     return this.rgbaToFormat(rgba, format);
   }
 
@@ -364,12 +364,12 @@ export class Convert {
   public static getFormatByString(color: string): string {
     if (color) {
       color = color.toLowerCase();
-      let regexHex: RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/;
-      let regexRGBA: RegExp =
+      const regexHex: RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/;
+      const regexRGBA: RegExp =
         /(rgba\((\d{1,3},\s?){3}(1|0?\.\d+)\)|rgb\(\d{1,3}(,\s?\d{1,3}){2}\))/;
-      let regexHSLA: RegExp =
+      const regexHSLA: RegExp =
         /(hsla\((\d{1,3}%?,\s?){3}(1|0?\.\d+)\)|hsl\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
-      let regexCMYK: RegExp = /(cmyk\(\d{1,3}(,\s?\d{1,3}){3}\))/;
+      const regexCMYK: RegExp = /(cmyk\(\d{1,3}(,\s?\d{1,3}){3}\))/;
       if (regexHex.test(color)) {
         return 'hex';
       } else if (regexRGBA.test(color)) {

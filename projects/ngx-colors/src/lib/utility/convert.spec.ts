@@ -10,7 +10,7 @@ export type ColorEquivalence = {
   [x: string]: string | Array<string>;
 };
 
-let iterateTests = (
+const iterateTests = (
   keys: Array<string>,
   convertTo: string,
   colorFormat: ColorFormats
@@ -31,7 +31,7 @@ let iterateTests = (
         break;
       }
       it(`${originalValue} -> [${test[convertTo]}]`, () => {
-        let result = Convert.stringToFormatString(originalValue, colorFormat);
+        const result = Convert.stringToFormatString(originalValue, colorFormat);
         console.log('key:', key);
         console.log('value:', originalValue);
         console.log('expect:', test[convertTo]);
@@ -46,7 +46,7 @@ let iterateTests = (
     }
   }
 };
-let mockClases: Array<{ [x: string]: ColorFormat | string }> = [
+const mockClases: Array<{ [x: string]: ColorFormat | string }> = [
   {
     rgba: new Rgba(255, 255, 255, 1),
     hsla: new Hsla(0, 0, 1, 1),
@@ -91,7 +91,7 @@ let mockClases: Array<{ [x: string]: ColorFormat | string }> = [
   },
 ];
 
-let mockStrings: Array<ColorEquivalence> = [
+const mockStrings: Array<ColorEquivalence> = [
   {
     hex: '#ffffff',
     rgba: 'rgb(255, 255, 255)',
@@ -172,8 +172,8 @@ function testFormatToClass(source: ColorFormats, target: ColorFormats) {
   const keytarget = getKeyByColorFormat(target);
   for (let i = 0; i < mockClases.length; i++) {
     const test = mockClases[i];
-    let source: ColorFormat | string = test[keysource];
-    let spectedResult: ColorFormat | string = test[keytarget];
+    const source: ColorFormat | string = test[keysource];
+    const spectedResult: ColorFormat | string = test[keytarget];
     let result: ColorFormat | string = Convert.colorToFormat(source, target);
     if (isColorFormat(result)) {
       result = result.toRounded();
@@ -185,26 +185,26 @@ function testFormatToClass(source: ColorFormats, target: ColorFormats) {
 }
 
 describe('Convert string to RGB string', () => {
-  let keys: Array<string> = ['hex', 'hsla', 'cmyk', 'hsva'];
-  let convertTo: string = 'rgba';
+  const keys: Array<string> = ['hex', 'hsla', 'cmyk', 'hsva'];
+  const convertTo: string = 'rgba';
   iterateTests(keys, convertTo, ColorFormats.RGBA);
 });
 
 describe('Convert string to HEX string', () => {
-  let keys = ['rgba', 'hsla', 'cmyk', 'hsva'];
-  let convertTo = 'hex';
+  const keys = ['rgba', 'hsla', 'cmyk', 'hsva'];
+  const convertTo = 'hex';
   iterateTests(keys, convertTo, ColorFormats.HEX);
 });
 
 describe('Convert string to CYMK string', () => {
-  let keys = ['rgba', 'hsla', 'hex', 'hsva'];
-  let convertTo = 'cmyk';
+  const keys = ['rgba', 'hsla', 'hex', 'hsva'];
+  const convertTo = 'cmyk';
   iterateTests(keys, convertTo, ColorFormats.CMYK);
 });
 
 describe('Convert string to CYMK string', () => {
-  let keys = ['rgba', 'hsla', 'hex', 'hsva'];
-  let convertTo = 'hsva';
+  const keys = ['rgba', 'hsla', 'hex', 'hsva'];
+  const convertTo = 'hsva';
   iterateTests(keys, convertTo, ColorFormats.HSVA);
 });
 // FROM ANY TO RGBA

@@ -309,7 +309,7 @@ export class Convert {
           /(hsl)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
         parseFunction: function (execResult: RegExpExecArray, _: string) {
           return new Hsla(
-            parseInt(execResult[2], 10) / 360,
+            parseInt(execResult[2], 10),
             parseInt(execResult[3], 10) / 100,
             parseInt(execResult[4], 10) / 100,
             isNaN(parseFloat(execResult[5])) ? 1 : parseFloat(execResult[5])
@@ -321,7 +321,7 @@ export class Convert {
           /(hsv)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
         parseFunction: function (execResult: RegExpExecArray, _: string) {
           return new Hsla(
-            parseInt(execResult[2], 10) / 360,
+            parseInt(execResult[2], 10),
             parseInt(execResult[3], 10) / 100,
             parseInt(execResult[4], 10) / 100,
             isNaN(parseFloat(execResult[5])) ? 1 : parseFloat(execResult[5])

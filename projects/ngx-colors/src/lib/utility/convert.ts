@@ -332,13 +332,13 @@ export class Convert {
       },
       {
         regex:
-          /cmyk?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*%?,\s*(\d{1,3})\s*%?(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+          /cmyk\(\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?(?:,\s*?(\d+(?:\.\d+)?)\s*%?)?\)/,
         parseFunction: function (execResult: RegExpExecArray, _: string) {
           return new Cmyk(
-            parseInt(execResult[1], 10) / 100,
-            parseInt(execResult[2], 10) / 100,
-            parseInt(execResult[3], 10) / 100,
-            parseInt(execResult[4], 10) / 100
+            Number(execResult[1]) / 100,
+            Number(execResult[2]) / 100,
+            Number(execResult[3]) / 100,
+            Number(execResult[4]) / 100
           );
         },
       },

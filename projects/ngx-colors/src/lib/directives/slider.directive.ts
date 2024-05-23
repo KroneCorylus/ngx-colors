@@ -7,6 +7,7 @@ import {
   Output,
   NgZone,
   ContentChild,
+  Input,
 } from '@angular/core';
 import {
   Observable,
@@ -19,7 +20,6 @@ import {
   startWith,
   switchMap,
   takeUntil,
-  throttleTime,
 } from 'rxjs';
 import { ThumbComponent } from '../components/thumb/thumb.component';
 
@@ -28,13 +28,13 @@ import { ThumbComponent } from '../components/thumb/thumb.component';
   standalone: true,
 })
 export class SliderDirective implements OnInit, OnDestroy {
-  @Output() change: EventEmitter<[number, number]> = new EventEmitter<
-    [number, number]
-  >();
+  @Output()
+  change: EventEmitter<[number, number]> = new EventEmitter<[number, number]>();
 
-  destroy$: Subject<void> = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
 
-  @ContentChild(ThumbComponent) thumb: ThumbComponent | undefined;
+  @ContentChild(ThumbComponent)
+  private thumb: ThumbComponent | undefined;
 
   private pointerUp$: Observable<PointerEvent> = merge(
     fromEvent<PointerEvent>(document, 'pointerup'),
@@ -69,7 +69,7 @@ export class SliderDirective implements OnInit, OnDestroy {
     this.elRef.nativeElement.style.position = 'relative';
     this._ngZone.runOutsideAngular(() => {
       this.drag$.subscribe(([x, y]: [number, number]) => {
-        this.setThumbPosition(x, y);
+        this._setThumbPosition(x, y);
         this.change.emit(this.normalize(x, y));
       });
     });
@@ -80,7 +80,12 @@ export class SliderDirective implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private setThumbPosition(x: number, y: number): void {
+  public setThumbPosition(x: number, y: number): void {
+    const [dx, dy] = this.denormalize(x, y);
+    this._setThumbPosition(dx, dy);
+  }
+
+  private _setThumbPosition(x: number, y: number): void {
     if (this.thumb) {
       if (this.thumb.apparence == 'circle') {
         this.thumb.elementRef.nativeElement.style.top = y + 'px';
@@ -107,5 +112,10 @@ export class SliderDirective implements OnInit, OnDestroy {
     const width = this.elRef.nativeElement.offsetWidth;
     const height = this.elRef.nativeElement.offsetHeight;
     return [x / width, y / height];
+  }
+  private denormalize(x: number, y: number): [number, number] {
+    const width = this.elRef.nativeElement.offsetWidth;
+    const height = this.elRef.nativeElement.offsetHeight;
+    return [x * width, y * height];
   }
 }

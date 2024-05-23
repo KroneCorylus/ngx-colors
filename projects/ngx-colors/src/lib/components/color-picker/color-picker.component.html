@@ -1,6 +1,7 @@
 <div class="flex flex-col h-100">
   <div
     class="_sl-box bg-saturation-lightness mb-4"
+    #slSlider
     ngxColorsSlider
     (change)="onChangeCoord('sl', $event)"
     [style.background-color]="hue"
@@ -16,6 +17,7 @@
     <div class="flex flex-col grow-1 mr-4 ml-4 _hue-alpha-box">
       <div
         ngxColorsSlider
+        #hueSlider
         class="grow-1 bg-hue radius-4 pointer"
         (change)="onChangeCoord('hue', $event)"
       >
@@ -24,6 +26,7 @@
       <div class="grow-1 radius-4 bg-transparent pointer">
         <div
           ngxColorsSlider
+          #alphaSlider
           (change)="onChangeCoord('alpha', $event)"
           class="h-100 w-100 radius-4"
           [ngStyle]="alphaGradient"

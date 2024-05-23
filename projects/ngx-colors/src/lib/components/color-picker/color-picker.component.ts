@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  ContentChild,
   EventEmitter,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { SliderDirective } from '../../directives/slider.directive';
 import { ThumbComponent } from '../thumb/thumb.component';
@@ -34,8 +36,15 @@ export class ColorPickerComponent implements OnChanges {
   @Output() valueChange: EventEmitter<Rgba> = new EventEmitter<Rgba>();
   constructor(private cdr: ChangeDetectorRef) {}
 
-  private _hue: Hsva = new Hsva(1, 1, 1, 1);
-  private _value: Hsva = new Hsva(1, 1, 1, 1);
+  @ViewChild('slSlider', { read: SliderDirective })
+  slSlider!: SliderDirective;
+  @ViewChild('alphaSlider', { read: SliderDirective })
+  alphaSlider!: SliderDirective;
+  @ViewChild('hueSlider', { read: SliderDirective })
+  hueSlider!: SliderDirective;
+
+  public _hue: Hsva = new Hsva(1, 1, 1, 1);
+  public _value: Hsva = new Hsva(1, 1, 1, 1);
 
   ngOnChanges(changes: SimpleChanges): void {
     let value = changes['value'].currentValue;
@@ -45,15 +54,17 @@ export class ColorPickerComponent implements OnChanges {
       this.hue = 'red';
       this._value = new Hsva(1, 1, 1, 1);
       this._hue = new Hsva(1, 1, 1, 1);
-      return;
     }
     if (value instanceof Rgba) {
       this._value = Convert.rgbaToFormat(value, ColorFormats.HSVA) as Hsva;
       this._hue.h = this._value.h;
       this.preview = value.toString();
       this.hue = Convert.hsva2Rgba(this._hue).toString();
-      this.alphaGradient = this.getAlphaGradient(this.hue);
     }
+    this.alphaGradient = this.getAlphaGradient(this.hue);
+    this.slSlider?.setThumbPosition(this._value.s, 1 - this._value.v);
+    this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
+    this.alphaSlider?.setThumbPosition(this._value.a, 0);
   }
 
   public onChangeCoord(sliderCode: string, coord: [number, number]) {

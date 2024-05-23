@@ -33,7 +33,7 @@ export class AppComponent {
     string | undefined | null
   >('rgba(0,255,100,0.9)');
 
-  pepe = new Rgba(255, 0, 0, 1);
+  pepe: Rgba | undefined = new Rgba(255, 0, 0, 1);
 
   events: Array<{ who: string; event: string; value: string | undefined }> = [];
 
@@ -49,10 +49,16 @@ export class AppComponent {
   }
 
   public green() {
-    this.pepe = new Rgba(0, 255, 0, 1);
+    this.pepe = new Rgba(37, 179, 37, 1);
   }
   public blue() {
     this.pepe = new Rgba(0, 0, 255, 1);
+  }
+  public red() {
+    this.pepe = new Rgba(255, 0, 0, 0.5);
+  }
+  public undi() {
+    this.pepe = undefined;
   }
 
   public changeValue() {

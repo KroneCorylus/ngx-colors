@@ -9,10 +9,9 @@
   </div>
   <div class="flex grow-1">
     <div class="justify-center align-center flex ml-4">
-      <div
-        class="_preview circle red elevation"
-        [style.background-color]="preview"
-      ></div>
+      <div class="_preview circle elevation bg-transparent overflow-h">
+        <div class="h-100 w-100" [style.background-color]="preview"></div>
+      </div>
     </div>
     <div class="flex flex-col grow-1 mr-4 ml-4 _hue-alpha-box">
       <div

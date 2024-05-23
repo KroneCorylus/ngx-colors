@@ -8,6 +8,7 @@ import {
 } from '../../../ngx-colors/src/public-api';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Rgba } from '../../../ngx-colors/src/lib/models/rgba';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,8 @@ export class AppComponent {
     string | undefined | null
   >('rgba(0,255,100,0.9)');
 
+  pepe = new Rgba(255, 0, 0, 1);
+
   events: Array<{ who: string; event: string; value: string | undefined }> = [];
 
   public onChange(value: string | undefined, who: string) {
@@ -39,6 +42,17 @@ export class AppComponent {
   }
   public onModelChanges(value: string | undefined, who: string) {
     this.events.push({ who: who, event: 'ngModelChange', value: value });
+  }
+
+  public log(event: any, who: string | undefined = undefined) {
+    console.log(who, event);
+  }
+
+  public green() {
+    this.pepe = new Rgba(0, 255, 0, 1);
+  }
+  public blue() {
+    this.pepe = new Rgba(0, 0, 255, 1);
   }
 
   public changeValue() {

@@ -48,8 +48,11 @@
 </table>
 <div *ngFor="let event of events">{{event | json}}</div>
 
+<div>{{pepe | json}}</div>
 <ngx-colors-panel> </ngx-colors-panel>
 <div style="display: flex; gap: 10px">
+  <button (click)="green()">green</button>
+  <button (click)="blue()">blue</button>
   <div
     style="
       width: 220px;
@@ -58,7 +61,8 @@
       margin-top: 10px;
     "
   >
-    <ngx-colors-color-picker> </ngx-colors-color-picker>
+    <ngx-colors-color-picker [(value)]="pepe" (valueChange)="log($event)">
+    </ngx-colors-color-picker>
   </div>
   <div
     style="

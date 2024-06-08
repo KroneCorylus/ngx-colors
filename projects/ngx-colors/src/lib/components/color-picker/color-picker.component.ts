@@ -60,8 +60,8 @@ export class ColorPickerComponent implements OnChanges {
       this._hue.h = this._value.h;
       this.preview = value.toString();
       this.hue = Convert.hsva2Rgba(this._hue).toString();
+      this.alphaGradient = this.getAlphaGradient(this.value!);
     }
-    this.alphaGradient = this.getAlphaGradient(this.hue);
     this.slSlider?.setThumbPosition(this._value.s, 1 - this._value.v);
     this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
     this.alphaSlider?.setThumbPosition(this._value.a, 0);
@@ -83,12 +83,13 @@ export class ColorPickerComponent implements OnChanges {
     }
     this.value = Convert.hsva2Rgba(this._value);
     this.preview = this.value.toString();
-    this.alphaGradient = this.getAlphaGradient(this.preview);
+    this.alphaGradient = this.getAlphaGradient(this.value);
     this.cdr.detectChanges();
     this.valueChange.emit(this.value);
   }
 
-  private getAlphaGradient(color: string) {
+  private getAlphaGradient(rgba: Rgba) {
+    let color = new Rgba(rgba.r, rgba.g, rgba.b, 1).toString();
     return {
       background:
         'linear-gradient(90deg, rgba(36,0,0,0) 0%, ' + color + ' 100%)',

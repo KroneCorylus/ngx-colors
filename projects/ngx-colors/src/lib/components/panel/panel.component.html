@@ -1,4 +1,5 @@
 <div class="elevation-z2 bg-white main flex flex-col">
+  @if(!showSliders){
   <div class="palette">
     <div
       *ngIf="palette.back"
@@ -22,10 +23,16 @@
     <div
       *ngIf="!palette.back"
       class="circle color-option overflow-h flex justify-center align-center pointer"
+      (click)="onClickShowSliders()"
     >
       <ng-container [ngTemplateOutlet]="sliderIcon"> </ng-container>
     </div>
   </div>
+  } @else{
+  <div style="height: 204px; width: 210px">
+    <ngx-colors-color-picker [(value)]="value"> </ngx-colors-color-picker>
+  </div>
+  }
   <div class="flex mt-3">
     <div class="flex justify-center align-center format">RGBA</div>
     <div class="flex justify-center align-center value">

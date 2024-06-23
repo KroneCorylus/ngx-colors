@@ -26,10 +26,6 @@ export class Convert {
     }
   }
 
-  // public static rgbaToFormatString(rgba: Rgba, format: ColorFormats): string {
-  //   return this.rgbaToFormat(rgba, format).toString();
-  // }
-
   //rgba to everything
   public static rgba2Hsla(rgba: Rgba): Hsla {
     const rNorm = rgba.r / 255;

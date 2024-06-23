@@ -29,6 +29,15 @@
     </div>
   </div>
   } @else{
+  <!-- Palette Page -->
+  <div>
+    <div
+      (click)="onClickBack()"
+      class="circle color-option overflow-h flex justify-center align-center pointer"
+    >
+      <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
+    </div>
+  </div>
   <div style="height: 204px; width: 210px">
     <ngx-colors-color-picker [(value)]="value"> </ngx-colors-color-picker>
   </div>

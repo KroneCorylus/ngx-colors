@@ -43,6 +43,9 @@ export class PanelComponent implements OnInit {
   }
 
   public onClickBack() {
+    if (this.showSliders) {
+      this.showSliders = false;
+    }
     if (this.palette.back) {
       this.palette.list = this.palette.back.list;
       this.palette.back = this.palette.back.back;

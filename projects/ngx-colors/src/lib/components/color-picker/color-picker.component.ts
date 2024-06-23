@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -22,6 +24,7 @@ import { ColorFormats } from '../../enums/color-formats';
   imports: [CommonModule, SliderDirective, ThumbComponent],
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss', '../../shared/shared.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorPickerComponent implements OnChanges {
   public hue: string = 'red';
@@ -31,22 +34,28 @@ export class ColorPickerComponent implements OnChanges {
       'linear-gradient(90deg, rgba(36,0,0,0) 0%, ' + this.hue + ' 100%)',
   };
 
+  //state in rgba (output format)
   @Input() value: Rgba | undefined = new Rgba(255, 0, 0, 1);
   @Output() valueChange: EventEmitter<Rgba> = new EventEmitter<Rgba>();
   constructor(private cdr: ChangeDetectorRef) {}
 
-  @ViewChild('slSlider', { read: SliderDirective })
+  @ViewChild('slSlider', { read: SliderDirective, static: true })
   slSlider!: SliderDirective;
-  @ViewChild('alphaSlider', { read: SliderDirective })
+  @ViewChild('alphaSlider', { read: SliderDirective, static: true })
   alphaSlider!: SliderDirective;
-  @ViewChild('hueSlider', { read: SliderDirective })
+  @ViewChild('hueSlider', { read: SliderDirective, static: true })
   hueSlider!: SliderDirective;
 
   public _hue: Hsva = new Hsva(1, 1, 1, 1);
+  //state in hsva
   public _value: Hsva = new Hsva(1, 1, 1, 1);
 
   ngOnChanges(changes: SimpleChanges): void {
     const value = changes['value'].currentValue;
+    this.setValue(value);
+  }
+
+  private setValue(value: Rgba | undefined) {
     if (!value) {
       this.preview = 'red';
       this.hue = 'red';
@@ -63,6 +72,7 @@ export class ColorPickerComponent implements OnChanges {
     this.slSlider?.setThumbPosition(this._value.s, 1 - this._value.v);
     this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
     this.alphaSlider?.setThumbPosition(this._value.a, 0);
+    this.cdr.detectChanges();
   }
 
   //Fired on change of slider directive.
@@ -87,7 +97,6 @@ export class ColorPickerComponent implements OnChanges {
     this.preview = this.value.toString();
     this.alphaGradient = this.getAlphaGradient(this.value);
     this.cdr.detectChanges();
-    this.valueChange.emit(this.value);
   }
 
   private getAlphaGradient(rgba: Rgba) {

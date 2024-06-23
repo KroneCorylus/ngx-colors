@@ -33,7 +33,7 @@ export class SliderDirective implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  @ContentChild(ThumbComponent)
+  @ContentChild(ThumbComponent, { static: true })
   private thumb: ThumbComponent | undefined;
 
   private pointerUp$: Observable<PointerEvent> = merge(

@@ -3,14 +3,20 @@
   <div class="palette">
     <div
       *ngIf="palette.back"
+      aria-label="back"
+      tabindex="0"
       (click)="onClickBack()"
+      (keydown.enter)="onClickBack()"
       class="circle color-option overflow-h flex justify-center align-center pointer"
     >
       <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
     </div>
-    @for(color of palette.list;track color.preview){
+    @for(color of palette.list;track color.preview; let index = $index){
     <div
       class="circle color-option bg-transparent overflow-h pointer"
+      tabindex="0"
+      [attr.aria-label]="index"
+      (keydown.enter)="onClickColor(color)"
       (click)="onClickColor(color)"
     >
       <div class="w-100 circle h-100" [style.background]="color.preview">
@@ -23,7 +29,10 @@
     <div
       *ngIf="!palette.back"
       class="circle color-option overflow-h flex justify-center align-center pointer"
+      aria-label="sliders"
+      tabindex="0"
       (click)="onClickShowSliders()"
+      (keydown.enter)="onClickShowSliders()"
     >
       <ng-container [ngTemplateOutlet]="sliderIcon"> </ng-container>
     </div>
@@ -32,7 +41,10 @@
   <!-- Palette Page -->
   <div>
     <div
+      aria-label="back"
+      tabindex="0"
       (click)="onClickBack()"
+      (keydown.enter)="onClickBack()"
       class="circle color-option overflow-h flex justify-center align-center pointer"
     >
       <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>

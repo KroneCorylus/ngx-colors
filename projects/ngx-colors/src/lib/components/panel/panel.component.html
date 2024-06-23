@@ -39,15 +39,19 @@
   </div>
   } @else{
   <!-- Palette Page -->
-  <div>
+  <div class="_palette-controls">
     <div
       aria-label="back"
       tabindex="0"
       (click)="onClickBack()"
       (keydown.enter)="onClickBack()"
-      class="circle color-option overflow-h flex justify-center align-center pointer"
+      class="circle color-option overflow-h flex justify-center align-center pointer hover-effect"
     >
       <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
+    </div>
+    <div class="_buttons">
+      <button class="pointer hover-effect">ACCEPT</button>
+      <button class="pointer hover-effect">CANCEL</button>
     </div>
   </div>
   <div style="height: 204px; width: 210px">

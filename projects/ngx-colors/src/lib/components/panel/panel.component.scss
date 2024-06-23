@@ -1,11 +1,13 @@
 :host {
+  font-family: sans-serif;
   display: inline-block;
 }
 .main {
-  padding: 14px 20px;
+  padding: 0 20px 14px 20px;
   border-radius: 4px;
 }
 .palette {
+  padding-top: 14px;
   display: grid;
   grid-template-columns: repeat(5, 34px);
   box-sizing: border-box;
@@ -21,6 +23,29 @@
     padding: 1px;
   }
 }
+._palette-controls {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px -16px;
+  align-items: center;
+  ._buttons {
+    display: flex;
+    gap: 4px;
+    button {
+      border: none;
+      font-family: inherit;
+      font-size: 12px;
+      background-color: unset;
+      -webkit-user-select: none;
+      user-select: none;
+      padding: 10px;
+      letter-spacing: 1px;
+      color: #222;
+      border-radius: 3px;
+      line-height: 20px;
+    }
+  }
+}
 .selected {
   border: 7px solid rgba(255, 255, 255, 0.6);
   box-sizing: border-box;
@@ -31,7 +56,6 @@
   padding: 18px 16px;
   letter-spacing: 1.5px;
   font-size: 10px;
-  font-family: sans-serif;
 }
 .value {
   flex-grow: 1;
@@ -39,7 +63,6 @@
   border-radius: 4px;
 
   input {
-    font-family: sans-serif;
     font-size: 10px;
     background: none;
     height: 100%;

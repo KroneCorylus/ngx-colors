@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  ContentChild,
   EventEmitter,
   Input,
   OnChanges,
@@ -47,8 +46,7 @@ export class ColorPickerComponent implements OnChanges {
   public _value: Hsva = new Hsva(1, 1, 1, 1);
 
   ngOnChanges(changes: SimpleChanges): void {
-    let value = changes['value'].currentValue;
-    console.log('colorpicker onChanges', changes);
+    const value = changes['value'].currentValue;
     if (!value) {
       this.preview = 'red';
       this.hue = 'red';
@@ -67,7 +65,11 @@ export class ColorPickerComponent implements OnChanges {
     this.alphaSlider?.setThumbPosition(this._value.a, 0);
   }
 
-  public onChangeCoord(sliderCode: string, coord: [number, number]) {
+  //Fired on change of slider directive.
+  public onChangeCoord(
+    sliderCode: 'hue' | 'sl' | 'alpha',
+    coord: [number, number]
+  ) {
     const [x, y] = coord;
     if (sliderCode === 'hue') {
       this._hue.h = x * 360;
@@ -89,7 +91,7 @@ export class ColorPickerComponent implements OnChanges {
   }
 
   private getAlphaGradient(rgba: Rgba) {
-    let color = new Rgba(rgba.r, rgba.g, rgba.b, 1).toString();
+    const color = new Rgba(rgba.r, rgba.g, rgba.b, 1).toString();
     return {
       background:
         'linear-gradient(90deg, rgba(36,0,0,0) 0%, ' + color + ' 100%)',

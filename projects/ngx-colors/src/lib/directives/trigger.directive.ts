@@ -3,6 +3,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   Output,
   forwardRef,
 } from '@angular/core';
@@ -11,7 +12,7 @@ import { Subject } from 'rxjs';
 import { OverlayService } from '../services/overlay.service';
 
 @Directive({
-  selector: '[ngx-colors-trigger]',
+  selector: '[ngxColorsTrigger]',
   standalone: true,
   providers: [
     {
@@ -21,7 +22,9 @@ import { OverlayService } from '../services/overlay.service';
     },
   ],
 })
-export class NgxColorsTriggerDirective implements ControlValueAccessor {
+export class NgxColorsTriggerDirective
+  implements ControlValueAccessor, OnDestroy
+{
   constructor(private overlayService: OverlayService) {}
   @HostListener('click') onClick() {
     this.openPanel();
@@ -38,25 +41,23 @@ export class NgxColorsTriggerDirective implements ControlValueAccessor {
     this.overlayService.createOverlay(undefined, 'pepe');
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  writeValue(obj: any): void {
+  writeValue(obj: string | undefined): void {
     this.value = obj;
     this.change.emit(obj);
   }
 
-  onChange = (_: any) => {};
-  onTouch = () => {};
+  onChange: (value: string | undefined) => void = () => {};
+  onTouch: () => void = () => {};
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string | undefined) => void): void {
     this.onChange = fn;
   }
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {

@@ -17,20 +17,29 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "ngx-colors",
-            "style": "camelCase"
-          }
-        ],
         "@angular-eslint/component-selector": [
           "error",
           {
             "type": "element",
             "prefix": "ngx-colors",
             "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "ngxColors",
+            "style": "camelCase"
+          }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "args": "all",
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
           }
         ]
       }

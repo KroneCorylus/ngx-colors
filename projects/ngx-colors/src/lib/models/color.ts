@@ -1,8 +1,7 @@
-import { ColorFormats } from '../enums/color-formats';
 import { ColorGroup } from '../interfaces/color-group';
 import { Convert } from '../utility/convert';
-import { Hsva } from './hsva';
 import { Rgba } from './rgba';
+
 export class Color {
   public preview: string;
   public value: Rgba | undefined;

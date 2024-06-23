@@ -1,4 +1,3 @@
-import { EventEmitter } from '@angular/core';
 import { ColorFormat } from '../interfaces/color-format';
 import { round } from '../utility/round';
 

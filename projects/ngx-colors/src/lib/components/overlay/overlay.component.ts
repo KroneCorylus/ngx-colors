@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { PanelComponent } from '../panel/panel.component';
 import { OverlayService } from '../../services/overlay.service';
 
@@ -9,12 +9,10 @@ import { OverlayService } from '../../services/overlay.service';
   templateUrl: './overlay.component.html',
   styleUrl: './overlay.component.scss',
 })
-export class OverlayComponent implements OnInit {
+export class OverlayComponent {
   constructor(private overlayService: OverlayService) {}
   @HostListener('click', ['$event'])
-  public onClick(event: any): void {
+  public onClick(): void {
     this.overlayService.removePanel();
   }
-
-  ngOnInit(): void {}
 }

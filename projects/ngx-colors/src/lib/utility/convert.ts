@@ -268,11 +268,7 @@ export class Convert {
   }
 
   public static stringToRgba(value: string): Rgba {
-    try {
-      return this.stringToFormat(value, ColorFormats.RGBA) as Rgba;
-    } catch (e) {
-      throw e;
-    }
+    return this.stringToFormat(value, ColorFormats.RGBA) as Rgba;
   }
 
   public static stringToFormatString(
@@ -341,7 +337,7 @@ export class Convert {
       {
         regex:
           /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})?$/,
-        parseFunction: function (_: any, originalValue: string) {
+        parseFunction: function (_: RegExpExecArray, originalValue: string) {
           return originalValue;
         },
       },

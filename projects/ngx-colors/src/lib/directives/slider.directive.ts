@@ -7,7 +7,6 @@ import {
   Output,
   NgZone,
   ContentChild,
-  Input,
 } from '@angular/core';
 import {
   Observable,

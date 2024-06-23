@@ -6,9 +6,7 @@ import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  template: `
-    <ngx-colors ngx-colors-trigger [(ngModel)]="value"></ngx-colors>
-  `,
+  template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
 })
 class HostComponent {
   value: string = '#ff00ff';

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { defaultColors } from '../../utility/default-colors';
 import { Color } from '../../models/color';
 import { Palette } from '../../types/palette';
@@ -14,9 +14,9 @@ import { Rgba } from '../../models/rgba';
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss', '../../shared/shared.scss'],
 })
-export class PanelComponent implements OnInit {
+export class PanelComponent {
   @HostListener('click', ['$event'])
-  public onClick(event: any): void {
+  public onClick(event: MouseEvent): void {
     event.stopPropagation();
   }
 
@@ -30,8 +30,6 @@ export class PanelComponent implements OnInit {
   public value: Rgba = new Rgba(255, 0, 0, 1);
 
   constructor() {}
-
-  ngOnInit(): void {}
 
   public onClickColor(color: Color): void {
     if (color.childs?.length) {

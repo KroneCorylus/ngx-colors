@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "ngx-colors",
+            "prefix": "ngxColors",
             "style": "camelCase"
           }
         ],

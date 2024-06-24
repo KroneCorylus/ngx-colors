@@ -1,0 +1,13 @@
+<div class="flex bg-gray radius-4">
+  <div
+    class="flex justify-center align-center format hover-effect pointer"
+    (click)="onClickFormat()"
+    aria-label="change format"
+    tabindex="0"
+  >
+    {{this.formatString}}
+  </div>
+  <div class="flex justify-center align-center value bg-white">
+    <input [formControl]="inputControl" />
+  </div>
+</div>

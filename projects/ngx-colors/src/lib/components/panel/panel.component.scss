@@ -52,25 +52,3 @@
   width: 100%;
   height: 100%;
 }
-.format {
-  padding: 18px 16px;
-  letter-spacing: 1.5px;
-  font-size: 10px;
-}
-.value {
-  flex-grow: 1;
-  border: 1px solid #f3f3f3;
-  border-radius: 4px;
-
-  input {
-    font-size: 10px;
-    background: none;
-    height: 100%;
-    width: 100%;
-    border: none;
-    text-transform: uppercase;
-    text-align: center;
-    color: #595b65;
-    outline: none;
-  }
-}

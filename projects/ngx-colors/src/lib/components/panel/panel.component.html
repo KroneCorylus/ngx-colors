@@ -55,14 +55,23 @@
     </div>
   </div>
   <div style="height: 204px; width: 210px">
-    <ngx-colors-color-picker [(value)]="value"> </ngx-colors-color-picker>
+    <ngx-colors-color-picker [(ngModel)]="value"> </ngx-colors-color-picker>
   </div>
   }
   <div class="flex mt-3">
-    <div class="flex justify-center align-center format">RGBA</div>
-    <div class="flex justify-center align-center value">
-      <input [(ngModel)]="selected" />
-    </div>
+    <ngx-colors-text-input [(ngModel)]="value"></ngx-colors-text-input>
+    <!-- <div -->
+    <!--   class="flex justify-center align-center format hover-effect pointer" -->
+    <!--   (click)="onClickFormat()" -->
+    <!--   aria-label="change format" -->
+    <!--   tabindex="0" -->
+    <!-- > -->
+    <!--   {{this.formatString}} -->
+    <!-- </div> -->
+    <!-- <div class="flex justify-center align-center value bg-white"> -->
+    <!--   <!-- <input [(ngModel)]="selected" /> -->
+    <!--   <ngx-colors-text-input [(ngModel)]="value"></ngx-colors-text-input> -->
+    <!-- </div> -->
   </div>
 </div>
 

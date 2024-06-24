@@ -372,6 +372,6 @@ export class Convert {
         return 'cmyk';
       }
     }
-    return 'hex';
+    return 'invalid';
   }
 }

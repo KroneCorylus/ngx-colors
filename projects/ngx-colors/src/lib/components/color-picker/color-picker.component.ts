@@ -9,6 +9,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  forwardRef,
 } from '@angular/core';
 import { SliderDirective } from '../../directives/slider.directive';
 import { ThumbComponent } from '../thumb/thumb.component';
@@ -16,16 +17,24 @@ import { Hsva } from '../../models/hsva';
 import { Convert } from '../../utility/convert';
 import { Rgba } from '../../models/rgba';
 import { ColorFormats } from '../../enums/color-formats';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'ngx-colors-color-picker',
   standalone: true,
   imports: [CommonModule, SliderDirective, ThumbComponent],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorPickerComponent),
+      multi: true,
+    },
+  ],
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss', '../../shared/shared.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ColorPickerComponent implements OnChanges {
+export class ColorPickerComponent implements OnChanges, ControlValueAccessor {
   public hue: string = 'red';
   public preview: string = 'red';
   public alphaGradient: { background: string } = {
@@ -48,6 +57,8 @@ export class ColorPickerComponent implements OnChanges {
   public _hue: Hsva = new Hsva(1, 1, 1, 1);
   //state in hsva
   public _value: Hsva = new Hsva(1, 1, 1, 1);
+
+  public disabled: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     const value = changes['value'].currentValue;
@@ -72,6 +83,7 @@ export class ColorPickerComponent implements OnChanges {
     this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
     this.alphaSlider?.setThumbPosition(this._value.a, 0);
     this.cdr.detectChanges();
+    this.onChange(this.value);
   }
 
   //Fired on change of slider directive.
@@ -95,6 +107,7 @@ export class ColorPickerComponent implements OnChanges {
     this.value = Convert.hsva2Rgba(this._value);
     this.preview = this.value.toString();
     this.alphaGradient = this.getAlphaGradient(this.value);
+    this.onChange(this.value);
     this.cdr.detectChanges();
   }
 
@@ -104,5 +117,23 @@ export class ColorPickerComponent implements OnChanges {
       background:
         'linear-gradient(90deg, rgba(36,0,0,0) 0%, ' + color + ' 100%)',
     };
+  }
+  writeValue(obj: Rgba | undefined): void {
+    this.value = obj;
+    console.log('magia');
+    this.setValue(obj);
+  }
+
+  onChange: (value: Rgba | undefined) => void = () => {};
+  onTouch: () => void = () => {};
+
+  registerOnChange(fn: (value: Rgba | undefined) => void): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouch = fn;
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }

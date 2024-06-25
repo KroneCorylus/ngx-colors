@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { Rgba } from '../../models/rgba';
 import { Convert } from '../../utility/convert';
-import { ColorFormats } from '../../enums/color-formats';
 import { ColorModel } from '../../types/color-model';
 
 @Component({

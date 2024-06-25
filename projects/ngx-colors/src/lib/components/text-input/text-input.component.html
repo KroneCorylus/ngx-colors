@@ -1,13 +1,14 @@
-<div class="flex bg-gray radius-4">
+<div class="flex radius-4 w-100">
   <div
-    class="flex justify-center align-center format hover-effect pointer"
-    (click)="onClickFormat()"
+    class="flex justify-center align-center _format hover-effect pointer mr-1 radius-4"
+    (click)="onClickColorModel()"
+    (keydown.enter)="onClickColorModel()"
     aria-label="change format"
     tabindex="0"
   >
-    {{this.formatString}}
+    {{this.selectedColorModel}}
   </div>
-  <div class="flex justify-center align-center value bg-white">
+  <div class="flex justify-center align-center bg-white _value">
     <input [formControl]="inputControl" />
   </div>
 </div>

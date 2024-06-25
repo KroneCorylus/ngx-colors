@@ -353,7 +353,7 @@ export class Convert {
     throw 'String no valida';
   }
 
-  public static getColorModelByString(color: string): string {
+  public static getColorModelByString(color: string): ColorModel | 'INVALID' {
     if (color) {
       color = color.toLowerCase();
       const regexHEX: RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/;
@@ -372,6 +372,6 @@ export class Convert {
         return 'CMYK';
       }
     }
-    return 'invalid';
+    return 'INVALID';
   }
 }

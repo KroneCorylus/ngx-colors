@@ -9,6 +9,9 @@
     {{this.selectedColorModel}}
   </div>
   <div class="flex justify-center align-center bg-white _value">
-    <input [formControl]="inputControl" />
+    <input
+      [formControl]="inputControl"
+      [class.error]="inputControl.hasError('invalidColor')"
+    />
   </div>
 </div>

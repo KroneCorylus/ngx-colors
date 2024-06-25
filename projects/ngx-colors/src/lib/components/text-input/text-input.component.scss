@@ -20,5 +20,9 @@
     text-align: center;
     color: #595b65;
     outline: none;
+    border-radius: 4px;
+    &.error {
+      border: 1px solid red;
+    }
   }
 }

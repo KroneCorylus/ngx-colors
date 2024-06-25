@@ -6,10 +6,12 @@ import {
   FormsModule,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { Rgba } from '../../models/rgba';
 import { Convert } from '../../utility/convert';
 import { ColorModel } from '../../types/color-model';
+import { ColorValidator } from '../../validators/color-validator';
 
 @Component({
   selector: 'ngx-colors-text-input',
@@ -30,7 +32,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
 
   inputControl: FormControl<string | null | undefined> = new FormControl<
     string | undefined
-  >('asd');
+  >('', [ColorValidator()]);
 
   disabled: boolean = false;
 
@@ -47,7 +49,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     this.inputControl.valueChanges.subscribe((changes) => {
       if (typeof changes === 'string') {
-        if (Convert.getColorModelByString(changes) === 'invalid') {
+        if (Convert.getColorModelByString(changes) === 'INVALID') {
           return;
         }
         this.value = Convert.stringToRgba(changes);

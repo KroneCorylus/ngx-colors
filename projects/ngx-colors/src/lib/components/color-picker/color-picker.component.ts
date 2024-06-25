@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -58,6 +59,11 @@ export class ColorPickerComponent implements OnChanges, ControlValueAccessor {
   public _value: Hsva = new Hsva(1, 1, 1, 1);
 
   public disabled: boolean = false;
+
+  @Input()
+  public eyeDropper: boolean = true;
+  //@ts-expect-error eyedroper is a experimental feature.
+  public eyeDropperSupport: boolean = !!window.EyeDropper;
 
   ngOnChanges(changes: SimpleChanges): void {
     const value = changes['value'].currentValue;
@@ -116,6 +122,25 @@ export class ColorPickerComponent implements OnChanges, ControlValueAccessor {
       background:
         'linear-gradient(90deg, rgba(36,0,0,0) 0%, ' + color + ' 100%)',
     };
+  }
+
+  public onClickEyeDropper() {
+    if (!this.eyeDropperSupport) {
+      console.error('EyeDropper not supported');
+      return;
+    }
+    //@ts-expect-error eyedroper is a experimental feature.
+    const eyeDropper = new EyeDropper();
+    eyeDropper
+      .open()
+      .then((result: { sRGBHex: string }) => {
+        let probeColor: Rgba = Convert.stringToRgba(result.sRGBHex);
+        //in unix systems the eyeDropper always return 0 on the alpha channel.
+        probeColor.a = 1;
+        this.value = probeColor;
+        this.setValue(probeColor);
+      })
+      .catch((_: any) => {});
   }
   writeValue(obj: Rgba | undefined): void {
     this.value = obj;

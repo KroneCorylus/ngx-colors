@@ -10,6 +10,16 @@
   </div>
   <div class="flex grow-1">
     <div class="justify-center align-center flex ml-4">
+      @if(eyeDropperSupport && eyeDropper){
+      <div
+        class="_eyeDropper circle hover-effect flex justify-center align-center pointer mr-1 p-1"
+        tabindex="0"
+        (click)="onClickEyeDropper()"
+        (keydown.enter)="onClickEyeDropper()"
+      >
+        <ng-container [ngTemplateOutlet]="eyeDropperIcon"></ng-container>
+      </div>
+      }
       <div class="_preview circle elevation bg-transparent overflow-h">
         <div class="h-100 w-100" [style.background-color]="preview"></div>
       </div>
@@ -37,3 +47,17 @@
     </div>
   </div>
 </div>
+
+<ng-template #eyeDropperIcon>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 -960 960 960"
+    width="24px"
+    fill="#434343"
+  >
+    <path
+      d="M120-120v-190l358-358-58-56 58-56 76 76 124-124q5-5 12.5-8t15.5-3q8 0 15 3t13 8l94 94q5 6 8 13t3 15q0 8-3 15.5t-8 12.5L705-555l76 78-57 57-56-58-358 358H120Zm80-80h78l332-334-76-76-334 332v78Zm447-410 96-96-37-37-96 96 37 37Zm0 0-37-37 37 37Z"
+    />
+  </svg>
+</ng-template>

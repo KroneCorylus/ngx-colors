@@ -1,10 +1,11 @@
 import { Convert } from './convert';
-import { ColorFormats } from '../enums/color-formats';
 import { Hsva } from '../models/hsva';
 import { Rgba } from '../models/rgba';
 import { Hsla } from '../models/hsla';
 import { Cmyk } from '../models/cmyk';
 import { ColorFormat } from '../interfaces/color-format';
+import { ColorModel } from '../types/color-model';
+import { Color } from '../models/color';
 
 export type ColorEquivalence = {
   [x: string]: string | Array<string>;
@@ -13,7 +14,7 @@ export type ColorEquivalence = {
 const iterateTests = (
   keys: Array<string>,
   convertTo: string,
-  colorFormat: ColorFormats
+  colorFormat: ColorModel
 ) => {
   for (let i = 0; i < mockStrings.length; i++) {
     const test = mockStrings[i];
@@ -31,7 +32,10 @@ const iterateTests = (
         break;
       }
       it(`${originalValue} -> [${test[convertTo]}]`, () => {
-        const result = Convert.stringToFormatString(originalValue, colorFormat);
+        const result = Convert.stringToColorModelString(
+          originalValue,
+          colorFormat
+        );
         console.log('key:', key);
         console.log('value:', originalValue);
         console.log('expect:', test[convertTo]);
@@ -150,31 +154,19 @@ const mockStrings: Array<ColorEquivalence> = [
   },
 ];
 
-function getKeyByColorFormat(cf: ColorFormats) {
-  switch (cf) {
-    case ColorFormats.HSVA:
-      return 'hsva';
-    case ColorFormats.CMYK:
-      return 'cmyk';
-    case ColorFormats.HSLA:
-      return 'hsla';
-    case ColorFormats.HEX:
-      return 'hex';
-    case ColorFormats.RGBA:
-      return 'rgba';
-  }
-}
-
 const isColorFormat = (value: any): value is ColorFormat => !!value?.toRounded;
 
-function testFormatToClass(source: ColorFormats, target: ColorFormats) {
-  const keysource = getKeyByColorFormat(source);
-  const keytarget = getKeyByColorFormat(target);
+function testFormatToClass(source: ColorModel, target: ColorModel) {
+  const keysource = source.toLowerCase();
+  const keytarget = target.toLowerCase();
   for (let i = 0; i < mockClases.length; i++) {
     const test = mockClases[i];
     const source: ColorFormat | string = test[keysource];
     const spectedResult: ColorFormat | string = test[keytarget];
-    let result: ColorFormat | string = Convert.colorToFormat(source, target);
+    let result: ColorFormat | string = Convert.colorToColorModel(
+      source,
+      target
+    );
     if (isColorFormat(result)) {
       result = result.toRounded();
     }
@@ -187,45 +179,45 @@ function testFormatToClass(source: ColorFormats, target: ColorFormats) {
 describe('Convert string to RGB string', () => {
   const keys: Array<string> = ['hex', 'hsla', 'cmyk', 'hsva'];
   const convertTo: string = 'rgba';
-  iterateTests(keys, convertTo, ColorFormats.RGBA);
+  iterateTests(keys, convertTo, 'RGBA');
 });
 
 describe('Convert string to HEX string', () => {
   const keys = ['rgba', 'hsla', 'cmyk', 'hsva'];
   const convertTo = 'hex';
-  iterateTests(keys, convertTo, ColorFormats.HEX);
+  iterateTests(keys, convertTo, 'HEX');
 });
 
 describe('Convert string to CYMK string', () => {
   const keys = ['rgba', 'hsla', 'hex', 'hsva'];
   const convertTo = 'cmyk';
-  iterateTests(keys, convertTo, ColorFormats.CMYK);
+  iterateTests(keys, convertTo, 'CMYK');
 });
 
 describe('Convert string to CYMK string', () => {
   const keys = ['rgba', 'hsla', 'hex', 'hsva'];
   const convertTo = 'hsva';
-  iterateTests(keys, convertTo, ColorFormats.HSVA);
+  iterateTests(keys, convertTo, 'HSVA');
 });
 // FROM ANY TO RGBA
 describe('Convert Class HSVA to Class RGBA', () => {
-  testFormatToClass(ColorFormats.HSVA, ColorFormats.RGBA);
+  testFormatToClass('HSVA', 'RGBA');
 });
 describe('Convert Class CMYK to Class RGBA', () => {
-  testFormatToClass(ColorFormats.CMYK, ColorFormats.RGBA);
+  testFormatToClass('CMYK', 'RGBA');
 });
 describe('Convert Class HSLA to Class RGBA', () => {
-  testFormatToClass(ColorFormats.HSLA, ColorFormats.RGBA);
+  testFormatToClass('HSLA', 'RGBA');
 });
 //--missing hex tests
 
 //FROM RGBA TO ANY
 describe('Convert Class RGBA to Class HSVA', () => {
-  testFormatToClass(ColorFormats.RGBA, ColorFormats.HSVA);
+  testFormatToClass('RGBA', 'HSVA');
 });
 describe('Convert Class RGBA to Class CMYK', () => {
-  testFormatToClass(ColorFormats.RGBA, ColorFormats.CMYK);
+  testFormatToClass('RGBA', 'CMYK');
 });
 describe('Convert Class RGBA to Class HSLA', () => {
-  testFormatToClass(ColorFormats.RGBA, ColorFormats.HSLA);
+  testFormatToClass('RGBA', 'HSLA');
 });

@@ -16,7 +16,6 @@ import { ThumbComponent } from '../thumb/thumb.component';
 import { Hsva } from '../../models/hsva';
 import { Convert } from '../../utility/convert';
 import { Rgba } from '../../models/rgba';
-import { ColorFormats } from '../../enums/color-formats';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -73,7 +72,7 @@ export class ColorPickerComponent implements OnChanges, ControlValueAccessor {
       this._hue = new Hsva(1, 1, 1, 1);
     }
     if (value instanceof Rgba) {
-      this._value = Convert.rgbaToFormat(value, ColorFormats.HSVA) as Hsva;
+      this._value = Convert.rgbaToColorModel(value, 'HSVA') as Hsva;
       this._hue.h = this._value.h;
       this.preview = value.toString();
       this.hue = Convert.hsva2Rgba(this._hue).toString();

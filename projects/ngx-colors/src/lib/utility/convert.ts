@@ -234,7 +234,7 @@ export class Convert {
     return new Rgba(r * 255, g * 255, b * 255, cmyk.a);
   }
 
-  public static stringToFormat(
+  public static stringToColorModel(
     value: string,
     colorModel: ColorModel
   ): ColorFormat | string {
@@ -243,7 +243,7 @@ export class Convert {
     return this.rgbaToColorModel(rgba, colorModel);
   }
 
-  public static colorToFormat(
+  public static colorToColorModel(
     value: ColorFormat | string,
     colorModel: ColorModel
   ): ColorFormat | string {
@@ -268,14 +268,14 @@ export class Convert {
   }
 
   public static stringToRgba(value: string): Rgba {
-    return this.stringToFormat(value, 'RGBA') as Rgba;
+    return this.stringToColorModel(value, 'RGBA') as Rgba;
   }
 
-  public static stringToFormatString(
+  public static stringToColorModelString(
     value: string,
     colorModel: ColorModel
   ): string {
-    return this.stringToFormat(value, colorModel).toString();
+    return this.stringToColorModel(value, colorModel).toString();
   }
 
   public static stringToColor(value: string): ColorFormat | string {
@@ -353,23 +353,23 @@ export class Convert {
     throw 'String no valida';
   }
 
-  public static getFormatByString(color: string): string {
+  public static getColorModelByString(color: string): string {
     if (color) {
       color = color.toLowerCase();
-      const regexHex: RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/;
+      const regexHEX: RegExp = /(#([\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?))/;
       const regexRGBA: RegExp =
         /(rgba\((\d{1,3},\s?){3}(1|0?\.\d+)\)|rgb\(\d{1,3}(,\s?\d{1,3}){2}\))/;
       const regexHSLA: RegExp =
         /(hsla\((\d{1,3}%?,\s?){3}(1|0?\.\d+)\)|hsl\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
       const regexCMYK: RegExp = /(cmyk\(\d{1,3}(,\s?\d{1,3}){3}\))/;
-      if (regexHex.test(color)) {
-        return 'hex';
+      if (regexHEX.test(color)) {
+        return 'HEX';
       } else if (regexRGBA.test(color)) {
-        return 'rgba';
+        return 'RGBA';
       } else if (regexHSLA.test(color)) {
-        return 'hsla';
+        return 'HSLA';
       } else if (regexCMYK.test(color)) {
-        return 'cmyk';
+        return 'CMYK';
       }
     }
     return 'invalid';

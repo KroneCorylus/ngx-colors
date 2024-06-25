@@ -48,30 +48,13 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     this.inputControl.valueChanges.subscribe((changes) => {
       if (typeof changes === 'string') {
-        if (Convert.getFormatByString(changes) === 'invalid') {
+        if (Convert.getColorModelByString(changes) === 'invalid') {
           return;
         }
         this.value = Convert.stringToRgba(changes);
         this.onChange(this.value);
       }
     });
-  }
-
-  private getFormatByStringFormat(value: string) {
-    switch (value.toUpperCase()) {
-      case 'RGBA':
-        return ColorFormats.RGBA;
-      case 'HEX':
-        return ColorFormats.HEX;
-      case 'HSVA':
-        return ColorFormats.HSVA;
-      case 'HSLA':
-        return ColorFormats.HSLA;
-      case 'CMYK':
-        return ColorFormats.CMYK;
-      default:
-        return ColorFormats.RGBA;
-    }
   }
 
   public onClickColorModel(): void {
@@ -86,10 +69,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     this.selectedColorModel = this.availableModels[index];
     if (this.value) {
       this.inputControl.setValue(
-        Convert.rgbaToFormat(
-          this.value,
-          this.getFormatByStringFormat(this.selectedColorModel)
-        ).toString()
+        Convert.rgbaToColorModel(this.value, this.selectedColorModel).toString()
       );
     }
   }
@@ -98,10 +78,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     this.value = obj;
     if (this.value) {
       this.inputControl.setValue(
-        Convert.rgbaToFormat(
-          this.value,
-          this.getFormatByStringFormat(this.selectedColorModel)
-        ).toString()
+        Convert.rgbaToColorModel(this.value, this.selectedColorModel).toString()
       );
     } else {
       this.inputControl.setValue('');

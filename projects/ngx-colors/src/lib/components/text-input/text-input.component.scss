@@ -21,8 +21,11 @@
     color: #595b65;
     outline: none;
     border-radius: 4px;
+    box-sizing: border-box;
     &.error {
-      border: 1px solid red;
+      border-bottom: 2px solid #f44336db;
+      color: #f44336;
+      background: #f4433605;
     }
   }
 }

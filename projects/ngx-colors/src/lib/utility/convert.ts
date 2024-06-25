@@ -361,6 +361,8 @@ export class Convert {
         /(rgba\((\d{1,3},\s?){3}(1|0?\.\d+)\)|rgb\(\d{1,3}(,\s?\d{1,3}){2}\))/;
       const regexHSLA: RegExp =
         /(hsla\((\d{1,3}%?,\s?){3}(1|0?\.\d+)\)|hsl\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
+      const regexHSVA: RegExp =
+        /(hsva\((\d{1,3}%?,\s?){3}(1|0?\.\d+)\)|hsv\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
       const regexCMYK: RegExp = /(cmyk\(\d{1,3}(,\s?\d{1,3}){3}\))/;
       if (regexHEX.test(color)) {
         return 'HEX';
@@ -368,6 +370,8 @@ export class Convert {
         return 'RGBA';
       } else if (regexHSLA.test(color)) {
         return 'HSLA';
+      } else if (regexHSVA.test(color)) {
+        return 'HSVA';
       } else if (regexCMYK.test(color)) {
         return 'CMYK';
       }

@@ -144,7 +144,6 @@ export class ColorPickerComponent implements OnChanges, ControlValueAccessor {
   }
   writeValue(obj: Rgba | undefined): void {
     this.value = obj;
-    console.log('magia');
     this.setValue(obj);
   }
 

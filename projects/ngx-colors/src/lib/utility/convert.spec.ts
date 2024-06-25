@@ -5,7 +5,6 @@ import { Hsla } from '../models/hsla';
 import { Cmyk } from '../models/cmyk';
 import { ColorFormat } from '../interfaces/color-format';
 import { ColorModel } from '../types/color-model';
-import { Color } from '../models/color';
 
 export type ColorEquivalence = {
   [x: string]: string | Array<string>;

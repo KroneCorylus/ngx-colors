@@ -1,9 +1,11 @@
-.format {
+._format {
   padding: 18px 16px;
+  width: 67px;
+  box-sizing: border-box;
   letter-spacing: 1.5px;
   font-size: 10px;
 }
-.value {
+._value {
   flex-grow: 1;
   border: 1px solid #f3f3f3;
   border-radius: 4px;

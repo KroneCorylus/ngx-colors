@@ -1,25 +1,25 @@
-import { ColorFormats } from '../enums/color-formats';
 import { ColorFormat } from '../interfaces/color-format';
 import { Cmyk } from '../models/cmyk';
 import { Hsla } from '../models/hsla';
 import { Hsva } from '../models/hsva';
 import { Rgba } from '../models/rgba';
+import { ColorModel } from '../types/color-model';
 
 export class Convert {
-  public static rgbaToFormat(
+  public static rgbaToColorModel(
     rgba: Rgba,
-    format: ColorFormats
+    format: ColorModel
   ): ColorFormat | string {
     switch (format) {
-      case ColorFormats.HEX:
+      case 'HEX':
         return this.rgba2Hex(rgba);
-      case ColorFormats.HSLA:
+      case 'HSLA':
         return this.rgba2Hsla(rgba);
-      case ColorFormats.HSVA:
+      case 'HSVA':
         return this.rgba2Hsva(rgba);
-      case ColorFormats.CMYK:
+      case 'CMYK':
         return this.rgba2Cmyk(rgba);
-      case ColorFormats.RGBA:
+      case 'RGBA':
         return rgba;
       default:
         throw 'Invalid output format';
@@ -236,19 +236,19 @@ export class Convert {
 
   public static stringToFormat(
     value: string,
-    format: ColorFormats
+    colorModel: ColorModel
   ): ColorFormat | string {
     const color = this.stringToColor(value);
     const rgba = this.colorToRgba(color);
-    return this.rgbaToFormat(rgba, format);
+    return this.rgbaToColorModel(rgba, colorModel);
   }
 
   public static colorToFormat(
     value: ColorFormat | string,
-    format: ColorFormats
+    colorModel: ColorModel
   ): ColorFormat | string {
     const rgba = this.colorToRgba(value);
-    return this.rgbaToFormat(rgba, format);
+    return this.rgbaToColorModel(rgba, colorModel);
   }
 
   public static colorToRgba(value: ColorFormat | string) {
@@ -268,14 +268,14 @@ export class Convert {
   }
 
   public static stringToRgba(value: string): Rgba {
-    return this.stringToFormat(value, ColorFormats.RGBA) as Rgba;
+    return this.stringToFormat(value, 'RGBA') as Rgba;
   }
 
   public static stringToFormatString(
     value: string,
-    format: ColorFormats
+    colorModel: ColorModel
   ): string {
-    return this.stringToFormat(value, format).toString();
+    return this.stringToFormat(value, colorModel).toString();
   }
 
   public static stringToColor(value: string): ColorFormat | string {

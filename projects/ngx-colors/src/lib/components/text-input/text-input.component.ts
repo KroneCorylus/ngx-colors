@@ -10,6 +10,7 @@ import {
 import { Rgba } from '../../models/rgba';
 import { Convert } from '../../utility/convert';
 import { ColorFormats } from '../../enums/color-formats';
+import { ColorModel } from '../../types/color-model';
 
 @Component({
   selector: 'ngx-colors-text-input',
@@ -34,9 +35,15 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
 
   disabled: boolean = false;
 
-  public formatString = 'RGBA';
+  public selectedColorModel: ColorModel = 'RGBA';
 
-  private availableFormats = ['RGBA', 'HEXA', 'HSVA', 'HSLA', 'CMYK'];
+  private availableModels: Array<ColorModel> = [
+    'RGBA',
+    'HEX',
+    'HSVA',
+    'HSLA',
+    'CMYK',
+  ];
 
   ngOnInit(): void {
     this.inputControl.valueChanges.subscribe((changes) => {
@@ -54,7 +61,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     switch (value.toUpperCase()) {
       case 'RGBA':
         return ColorFormats.RGBA;
-      case 'HEXA':
+      case 'HEX':
         return ColorFormats.HEX;
       case 'HSVA':
         return ColorFormats.HSVA;
@@ -67,20 +74,21 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  public onClickFormat(): void {
+  public onClickColorModel(): void {
     const index =
-      (this.availableFormats.findIndex((af) => af === this.formatString) + 1) %
-      this.availableFormats.length;
+      (this.availableModels.findIndex((af) => af === this.selectedColorModel) +
+        1) %
+      this.availableModels.length;
     if (index === -1) {
-      this.formatString = this.availableFormats[0];
+      this.selectedColorModel = this.availableModels[0];
       return;
     }
-    this.formatString = this.availableFormats[index];
+    this.selectedColorModel = this.availableModels[index];
     if (this.value) {
       this.inputControl.setValue(
         Convert.rgbaToFormat(
           this.value,
-          this.getFormatByStringFormat(this.formatString)
+          this.getFormatByStringFormat(this.selectedColorModel)
         ).toString()
       );
     }
@@ -92,7 +100,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
       this.inputControl.setValue(
         Convert.rgbaToFormat(
           this.value,
-          this.getFormatByStringFormat(this.formatString)
+          this.getFormatByStringFormat(this.selectedColorModel)
         ).toString()
       );
     } else {

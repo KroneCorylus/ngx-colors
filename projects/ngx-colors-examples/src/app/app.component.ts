@@ -64,6 +64,7 @@ export type ColorsApiResponseType = {
         lockValues: {
           alpha: 1,
         },
+        overlayClass: '_default-overlay',
       },
     },
   ],

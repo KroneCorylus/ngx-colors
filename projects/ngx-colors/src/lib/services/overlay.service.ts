@@ -1,16 +1,26 @@
 import {
   ApplicationRef,
   ComponentRef,
+  Inject,
   Injectable,
   Injector,
+  Optional,
   createComponent,
 } from '@angular/core';
 import { OverlayComponent } from '../components/overlay/overlay.component';
 import { NgxColorsTriggerDirective } from '../directives/trigger.directive';
+import {
+  NGX_COLORS_CONFIG,
+  NgxColorsConfiguration,
+} from '../interfaces/configuration';
+import { StateService } from './state.service';
 
 @Injectable()
 export class OverlayService {
-  constructor(private applicationRef: ApplicationRef) {}
+  constructor(
+    private applicationRef: ApplicationRef,
+    private stateService: StateService,
+  ) {}
 
   componentRef: ComponentRef<OverlayComponent> | undefined = undefined;
   overlay: HTMLElement | undefined;
@@ -18,21 +28,19 @@ export class OverlayService {
   createOverlay(
     trigger: NgxColorsTriggerDirective | undefined,
     attachToId: string | undefined,
-    overlayClassName: string | undefined,
-    injector: Injector
+    injector: Injector,
   ): ComponentRef<OverlayComponent> {
-    console.log(trigger);
     if (this.componentRef != undefined) {
       this.removePanel();
     }
 
     const hostElement: HTMLElement =
       document.createElement('ngx-colors-overlay');
-    if (overlayClassName) {
-      hostElement.classList.add(overlayClassName);
+    if (this.stateService.configuration.overlayClass) {
+      hostElement.classList.add(this.stateService.configuration.overlayClass);
     }
     (document.getElementById(attachToId ?? '') ?? document.body).appendChild(
-      hostElement
+      hostElement,
     );
     const environmentInjector = this.applicationRef.injector;
 

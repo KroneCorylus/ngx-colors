@@ -96,8 +96,11 @@ export class NgxColorsTriggerDirective
     defaultColors;
   @Input()
   public animation: AnimationOptions | undefined;
+  @Input()
+  public overlayClass: string | undefined;
 
   public ngOnInit(): void {
+    console.log(this.overlayClass);
     this.setPalette(this.palette);
 
     this.stateService.state.subscribe((value) => {
@@ -147,7 +150,7 @@ export class NgxColorsTriggerDirective
         { provide: OverlayService, useValue: this.overlayService },
       ],
     });
-    this.overlayService.createOverlay(this, undefined, 'pepe', injector);
+    this.overlayService.createOverlay(this, undefined, injector);
   }
 
   private setPalette(

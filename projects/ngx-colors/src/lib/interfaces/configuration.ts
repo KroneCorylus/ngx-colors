@@ -22,7 +22,7 @@ export interface NgxColorsConfiguration {
   palette?: Observable<ColorOption[]> | ColorOption[] | undefined;
   animation?: AnimationOptions;
   overlayClass?: string | undefined;
-  attachTo?: string | undefined;
+  overlayAttachTo?: string | HTMLElement | undefined;
   labels?: {
     accept: string;
     cancel: string;

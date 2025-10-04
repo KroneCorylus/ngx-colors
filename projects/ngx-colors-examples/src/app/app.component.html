@@ -139,8 +139,27 @@
       [display]="{ text: true, palette: true }"
     ></ngx-colors>
     <br />
+    <br />
+    overlayAttachTo
+    <ngx-colors
+      overlayAttachTo=""
+      ngxColorsTrigger
+      [display]="{ text: true, palette: true }"
+    ></ngx-colors>
+    <ngx-colors
+      overlayAttachTo="logger"
+      ngxColorsTrigger
+      [display]="{ text: true, palette: true }"
+    ></ngx-colors>
+    <ngx-colors
+      [overlayAttachTo]="html"
+      ngxColorsTrigger
+      [display]="{ text: true, palette: true }"
+    ></ngx-colors>
+    <br />
   </div>
   <div
+    id="logger"
     style="border: 1px solid gray; padding: 3px; height: 500px; overflow: auto"
   >
     <button (click)="this.clearLog()">clear</button>

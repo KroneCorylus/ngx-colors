@@ -98,6 +98,8 @@ export class NgxColorsTriggerDirective
   public animation: AnimationOptions | undefined;
   @Input()
   public overlayClass: string | undefined;
+  @Input()
+  public overlayAttachTo: string | HTMLElement | undefined;
 
   public ngOnInit(): void {
     console.log(this.overlayClass);

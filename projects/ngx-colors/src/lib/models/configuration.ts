@@ -36,7 +36,7 @@ export class Configuration implements NgxColorsConfiguration {
     defaultColors;
   public animation: AnimationOptions = 'popup';
   public overlayClass: string | undefined = undefined;
-  public attachTo: string | undefined = undefined;
+  public overlayAttachTo: string | HTMLElement | undefined = undefined;
   public labels: {
     accept: string;
     cancel: string;
@@ -74,8 +74,8 @@ export class Configuration implements NgxColorsConfiguration {
       if (overwrite.overlayClass !== undefined) {
         this.overlayClass = overwrite.overlayClass;
       }
-      if (overwrite.attachTo !== undefined) {
-        this.attachTo = overwrite.attachTo;
+      if (overwrite.overlayAttachTo !== undefined) {
+        this.overlayAttachTo = overwrite.overlayAttachTo;
       }
       if (overwrite.labels !== undefined) {
         this.labels = { ...this.labels, ...overwrite.labels };

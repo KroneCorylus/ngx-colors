@@ -39,9 +39,21 @@ export class OverlayService {
     if (this.stateService.configuration.overlayClass) {
       hostElement.classList.add(this.stateService.configuration.overlayClass);
     }
-    (document.getElementById(attachToId ?? '') ?? document.body).appendChild(
-      hostElement,
-    );
+    let parent = document.body;
+    let attachTo = this.stateService.configuration.overlayAttachTo;
+    if (attachTo) {
+      if (typeof attachTo == 'string') {
+        let aux_parent = document.getElementById(attachTo);
+        if (!aux_parent) {
+          throw new Error('Overlay parent not found');
+        }
+        parent = aux_parent;
+      } else {
+        parent = attachTo;
+      }
+    }
+
+    parent.appendChild(hostElement);
     const environmentInjector = this.applicationRef.injector;
 
     this.componentRef = createComponent(OverlayComponent, {

@@ -101,6 +101,8 @@ export class AppComponent implements OnInit {
     value: string | null | undefined;
   }> = [];
 
+  html = document.documentElement;
+
   ngOnInit(): void {
     this.setRequest('3A02A9');
   }

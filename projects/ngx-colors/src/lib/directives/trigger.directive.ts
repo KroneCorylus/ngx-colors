@@ -35,6 +35,7 @@ import {
 } from '../types/configuration';
 import { ColorModel } from '../types/color-model';
 import { IColorModel } from '../interfaces/color-format';
+import { Labels, NGX_COLORS_LABELS } from '../interfaces/labels';
 
 @Directive({
   selector: '[ngxColorsTrigger]',
@@ -64,6 +65,9 @@ export class NgxColorsTriggerDirective
     @Optional()
     @Inject(NGX_COLORS_CONFIG)
     private config: NgxColorsConfiguration,
+    @Optional()
+    @Inject(NGX_COLORS_LABELS)
+    private _labels: Labels,
   ) {}
   @HostListener('click') onClick() {
     this.openPanel();
@@ -100,6 +104,8 @@ export class NgxColorsTriggerDirective
   public overlayClass: string | undefined;
   @Input()
   public overlayAttachTo: string | HTMLElement | undefined;
+  @Input()
+  public labels: Labels | undefined;
 
   public ngOnInit(): void {
     console.log(this.overlayClass);
@@ -131,7 +137,11 @@ export class NgxColorsTriggerDirective
   }
 
   private applyConfig() {
-    this.stateService.configuration = new Configuration(this.config, this);
+    this.stateService.configuration = new Configuration(
+      { labels: this._labels },
+      this.config,
+      this,
+    );
   }
 
   public ngOnDestroy(): void {

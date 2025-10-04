@@ -11,6 +11,7 @@ import {
 } from '../types/configuration';
 import { Observable } from 'rxjs';
 import { ColorModel } from '../types/color-model';
+import { Labels } from './labels';
 
 export interface NgxColorsConfiguration {
   display?: DisplayOptions;
@@ -23,8 +24,5 @@ export interface NgxColorsConfiguration {
   animation?: AnimationOptions;
   overlayClass?: string | undefined;
   overlayAttachTo?: string | HTMLElement | undefined;
-  labels?: {
-    accept: string;
-    cancel: string;
-  };
+  labels?: Labels | undefined;
 }

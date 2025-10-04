@@ -41,8 +41,8 @@ export class Configuration implements NgxColorsConfiguration {
     accept: string;
     cancel: string;
   } = {
-    accept: 'Accept',
-    cancel: 'Cancel',
+    accept: 'ACCEPT',
+    cancel: 'CANCEL',
   };
 
   constructor(...configOverwrites: NgxColorsConfiguration[]) {

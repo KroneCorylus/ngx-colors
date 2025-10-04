@@ -104,7 +104,11 @@
 </ng-template>
 <ng-template #confirmation>
   <div class="_buttons">
-    <button (click)="this.accept()" class="pointer hover-effect">ACCEPT</button>
-    <button (click)="this.cancel()" class="pointer hover-effect">CANCEL</button>
+    <button (click)="this.accept()" class="pointer hover-effect">
+      {{ this.stateService.configuration.labels.accept }}
+    </button>
+    <button (click)="this.cancel()" class="pointer hover-effect">
+      {{ this.stateService.configuration.labels.cancel }}
+    </button>
   </div>
 </ng-template>

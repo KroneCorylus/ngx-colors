@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import {
   ColorHelper,
   NGX_COLORS_CONFIG,
+  NGX_COLORS_LABELS,
   NgxColorsComponent,
   NgxColorsConfiguration,
   NgxColorsTriggerDirective,
@@ -65,6 +66,7 @@ export type ColorsApiResponseType = {
           alpha: 1,
         },
         overlayClass: '_default-overlay',
+        labels: { accept: 'OK', cancel: 'NAH' },
       },
     },
   ],

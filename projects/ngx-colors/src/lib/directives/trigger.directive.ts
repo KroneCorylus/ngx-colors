@@ -149,6 +149,7 @@ export class NgxColorsTriggerDirective
     this.destroy$.complete();
   }
   public ngOnChanges(changes: SimpleChanges): void {
+    this.applyConfig();
     if (changes['palette']) {
       this.setPalette(changes['palette'].currentValue);
     }

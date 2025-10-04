@@ -105,6 +105,27 @@ export class AppComponent implements OnInit {
 
   html = document.documentElement;
 
+  displayOptions = {
+    text: true,
+    sliders: true,
+    palette: true,
+  };
+
+  public onClickChangeDisplay() {
+    if (this.displayOptions.palette) {
+      this.displayOptions = {
+        text: true,
+        sliders: true,
+        palette: false,
+      };
+    } else {
+      this.displayOptions = {
+        text: true,
+        sliders: true,
+        palette: true,
+      };
+    }
+  }
   ngOnInit(): void {
     this.setRequest('3A02A9');
   }
@@ -135,7 +156,7 @@ export class AppComponent implements OnInit {
   }
 
   public logEvent(who: string, event: string, value: any) {
-    this.events.push({ who, event, value: value.toString() });
+    this.events.push({ who, event, value: value?.toString() ?? 'undefined' });
   }
   public clearLog() {
     this.events.length = 0;

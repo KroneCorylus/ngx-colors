@@ -173,6 +173,9 @@
       [display]="{ text: true, palette: true }"
     ></ngx-colors>
     <br />
+    changeConfig
+    <button (click)="this.onClickChangeDisplay()">changeDisplay</button>
+    <ngx-colors ngxColorsTrigger [display]="displayOptions"></ngx-colors>
   </div>
   <div
     id="logger"

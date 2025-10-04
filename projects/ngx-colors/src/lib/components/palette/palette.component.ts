@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -37,7 +38,10 @@ import { StateService } from '../../services/state.service';
 export class PaletteComponent
   implements OnInit, ControlValueAccessor, OnDestroy
 {
-  constructor(public stateService: StateService) {}
+  constructor(
+    public stateService: StateService,
+    private cd: ChangeDetectorRef,
+  ) {}
   private destroy$: Subject<void> = new Subject<void>();
   private value: Rgba | undefined = undefined;
   public disabled: boolean = false;
@@ -91,6 +95,7 @@ export class PaletteComponent
         },
         complete: () => {
           this.loading = false;
+          this.cd.detectChanges();
         },
       });
     } else {

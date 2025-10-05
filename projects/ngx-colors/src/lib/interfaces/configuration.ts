@@ -5,6 +5,7 @@ import { InjectionToken } from '@angular/core';
 import { ColorOption } from '../types/color-option';
 import {
   AnimationOptions,
+  ConfirmationRequiredOptions,
   DisplayOptions,
   LayoutOptions,
   LockValuesOptions,
@@ -25,4 +26,5 @@ export interface NgxColorsConfiguration {
   overlayClass?: string | undefined;
   overlayAttachTo?: string | HTMLElement | undefined;
   labels?: Labels | undefined;
+  confirmationRequired?: ConfirmationRequiredOptions;
 }

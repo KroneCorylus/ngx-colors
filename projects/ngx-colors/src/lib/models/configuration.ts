@@ -3,6 +3,7 @@ import { NgxColorsConfiguration } from '../interfaces/configuration';
 import { ColorOption } from '../types/color-option';
 import {
   AnimationOptions,
+  ConfirmationRequiredOptions,
   DisplayOptions,
   LayoutOptions,
   LockValuesOptions,
@@ -44,6 +45,11 @@ export class Configuration implements NgxColorsConfiguration {
     accept: 'ACCEPT',
     cancel: 'CANCEL',
   };
+  public confirmationRequired?: ConfirmationRequiredOptions | undefined = {
+    palette: false,
+    text: false,
+    sliders: true,
+  };
 
   constructor(...configOverwrites: NgxColorsConfiguration[]) {
     for (const overwrite of configOverwrites) {
@@ -79,6 +85,12 @@ export class Configuration implements NgxColorsConfiguration {
       }
       if (overwrite.labels !== undefined) {
         this.labels = { ...this.labels, ...overwrite.labels };
+      }
+      if (overwrite.confirmationRequired !== undefined) {
+        this.confirmationRequired = {
+          ...this.confirmationRequired,
+          ...overwrite.confirmationRequired,
+        };
       }
     }
   }

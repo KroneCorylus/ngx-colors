@@ -29,6 +29,7 @@ import {
 import { Configuration } from '../models/configuration';
 import {
   AnimationOptions,
+  ConfirmationRequiredOptions,
   DisplayOptions,
   LayoutOptions,
   LockValuesOptions,
@@ -36,6 +37,7 @@ import {
 import { ColorModel } from '../types/color-model';
 import { IColorModel } from '../interfaces/color-format';
 import { Labels, NGX_COLORS_LABELS } from '../interfaces/labels';
+import { isInputOrigin } from '../types/changes';
 
 @Directive({
   selector: '[ngxColorsTrigger]',
@@ -106,32 +108,45 @@ export class NgxColorsTriggerDirective
   public overlayAttachTo: string | HTMLElement | undefined;
   @Input()
   public labels: Labels | undefined;
-
+  @Input()
+  public confirmationRequired: ConfirmationRequiredOptions | undefined;
   public ngOnInit(): void {
-    console.log(this.overlayClass);
+    this.stateService.sliderChange$.subscribe((r) => {
+      console.log('r', r);
+    });
     this.setPalette(this.palette);
 
-    this.stateService.state.subscribe((value) => {
-      if (value) {
-        let color: IColorModel | string = value;
+    this.stateService.state.subscribe((state) => {
+      console.log(state);
+      let newValue = null;
+      if (state?.value) {
+        let color: IColorModel | string = state.value;
         if (this.stateService.configuration.outputModel == 'AUTO') {
           color = ColorHelper.rgbaToColorModel(
-            value,
+            state.value,
             this.stateService.colorModel,
           );
         } else {
           color = ColorHelper.rgbaToColorModel(
-            value,
+            state.value,
             this.stateService.configuration.outputModel,
           );
         }
-        this.value = color.toString();
-        this.onChange(this.value);
-        this.overlayService.removePanel();
-        return;
+        newValue = color.toString();
       }
-      this.value = null;
-      this.onChange(null);
+      this.value = newValue;
+      this.onChange(this.value);
+      if (state.origin == 'confirm') {
+        this.overlayService.removePanel();
+      }
+      if (
+        isInputOrigin(state.origin) &&
+        !this.stateService.configuration.confirmationRequired?.[state.origin]
+      ) {
+        if (state.origin == 'palette') {
+          this.overlayService.removePanel();
+        }
+      }
     });
     this.applyConfig();
   }
@@ -187,9 +202,9 @@ export class NgxColorsTriggerDirective
         this.stateService.colorModel = model;
       }
       const rgba = ColorHelper.stringToRgba(value);
-      this.stateService.set(rgba);
+      this.stateService.set({ value: rgba, origin: 'state' });
     } else {
-      this.stateService.set(null);
+      this.stateService.set({ value: null, origin: 'state' });
     }
     this.value = value;
   }

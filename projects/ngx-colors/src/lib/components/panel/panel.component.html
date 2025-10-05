@@ -68,7 +68,11 @@
       [formControl]="this.textInputCtrl"
     ></ngx-colors-text-input>
   }
-  @if (this.stateService.configuration.layout !== "pages") {
+  @if (
+    this.stateService.configuration.layout !== "pages" ||
+    this.stateService.configuration.confirmationRequired?.palette ||
+    this.stateService.configuration.confirmationRequired?.text
+  ) {
     <div class="_palette-controls">
       <ng-container [ngTemplateOutlet]="confirmation"></ng-container>
     </div>

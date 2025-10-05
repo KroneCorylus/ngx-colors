@@ -15,6 +15,7 @@
           <ngx-colors
             ngxColorsTrigger
             [palette]="this.request"
+            layout="pages"
             style=""
             outputModel="HSVA"
             [formControl]="testCtrl"
@@ -37,7 +38,9 @@
           <ngx-colors
             ngxColorsTrigger
             style=""
+            layout="pages"
             [(ngModel)]="test"
+            (onSliderChange)="logEvent('control', 'onSliderChange', $event)"
             (ngModelChange)="logEvent('ngModel', 'ngModelChange', $event)"
           ></ngx-colors>
         </td>
@@ -176,6 +179,18 @@
     changeConfig
     <button (click)="this.onClickChangeDisplay()">changeDisplay</button>
     <ngx-colors ngxColorsTrigger [display]="displayOptions"></ngx-colors>
+    <br />
+    confirmation
+    <ngx-colors
+      ngxColorsTrigger
+      [confirmationRequired]="{ palette: true, text: true, sliders: true }"
+      layout="pages"
+    ></ngx-colors>
+    <ngx-colors
+      ngxColorsTrigger
+      [confirmationRequired]="{ palette: true, text: true, sliders: true }"
+      layout="full-vertical"
+    ></ngx-colors>
   </div>
   <div
     id="logger"

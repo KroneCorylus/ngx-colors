@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
   ColorHelper,
@@ -88,7 +88,10 @@ export type ColorsApiResponseType = {
   ],
 })
 export class AppComponent implements OnInit {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    public cd: ChangeDetectorRef,
+  ) {}
   title = 'ngx-colors-examples';
 
   test: string | undefined | null = 'rgba(255,0,255,0.5)';
@@ -157,6 +160,7 @@ export class AppComponent implements OnInit {
 
   public logEvent(who: string, event: string, value: any) {
     this.events.push({ who, event, value: value?.toString() ?? 'undefined' });
+    this.cd.detectChanges();
   }
   public clearLog() {
     this.events.length = 0;

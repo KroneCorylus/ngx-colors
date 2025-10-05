@@ -13,8 +13,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Rgba } from '../../models/rgba';
-import { Subject, map, merge, take, takeUntil, tap } from 'rxjs';
-import { Changes } from '../../types/changes';
+import { Subject, forkJoin, map, merge, take, takeUntil, tap } from 'rxjs';
+import { Changes, isInputOrigin } from '../../types/changes';
 import { StateService } from '../../services/state.service';
 import { CommonModule } from '@angular/common';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
@@ -51,7 +51,6 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   private destroy$: Subject<void> = new Subject<void>();
-  public showSliders: boolean = false;
 
   public paletteCtrl: FormControl<Rgba | null | undefined> = new FormControl<
     Rgba | undefined
@@ -71,13 +70,13 @@ export class PanelComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     merge(
       this.stateService.state.pipe(
-        map<Rgba | null | undefined, Changes>((newValue) => {
-          return { value: newValue, origin: 'trigger' };
+        map<Changes, Changes>((state: Changes) => {
+          return { value: state.value, origin: 'state' };
         }),
       ),
       this.textInputCtrl.valueChanges.pipe(
         map<Rgba | null | undefined, Changes>((newValue) => {
-          return { value: newValue, origin: 'text-input' };
+          return { value: newValue, origin: 'text' };
         }),
       ),
       this.slidersCtrl.valueChanges.pipe(
@@ -85,7 +84,7 @@ export class PanelComponent implements OnInit, OnDestroy {
           this.stateService.sliderChange$.emit(value);
         }),
         map<Rgba | null | undefined, Changes>((newValue) => {
-          return { value: newValue, origin: 'color-picker' };
+          return { value: newValue, origin: 'sliders' };
         }),
       ),
       this.paletteCtrl.valueChanges.pipe(
@@ -96,8 +95,8 @@ export class PanelComponent implements OnInit, OnDestroy {
     )
       .pipe(takeUntil(this.destroy$))
       .subscribe((changes) => {
-        this.tempValue = changes.value;
-        this.updateCtrlValues(changes.value, changes.origin);
+        this.stateService.setTemp(changes);
+        this.updateCtrlValues(changes);
       });
     //CONFIG AUX
     if (this.stateService.configuration.display.palette === false) {
@@ -113,36 +112,42 @@ export class PanelComponent implements OnInit, OnDestroy {
   public onPaletteColorHover(color: Rgba | undefined) {
     this.stateService.paleteColorHover$.emit(color);
   }
-  private updateCtrlValues(
-    value: Rgba | null | undefined,
-    origin:
-      | 'text-input'
-      | 'color-picker'
-      | 'trigger'
-      | 'palette'
-      | undefined = undefined,
-  ) {
-    if (origin == 'palette') {
-      this.stateService.set(value);
+
+  private updateCtrlValues(state: Changes) {
+    if (!state) {
+      return;
     }
-    if (origin != 'palette') {
-      this.paletteCtrl.setValue(value, { emitEvent: false });
+    if (isInputOrigin(state.origin)) {
+      if (
+        !this.stateService.configuration.confirmationRequired?.[state.origin]
+      ) {
+        this.stateService.set(state);
+      }
     }
-    if (origin != 'text-input') {
-      this.textInputCtrl.setValue(value, { emitEvent: false });
+    if (state.origin != 'palette') {
+      this.paletteCtrl.setValue(state.value, { emitEvent: false });
     }
-    if (origin != 'color-picker') {
-      this.slidersCtrl.setValue(value, { emitEvent: false });
+    if (state.origin != 'text') {
+      this.textInputCtrl.setValue(state.value, { emitEvent: false });
+    }
+    if (state.origin != 'sliders') {
+      this.slidersCtrl.setValue(state.value, { emitEvent: false });
+      console.log('sliderVlaue', this.slidersCtrl.value);
+      console.log('set value sliders', state.value);
     }
   }
 
   public accept() {
-    this.stateService.set(this.tempValue);
+    this.stateService.temp.pipe(take(1)).subscribe((tempValue) => {
+      console.log('value temp', tempValue);
+      this.stateService.set({ value: tempValue.value, origin: 'confirm' });
+    });
   }
+
   public cancel() {
-    this.stateService.state
-      .pipe(take(1))
-      .subscribe((res) => this.updateCtrlValues(res));
+    this.stateService.state.pipe(take(1)).subscribe((value) => {
+      this.stateService.set(value);
+    });
   }
 
   public onClickBack() {

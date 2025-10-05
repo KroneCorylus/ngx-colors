@@ -11,4 +11,9 @@ export type LockValuesOptions = {
   brightness?: number | undefined;
   alpha?: number | undefined;
 };
+export type ConfirmationRequiredOptions = {
+  palette: boolean;
+  text: boolean;
+  sliders: boolean;
+};
 export type AnimationOptions = 'popup' | 'slide';

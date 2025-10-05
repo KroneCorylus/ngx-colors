@@ -80,6 +80,9 @@ export class ColorPickerComponent
     const value = changes['value'].currentValue;
     this.setValue(value);
   }
+  ngAfterViewInit() {
+    this.setThumbs();
+  }
 
   private getHSVA(): Hsva {
     let hue = 1;
@@ -102,6 +105,7 @@ export class ColorPickerComponent
   }
 
   private setValue(value: Rgba | undefined, emitEvent: boolean = true) {
+    console.log('magia', value);
     if (!value) {
       this._value = this.getHSVA();
       this._hue = new Hsva(this._value.h, 1, 1, 1);
@@ -128,13 +132,17 @@ export class ColorPickerComponent
       new Hsva(this._value.h, 1, this._value.v, 1),
     );
     this.bgs = this.getGradient(left, right);
-    this.slSlider?.setThumbPosition(this._value.s, 1 - this._value.v);
-    this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
-    this.alphaSlider?.setThumbPosition(this._value.a, 0);
+    this.setThumbs();
     this.cdr.detectChanges();
     if (emitEvent) {
       this.onChange(this.value);
     }
+  }
+
+  private setThumbs() {
+    this.slSlider?.setThumbPosition(this._value.s, 1 - this._value.v);
+    this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
+    this.alphaSlider?.setThumbPosition(this._value.a, 0);
   }
 
   //Fired on change of slider directive.
@@ -214,6 +222,7 @@ export class ColorPickerComponent
       });
   }
   writeValue(obj: Rgba | undefined): void {
+    console.log('sliders writeValue', obj);
     this.value = obj;
     this.setValue(obj, false);
   }

@@ -1,21 +1,34 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Observer } from 'rxjs';
 import { Rgba } from '../models/rgba';
 import { ColorOption } from '../types/color-option';
 import { Configuration } from '../models/configuration';
 import { ColorModel } from '../types/color-model';
+import { Changes } from '../types/changes';
 
 @Injectable()
 export class StateService {
-  private _state = new BehaviorSubject<Rgba | undefined | null>(undefined);
+  private _state = new BehaviorSubject<Changes>({
+    value: null,
+    origin: 'state',
+  });
   public state = this._state.asObservable();
+
+  private _temp = new BehaviorSubject<Changes>({
+    value: null,
+    origin: 'state',
+  });
+  public temp = this._temp.asObservable();
 
   constructor() {}
 
-  set(value: Rgba | undefined | null) {
-    this._state.next(value);
+  public setTemp(value: Changes) {
+    return this._temp.next(value);
   }
 
+  public set(value: Changes) {
+    return this._state.next(value);
+  }
   public palette$: Observable<ColorOption[]> | undefined = undefined;
 
   public sliderChange$: EventEmitter<Rgba | null> =

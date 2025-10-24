@@ -111,9 +111,6 @@ export class NgxColorsTriggerDirective
   @Input()
   public confirmationRequired: ConfirmationRequiredOptions | undefined;
   public ngOnInit(): void {
-    this.stateService.sliderChange$.subscribe((r) => {
-      console.log('r', r);
-    });
     this.setPalette(this.palette);
 
     this.stateService.state.subscribe((state) => {

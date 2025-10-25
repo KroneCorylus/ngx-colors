@@ -3,7 +3,7 @@
   padding: 24px;
   background: #f3f5fb;
   color: #1f2933;
-  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 .page {
@@ -139,7 +139,9 @@
     color: #ffffff;
     font-size: 13px;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
 
     &:nth-child(2) {
       background: #0ea5e9;
@@ -166,6 +168,62 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 16px;
+}
+
+.snippet-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.snippet-tabs {
+  display: inline-flex;
+  background: rgba(148, 163, 184, 0.12);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+
+  button {
+    border: none;
+    background: transparent;
+    color: #475569;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+    &.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+    }
+  }
+}
+
+.snippet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+    overflow: auto;
+    max-height: 360px;
+  }
+
+  code {
+    display: block;
+    white-space: pre;
+  }
 }
 
 fieldset {
@@ -198,15 +256,17 @@ label {
   }
 
   select,
-  input[type='text'],
-  input[type='number'] {
+  input[type="text"],
+  input[type="number"] {
     padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid #cbd5f5;
     background: #ffffff;
     font-size: 14px;
     color: #0f172a;
-    transition: border 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      border 0.15s ease,
+      box-shadow 0.15s ease;
 
     &:focus {
       outline: none;
@@ -227,7 +287,7 @@ label {
   gap: 10px;
   font-weight: 500;
 
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     width: 16px;
     height: 16px;
     accent-color: #2563eb;
@@ -352,7 +412,9 @@ label {
     color: #ffffff;
     font-size: 13px;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
 
     &:hover {
       transform: translateY(-1px);
@@ -461,7 +523,7 @@ label {
 }
 
 code {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
 }
 
 @media (max-width: 1080px) {

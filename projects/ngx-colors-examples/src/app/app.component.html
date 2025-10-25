@@ -249,6 +249,33 @@
         </form>
       </section>
 
+      <section class="card snippet-card">
+        <div class="card__header">
+          <h2>Generated Snippets</h2>
+          <p>Review the configuration object or copy the Angular markup that matches the current setup.</p>
+        </div>
+        <div class="snippet-tabs">
+          <button
+            type="button"
+            [class.active]="activeSnippet === 'config'"
+            (click)="setActiveSnippet('config')"
+          >
+            Configuration JSON
+          </button>
+          <button
+            type="button"
+            [class.active]="activeSnippet === 'html'"
+            (click)="setActiveSnippet('html')"
+          >
+            Angular HTML
+          </button>
+        </div>
+        <div class="snippet-body">
+          <pre><code [innerText]="activeSnippet === 'config' ? configJson : htmlSnippet"></code></pre>
+          <p class="hint" *ngIf="paletteSummary">{{ paletteSummary }}</p>
+        </div>
+      </section>
+
       <section class="card">
         <div class="card__header">
           <h2>Binding Examples</h2>

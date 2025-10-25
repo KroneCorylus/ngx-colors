@@ -20,7 +20,7 @@
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, transparent 100%);
 }
 ._horizontal-slider {
-  max-height: 30px;
+  height: 30px;
 }
 
 ._preview {
@@ -29,6 +29,7 @@
 }
 ._sl-box {
   height: 63%;
+  min-height: 130px;
   cursor: crosshair;
 }
 ._hue-alpha-box {

@@ -1,6 +1,8 @@
 <div class="elevation-z2 bg-white main flex flex-col">
   @if (
     this.stateService.configuration.layout == "pages" &&
+    this.stateService.configuration.display.sliders &&
+    this.stateService.configuration.confirmationRequired?.sliders &&
     this.currentPage == "sliders"
   ) {
     <div class="_palette-controls px-3">
@@ -26,8 +28,9 @@
     "
   >
     @if (
-      this.stateService.configuration.layout != "pages" ||
-      this.currentPage === "sliders"
+      (this.stateService.configuration.layout != "pages" ||
+        this.currentPage === "sliders") &&
+      this.stateService.configuration.display.sliders
     ) {
       <div style="height: 204px; width: 220px">
         <ngx-colors-color-picker [formControl]="this.slidersCtrl">
@@ -69,9 +72,13 @@
     ></ngx-colors-text-input>
   }
   @if (
-    this.stateService.configuration.layout !== "pages" ||
-    this.stateService.configuration.confirmationRequired?.palette ||
-    this.stateService.configuration.confirmationRequired?.text
+    (this.stateService.configuration.layout !== "pages" &&
+      this.stateService.configuration.display.sliders &&
+      this.stateService.configuration.confirmationRequired?.sliders) ||
+    (this.stateService.configuration.display.palette &&
+      this.stateService.configuration.confirmationRequired?.palette) ||
+    (this.stateService.configuration.display.text &&
+      this.stateService.configuration.confirmationRequired?.text)
   ) {
     <div class="_palette-controls">
       <ng-container [ngTemplateOutlet]="confirmation"></ng-container>

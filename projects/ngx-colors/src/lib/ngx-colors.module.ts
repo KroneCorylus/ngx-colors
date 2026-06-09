@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { NgxColorsComponent } from "./ngx-colors.component";
 import { CommonModule } from "@angular/common";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ColorPickerComponent } from "./components/color-picker/color-picker.component";
 import { ConverterService } from "./services/converter.service";
 import { SliderDirective } from "./directives/slider.directive";

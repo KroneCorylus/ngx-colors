@@ -111,6 +111,30 @@ $radius: 5px;
     }
   }
 
+  // Staggered enter animation for the palette swatches. Replaces the legacy
+  // @angular/animations `colorsAnimation` trigger with pure CSS so the library
+  // no longer requires an animations provider at the consumer's bootstrap.
+  // The animation class (`slide-in` | `popup`) is set from `colorsAnimationEffect`.
+  .colors {
+    &.slide-in > * {
+      animation: ngx-colors-slide-in 0.3s ease-in both;
+    }
+    &.popup > * {
+      animation: ngx-colors-popup 0.5s ease-out both;
+    }
+
+    // Reproduce the original 10ms-per-item stagger via incremental delays.
+    // The cap (200) only bounds how many swatches get a *staggered* delay;
+    // swatch 201+ still animate, just without an extra per-item offset. 200 is
+    // well beyond any realistic palette while keeping the generated CSS small.
+    @for $i from 1 through 200 {
+      &.slide-in > *:nth-child(#{$i}),
+      &.popup > *:nth-child(#{$i}) {
+        animation-delay: #{($i - 1) * 10}ms;
+      }
+    }
+  }
+
   .color-picker-wrapper {
     margin: 5px 15px 5px 15px;
   }
@@ -168,3 +192,37 @@ $radius: 5px;
   }
 }
 // }
+
+@keyframes ngx-colors-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+  30% {
+    opacity: 0.5;
+    transform: translateX(-10px) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ngx-colors-popup {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  30% {
+    opacity: 0.5;
+    transform: scale(0.5);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

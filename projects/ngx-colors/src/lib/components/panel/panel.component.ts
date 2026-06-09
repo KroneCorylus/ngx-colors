@@ -10,15 +10,6 @@ import {
   HostListener,
   HostBinding,
 } from '@angular/core';
-import {
-  trigger,
-  transition,
-  query,
-  style,
-  stagger,
-  animate,
-  keyframes,
-} from '@angular/animations';
 import { isDescendantOrSame } from '../../helpers/helpers';
 import { ColorFormats } from '../../enums/formats';
 import { ConverterService } from '../../services/converter.service';
@@ -32,53 +23,6 @@ import { NgxColorsColor } from '../../clases/color';
   selector: 'ngx-colors-panel',
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
-  animations: [
-    trigger('colorsAnimation', [
-      transition('void => slide-in', [
-        // Initially all colors are hidden
-        query(':enter', style({ opacity: 0 }), { optional: true }),
-        //slide-in animation
-        query(
-          ':enter',
-          stagger('10ms', [
-            animate(
-              '.3s ease-in',
-              keyframes([
-                style({ opacity: 0, transform: 'translatex(-50%)', offset: 0 }),
-                style({
-                  opacity: 0.5,
-                  transform: 'translatex(-10px) scale(1.1)',
-                  offset: 0.3,
-                }),
-                style({ opacity: 1, transform: 'translatex(0)', offset: 1 }),
-              ])
-            ),
-          ]),
-          { optional: true }
-        ),
-      ]),
-      //popup animation
-      transition('void => popup', [
-        query(':enter', style({ opacity: 0, transform: 'scale(0)' }), {
-          optional: true,
-        }),
-        query(
-          ':enter',
-          stagger('10ms', [
-            animate(
-              '500ms ease-out',
-              keyframes([
-                style({ opacity: 0.5, transform: 'scale(.5)', offset: 0.3 }),
-                style({ opacity: 1, transform: 'scale(1.1)', offset: 0.8 }),
-                style({ opacity: 1, transform: 'scale(1)', offset: 1 }),
-              ])
-            ),
-          ]),
-          { optional: true }
-        ),
-      ]),
-    ]),
-  ],
 })
 export class PanelComponent implements OnInit {
   @HostListener('document:mousedown', ['$event'])
@@ -109,7 +53,7 @@ export class PanelComponent implements OnInit {
   public previewColor: string = '#000000';
   public hsva = new Hsva(0, 1, 1, 1);
 
-  public colorsAnimationEffect = 'slide-in';
+  public colorsAnimationEffect: 'slide-in' | 'popup' = 'slide-in';
 
   public palette = defaultColors;
   public variants = [];
@@ -188,7 +132,7 @@ export class PanelComponent implements OnInit {
     triggerElementRef,
     color,
     palette,
-    animation,
+    animation: 'slide-in' | 'popup',
     format: string,
     hideTextInput: boolean,
     hideColorPicker: boolean,

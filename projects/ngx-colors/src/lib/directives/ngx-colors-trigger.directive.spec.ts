@@ -5,7 +5,6 @@ import { NgxColorsComponent } from '../ngx-colors.component';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 
 describe('NgxColorsTriggerDirective', () => {
@@ -64,11 +63,9 @@ describe('NgxColorsTriggerDirective', () => {
         const testHostComponent = TestHostComponent;
 
         beforeEach(async () => {
-            await TestBed.configureTestingModule({
-                providers: [
-                    provideNoopAnimations(),
-                ],
-            }).compileComponents();
+            // No animations provider is registered on purpose: ngx-colors must
+            // work without one now that the panel uses pure-CSS animations.
+            await TestBed.configureTestingModule({}).compileComponents();
 
             fixture = TestBed.createComponent(testHostComponent);
             hostComponent = fixture.componentInstance;
@@ -140,11 +137,9 @@ describe('NgxColorsTriggerDirective', () => {
         const testHostComponent = TestHostComponent;
 
         beforeEach(async () => {
-            await TestBed.configureTestingModule({
-                providers: [
-                    provideNoopAnimations(),
-                ],
-            }).compileComponents();
+            // No animations provider is registered on purpose: ngx-colors must
+            // work without one now that the panel uses pure-CSS animations.
+            await TestBed.configureTestingModule({}).compileComponents();
 
             fixture = TestBed.createComponent(testHostComponent);
             hostComponent = fixture.componentInstance;

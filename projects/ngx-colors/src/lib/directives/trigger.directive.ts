@@ -21,7 +21,6 @@ import { OverlayService } from '../services/overlay.service';
 import { ColorHelper } from '../utility/color-helper';
 import { StateService } from '../services/state.service';
 import { ColorOption } from '../types/color-option';
-import { defaultColors } from '../utility/default-colors';
 import { Rgba } from '../models/rgba';
 import {
   NGX_COLORS_CONFIG,
@@ -132,7 +131,7 @@ export class NgxColorsTriggerDirective
     | Observable<ColorOption[]>
     | ColorOption[]
     | Array<NgxColorsColor>
-    | undefined = defaultColors;
+    | undefined;
   @Input()
   public animation: AnimationOptions | undefined;
   @Input()
@@ -195,7 +194,8 @@ export class NgxColorsTriggerDirective
   // ---- end of v3 compatibility block ----
 
   public ngOnInit(): void {
-    this.setPalette(this.palette);
+    this.applyConfig();
+    this.setPalette(this.stateService.configuration.palette);
 
     this.stateService.state.pipe(takeUntil(this.destroy$)).subscribe((state) => {
       const newValue: string | null = state?.value
@@ -225,7 +225,6 @@ export class NgxColorsTriggerDirective
       }
     });
     this.initLegacyOutputs();
-    this.applyConfig();
   }
 
   private rgbaToOutputString(value: Rgba): string {
@@ -251,6 +250,9 @@ export class NgxColorsTriggerDirective
         outputModel: this.outputModel,
         allowedModels: this.allowedModels,
         eyedropper: this.eyedropper,
+        palette: Array.isArray(this.palette)
+          ? translateLegacyPalette(this.palette)
+          : this.palette,
         animation: this.animation,
         overlayClass: this.overlayClass,
         overlayAttachTo: this.overlayAttachTo,
@@ -273,7 +275,7 @@ export class NgxColorsTriggerDirective
   public ngOnChanges(changes: SimpleChanges): void {
     this.applyConfig();
     if (changes['palette']) {
-      this.setPalette(changes['palette'].currentValue);
+      this.setPalette(this.stateService.configuration.palette);
     }
     if (changes['color']) {
       this.applyExternalValue(changes['color'].currentValue);

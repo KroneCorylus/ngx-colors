@@ -1,4 +1,5 @@
-import { Component, DebugElement, SimpleChange } from '@angular/core';
+import { Component, DebugElement, SimpleChange, Type } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxColorsTriggerDirective } from './trigger.directive';
 import { NgxColorsComponent } from '../../public-api';
@@ -965,7 +966,8 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
     expect(emissions).toEqual([]);
   });
 
-  it('applies the palette passed through ngOnChanges rather than the current input value', (done) => {
+  it('applies an updated [palette] input to the palette stream', (done) => {
+    directive.palette = ['#123456'];
     directive.ngOnChanges({
       palette: new SimpleChange(undefined, ['#123456'], false),
     });
@@ -977,5 +979,71 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
       expect(colors).toEqual(['#123456']);
       done();
     });
+  });
+});
+
+@Component({
+  template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
+})
+class TokenPaletteHostComponent {
+  value: string | null = '#ff00ff';
+}
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      [palette]="palette"
+    ></ngx-colors>
+  `,
+})
+class TokenPlusInputPaletteHostComponent {
+  value: string | null = '#ff00ff';
+  palette = ['#abcdef'];
+}
+
+describe('NgxColorsTriggerDirective palette via NGX_COLORS_CONFIG', () => {
+  function setup<T>(host: Type<T>): StateService {
+    TestBed.configureTestingModule({
+      declarations: [host],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
+      providers: [
+        {
+          provide: NGX_COLORS_CONFIG,
+          useValue: { palette: ['#123456', '#654321'] },
+        },
+      ],
+    });
+    const fixture = TestBed.createComponent(host);
+    fixture.detectChanges();
+    return fixture.debugElement
+      .query(By.directive(NgxColorsTriggerDirective))
+      .injector.get(StateService);
+  }
+
+  it('feeds the palette stream from the global config when no input is bound', async () => {
+    const stateService = setup(TokenPaletteHostComponent);
+    if (!stateService.palette$) {
+      fail('palette$ should be defined');
+      return;
+    }
+    const colors = await firstValueFrom(stateService.palette$);
+    expect(colors).toEqual(['#123456', '#654321']);
+  });
+
+  it('lets the [palette] input win over the global config', async () => {
+    const stateService = setup(TokenPlusInputPaletteHostComponent);
+    if (!stateService.palette$) {
+      fail('palette$ should be defined');
+      return;
+    }
+    const colors = await firstValueFrom(stateService.palette$);
+    expect(colors).toEqual(['#abcdef']);
   });
 });

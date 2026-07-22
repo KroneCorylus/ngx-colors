@@ -16,7 +16,7 @@ import {
   forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, of, shareReplay } from 'rxjs';
+import { Observable, Subject, of, shareReplay, takeUntil } from 'rxjs';
 import { OverlayService } from '../services/overlay.service';
 import { ColorHelper } from '../utility/color-helper';
 import { StateService } from '../services/state.service';
@@ -145,8 +145,8 @@ export class NgxColorsTriggerDirective
   public ngOnInit(): void {
     this.setPalette(this.palette);
 
-    this.stateService.state.subscribe((state) => {
-      let newValue = null;
+    this.stateService.state.pipe(takeUntil(this.destroy$)).subscribe((state) => {
+      let newValue: string | null = null;
       if (state?.value) {
         let color: IColorModel | string = state.value;
         if (this.stateService.configuration.outputModel == 'AUTO') {
@@ -162,9 +162,14 @@ export class NgxColorsTriggerDirective
         }
         newValue = color.toString();
       }
+      const changed = (newValue ?? null) !== (this.value ?? null);
+      const userDriven =
+        isInputOrigin(state.origin) || state.origin === 'confirm';
       this.value = newValue;
-      this.colorChange.emit(this.value);
-      if (isInputOrigin(state.origin) || state.origin === 'confirm') {
+      if (changed || userDriven) {
+        this.colorChange.emit(this.value);
+      }
+      if (userDriven) {
         this.onChange(this.value);
         this.userChange.emit(this.value);
       }
@@ -228,10 +233,10 @@ export class NgxColorsTriggerDirective
     palette: Observable<ColorOption[]> | ColorOption[] | undefined,
   ) {
     if (!palette) return;
-    if (Array.isArray(this.palette)) {
-      this.stateService.palette$ = of(this.palette);
-    } else if (this.palette instanceof Observable) {
-      this.stateService.palette$ = this.palette.pipe(shareReplay());
+    if (Array.isArray(palette)) {
+      this.stateService.palette$ = of(palette);
+    } else if (palette instanceof Observable) {
+      this.stateService.palette$ = palette.pipe(shareReplay());
     } else {
       throw new Error('The palette provided is not of a valid type');
     }

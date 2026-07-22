@@ -18,16 +18,20 @@ export class Hsla implements IColorModel {
     );
   }
   public toString(): string {
+    const h = round(this.h, 0);
+    const s = round(this.s * 100, 0);
+    const l = round(this.l * 100, 0);
+    const a = round(this.a, 2);
     const output =
       'hsl' +
-      (this.a != 1 ? 'a(' : '(') +
-      this.h +
+      (a != 1 ? 'a(' : '(') +
+      h +
       ', ' +
-      this.s +
+      s +
       '%, ' +
-      this.l +
+      l +
       '%' +
-      (this.a != 1 ? ', ' + this.a + ')' : ')');
+      (a != 1 ? ', ' + a + ')' : ')');
     return output;
   }
 }

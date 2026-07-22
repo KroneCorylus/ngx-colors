@@ -107,7 +107,7 @@ const mockStrings: Array<ColorEquivalence> = [
   {
     hex: ['#fff0', '#ffffff00'],
     rgba: 'rgba(255, 255, 255, 0.0)',
-    hsla: 'hsla(0, 0%, 100%, 0.0)',
+    hsla: ['hsla(0, 0%, 100%, 0.0)', 'hsla(0, 0%, 100%, 0)'],
     hsva: 'hsva(0, 0%, 100%, 0)',
     cmyk: '',
   },
@@ -125,7 +125,7 @@ const mockStrings: Array<ColorEquivalence> = [
       'rgba(255, 100, 0, 0.50)',
       'rgba(255, 102, 0, 0.50)',
     ],
-    hsla: 'hsla(24, 100%, 50%, 0.50)',
+    hsla: ['hsla(24, 100%, 50%, 0.50)', 'hsla(24, 100%, 50%, 0.5)'],
     hsva: 'hsva(24, 100%, 100%, 0.5)',
     cmyk: '',
   },
@@ -139,7 +139,7 @@ const mockStrings: Array<ColorEquivalence> = [
   {
     hex: ['#f5c38ede', '#f5c48ede'],
     rgba: ['rgba(245, 195, 142, 0.87)', 'rgba(245, 196, 142, 0.87)'],
-    hsla: 'hsla(31, 84%, 76%, 0.87)',
+    hsla: ['hsla(31, 84%, 76%, 0.87)', 'hsla(31, 83%, 76%, 0.87)'],
     hsva: 'hsva(31, 42%, 96%, 0.87)',
     cmyk: '',
   },
@@ -221,6 +221,12 @@ describe('Convert string to HSVA string', () => {
   const keys = ['rgba', 'hsla', 'hex', 'hsva'];
   const convertTo = 'hsva';
   iterateTests(keys, convertTo, 'HSVA');
+});
+
+describe('Convert string to HSLA string', () => {
+  const keys = ['rgba', 'hex', 'hsva', 'cmyk'];
+  const convertTo = 'hsla';
+  iterateTests(keys, convertTo, 'HSLA');
 });
 
 describe('Get ColorModel from string', () => {

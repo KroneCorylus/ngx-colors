@@ -1,4 +1,4 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxColorsTriggerDirective } from './trigger.directive';
 import { NgxColorsComponent } from '../../public-api';
@@ -729,5 +729,86 @@ describe('NgxColorsTriggerDirective outputModel: "AUTO" literal binding', () => 
     fixture.detectChanges();
 
     expect(fixture.componentInstance.value).toBe('#00ff00');
+  });
+});
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      (colorChange)="onColorChange($event)"
+    ></ngx-colors>
+  `,
+})
+class NoInitialValueHostComponent {
+  colorChanges: Array<string | null | undefined> = [];
+  onColorChange(v: string | null | undefined) {
+    this.colorChanges.push(v);
+  }
+}
+
+describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
+  let fixture: ComponentFixture<NoInitialValueHostComponent>;
+  let directive: NgxColorsTriggerDirective;
+  let stateService: StateService;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [NoInitialValueHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(NoInitialValueHostComponent);
+    fixture.detectChanges();
+    const de = fixture.debugElement.query(
+      By.directive(NgxColorsTriggerDirective),
+    );
+    directive = de.injector.get(NgxColorsTriggerDirective);
+    stateService = de.injector.get(StateService);
+  });
+
+  it('does not emit colorChange(null) on init when no value is bound', () => {
+    expect(fixture.componentInstance.colorChanges).toEqual([]);
+  });
+
+  it('does not re-emit colorChange for a programmatic write of the same value', () => {
+    stateService.set({ value: new Rgba(1, 2, 3, 1), origin: 'state' });
+    stateService.set({ value: new Rgba(1, 2, 3, 1), origin: 'state' });
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.colorChanges).toEqual(['rgb(1, 2, 3)']);
+  });
+
+  it('still emits colorChange for repeated user-driven picks of the same value', () => {
+    stateService.set({ value: new Rgba(1, 2, 3, 1), origin: 'palette' });
+    stateService.set({ value: new Rgba(1, 2, 3, 1), origin: 'palette' });
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.colorChanges.length).toBe(2);
+  });
+
+  it('stops reacting to state changes once the host is destroyed', () => {
+    const emissions: Array<string | null | undefined> = [];
+    directive.colorChange.subscribe((v: string | null | undefined) =>
+      emissions.push(v),
+    );
+    fixture.destroy();
+    stateService.set({ value: new Rgba(9, 9, 9, 1), origin: 'state' });
+
+    expect(emissions).toEqual([]);
+  });
+
+  it('applies the palette passed through ngOnChanges rather than the current input value', (done) => {
+    directive.ngOnChanges({
+      palette: new SimpleChange(undefined, ['#123456'], false),
+    });
+    if (!stateService.palette$) {
+      fail('palette$ should be defined');
+      return;
+    }
+    stateService.palette$.subscribe((colors) => {
+      expect(colors).toEqual(['#123456']);
+      done();
+    });
   });
 });

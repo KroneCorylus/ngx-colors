@@ -833,6 +833,70 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
 
 @Component({
   template: `
+    <div dir="rtl">
+      <div
+        ngxColorsTrigger
+        [(ngModel)]="value"
+        style="position: fixed; top: 10px; width: 20px; height: 20px"
+      ></div>
+    </div>
+  `,
+})
+class RtlHostComponent {
+  value: string | null = '#ff00ff';
+}
+
+describe('NgxColorsTriggerDirective RTL positioning', () => {
+  let fixture: ComponentFixture<RtlHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [RtlHostComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(RtlHostComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    document.body
+      .querySelector('ngx-colors-overlay')
+      ?.dispatchEvent(new Event('pointerdown'));
+    fixture.detectChanges();
+  });
+
+  it('aligns the panel right edge with the trigger right edge under dir="rtl"', () => {
+    const trigger: HTMLElement =
+      fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+    trigger.style.left = '400px';
+
+    trigger.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const panel = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay ngx-colors-panel',
+    );
+    if (!panel) {
+      throw new Error('Expected an open panel in the document');
+    }
+    const panelRect = panel.getBoundingClientRect();
+    const triggerRect = trigger.getBoundingClientRect();
+
+    expect(panelRect.width).toBeGreaterThan(0);
+    expect(Math.abs(panelRect.right - triggerRect.right)).toBeLessThanOrEqual(
+      1,
+    );
+  });
+});
+
+@Component({
+  template: `
     <ngx-colors
       ngxColorsTrigger
       (colorChange)="onColorChange($event)"

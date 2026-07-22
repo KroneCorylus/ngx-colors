@@ -52,6 +52,42 @@ describe('computeOverlayPosition', () => {
     });
   });
 
+  describe('horizontal placement in RTL', () => {
+    it('aligns to the trigger right edge when there is enough room', () => {
+      const result = computeOverlayPosition(
+        trigger({ left: 700, right: 750, top: 0, bottom: 20 }),
+        PANEL,
+        VIEWPORT,
+        undefined,
+        'rtl',
+      );
+      expect(result.left).toBe(750 - PANEL.width);
+      expect(result.left + PANEL.width).toBe(750);
+    });
+
+    it('clamps to the left edge of the viewport when it would overflow', () => {
+      const result = computeOverlayPosition(
+        trigger({ left: 10, right: 60, top: 0, bottom: 20 }),
+        PANEL,
+        VIEWPORT,
+        undefined,
+        'rtl',
+      );
+      expect(result.left).toBe(0);
+    });
+
+    it('never places the panel past the right viewport edge even for off-screen triggers', () => {
+      const result = computeOverlayPosition(
+        trigger({ left: 1400, right: 1450, top: 0, bottom: 20 }),
+        PANEL,
+        VIEWPORT,
+        undefined,
+        'rtl',
+      );
+      expect(result.left).toBe(VIEWPORT.width - PANEL.width);
+    });
+  });
+
   describe('vertical placement', () => {
     it('opens below the trigger when there is enough room', () => {
       const result = computeOverlayPosition(

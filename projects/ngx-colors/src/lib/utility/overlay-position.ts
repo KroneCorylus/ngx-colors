@@ -17,11 +17,14 @@ export interface OverlayPosition {
 
 export type ForcedPosition = 'top' | 'bottom';
 
+export type OverlayDirection = 'ltr' | 'rtl';
+
 /**
  * Computes where to place the overlay panel relative to its trigger so it
  * stays inside the viewport instead of running off-screen:
- *  - Horizontally: aligned to the trigger's left edge, clamped so the panel
- *    never overflows the right (or left) edge of the viewport.
+ *  - Horizontally: aligned to the trigger's leading edge (left edge in LTR,
+ *    right edge in RTL), clamped so the panel never overflows either side of
+ *    the viewport.
  *  - Vertically: opens below the trigger by default, flips above it when
  *    there isn't enough room below but there is above, and otherwise clamps
  *    to the viewport as a last resort (panel taller than the viewport).
@@ -31,10 +34,11 @@ export function computeOverlayPosition(
   panel: OverlaySize,
   viewport: OverlaySize,
   forcedPosition?: ForcedPosition,
+  direction: OverlayDirection = 'ltr',
 ): OverlayPosition {
   return {
     top: clampVertical(trigger, panel, viewport, forcedPosition),
-    left: clampHorizontal(trigger, panel, viewport),
+    left: clampHorizontal(trigger, panel, viewport, direction),
   };
 }
 
@@ -42,9 +46,12 @@ function clampHorizontal(
   trigger: OverlayTriggerRect,
   panel: OverlaySize,
   viewport: OverlaySize,
+  direction: OverlayDirection,
 ): number {
   const maxLeft = Math.max(viewport.width - panel.width, 0);
-  return Math.min(Math.max(trigger.left, 0), maxLeft);
+  const preferredLeft =
+    direction === 'rtl' ? trigger.right - panel.width : trigger.left;
+  return Math.min(Math.max(preferredLeft, 0), maxLeft);
 }
 
 function clampVertical(

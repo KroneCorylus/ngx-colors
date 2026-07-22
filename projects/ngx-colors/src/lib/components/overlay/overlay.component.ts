@@ -103,11 +103,16 @@ export class OverlayComponent implements OnDestroy {
     if (!this.triggerNativeElement) return;
     const triggerRect = this.triggerNativeElement.getBoundingClientRect();
     const panelRect = this.panelElementRef.nativeElement.getBoundingClientRect();
+    const direction =
+      getComputedStyle(this.triggerNativeElement).direction === 'rtl'
+        ? 'rtl'
+        : 'ltr';
     const position = computeOverlayPosition(
       triggerRect,
       { width: panelRect.width, height: panelRect.height },
       { width: window.innerWidth, height: window.innerHeight },
       this.stateService.configuration.position,
+      direction,
     );
     this.x = position.left;
     this.y = position.top;

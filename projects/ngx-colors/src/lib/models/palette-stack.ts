@@ -23,6 +23,8 @@ export class PaletteStack {
 
   public clear(): void {
     this.items.length = 0;
+    this.peek = [];
+    this.size = 0;
   }
 
   private updateState() {

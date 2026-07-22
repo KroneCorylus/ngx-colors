@@ -122,3 +122,82 @@ describe('NgxColorsTriggerDirective overlay cleanup', () => {
     expect(overlayCount()).toBe(0);
   });
 });
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      (open)="onOpen()"
+      (close)="onClose()"
+    ></ngx-colors>
+  `,
+})
+class OpenCloseHostComponent {
+  value = '#ff00ff';
+  openCount = 0;
+  closeCount = 0;
+  onOpen() {
+    this.openCount++;
+  }
+  onClose() {
+    this.closeCount++;
+  }
+}
+
+describe('NgxColorsTriggerDirective open/close outputs', () => {
+  let fixture: ComponentFixture<OpenCloseHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [OpenCloseHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(OpenCloseHostComponent);
+    fixture.detectChanges();
+  });
+
+  function getTriggerElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+
+  function getOverlayElement(): HTMLElement {
+    const overlay = document.body.querySelector('ngx-colors-overlay');
+    if (!overlay) {
+      throw new Error('Expected an open overlay in the document');
+    }
+    return overlay as HTMLElement;
+  }
+
+  it('emits (open) when the trigger is clicked', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.openCount).toBe(1);
+    expect(fixture.componentInstance.closeCount).toBe(0);
+  });
+
+  it('emits (close) when the panel is closed by clicking outside it', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    getOverlayElement().dispatchEvent(new Event('pointerdown'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.openCount).toBe(1);
+    expect(fixture.componentInstance.closeCount).toBe(1);
+  });
+
+  it('emits open/close in the right order across repeated open/close cycles', () => {
+    for (let i = 0; i < 3; i++) {
+      getTriggerElement().dispatchEvent(new Event('click'));
+      fixture.detectChanges();
+      getOverlayElement().dispatchEvent(new Event('pointerdown'));
+      fixture.detectChanges();
+    }
+
+    expect(fixture.componentInstance.openCount).toBe(3);
+    expect(fixture.componentInstance.closeCount).toBe(3);
+  });
+});

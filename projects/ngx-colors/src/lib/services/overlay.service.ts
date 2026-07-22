@@ -1,6 +1,7 @@
 import {
   ApplicationRef,
   ComponentRef,
+  EventEmitter,
   Injectable,
   Injector,
   createComponent,
@@ -18,6 +19,9 @@ export class OverlayService {
 
   componentRef: ComponentRef<OverlayComponent> | undefined = undefined;
   overlay: HTMLElement | undefined;
+
+  public opened: EventEmitter<void> = new EventEmitter<void>();
+  public closed: EventEmitter<void> = new EventEmitter<void>();
 
   createOverlay(
     trigger: NgxColorsTriggerDirective | undefined,
@@ -60,6 +64,7 @@ export class OverlayService {
       trigger?.triggerRef.nativeElement;
     this.componentRef.instance.updatePosition();
     this.applicationRef.attachView(this.componentRef.hostView);
+    this.opened.emit();
     return this.componentRef;
   }
 
@@ -72,6 +77,7 @@ export class OverlayService {
       // Angular does not take ownership of externally-supplied host
       // elements, so it is our responsibility to remove it.
       this.overlay?.remove();
+      this.closed.emit();
     }
     this.componentRef = undefined;
     this.overlay = undefined;

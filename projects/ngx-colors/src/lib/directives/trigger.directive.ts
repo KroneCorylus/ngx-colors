@@ -83,6 +83,13 @@ export class NgxColorsTriggerDirective
   @Output()
   public colorHover: EventEmitter<Rgba | null> =
     this.stateService.paleteColorHover$;
+  //Keep naming for parity with old version
+  @Output()
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  public open: EventEmitter<void> = this.overlayService.opened;
+  @Output()
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  public close: EventEmitter<void> = this.overlayService.closed;
 
   // CONFIGURATION
   @Input()

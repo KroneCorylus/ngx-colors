@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxColorsTriggerDirective } from './trigger.directive';
 import { NgxColorsComponent } from '../../public-api';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGX_COLORS_CONFIG } from '../interfaces/configuration';
@@ -25,7 +26,12 @@ describe('NgxColorsTriggerDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
@@ -83,6 +89,7 @@ describe('NgxColorsTriggerDirective overlay cleanup', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
+        NoopAnimationsModule,
       ],
       // A minimal config is enough here: these tests exercise overlay
       // lifecycle, not the configuration merge itself.
@@ -152,7 +159,12 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OpenCloseHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(OpenCloseHostComponent);
@@ -233,7 +245,11 @@ describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ColorInputHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(ColorInputHostComponent);
@@ -328,7 +344,11 @@ describe('NgxColorsTriggerDirective forms-free end-to-end palette selection', ()
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FlatPaletteHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(FlatPaletteHostComponent);
@@ -377,7 +397,12 @@ describe('NgxColorsTriggerDirective disabled state', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DisabledHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(DisabledHostComponent);
@@ -469,6 +494,7 @@ describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', (
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         ReactiveFormsModule,
+        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -536,7 +562,12 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CancelHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(CancelHostComponent);
@@ -633,6 +664,7 @@ describe('NgxColorsTriggerDirective ControlValueAccessor dirty/pristine behavior
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         ReactiveFormsModule,
+        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -694,7 +726,12 @@ describe('NgxColorsTriggerDirective outputModel: "AUTO" literal binding', () => 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AutoOutputModelHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(AutoOutputModelHostComponent);
@@ -755,7 +792,11 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NoInitialValueHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        NoopAnimationsModule,
+      ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(NoInitialValueHostComponent);

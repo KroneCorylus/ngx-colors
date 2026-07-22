@@ -16,21 +16,19 @@ import {
 } from '@angular/forms';
 import { Observable, Subject, delay, of, takeUntil } from 'rxjs';
 import {
+  AnimationOptions,
+  ColorModel,
+  ColorOption,
+  ConfirmationRequiredOptions,
+  defaultColors,
+  DisplayOptions,
+  LayoutOptions,
+  LockValuesOptions,
   NGX_COLORS_CONFIG,
   NgxColorsComponent,
   NgxColorsConfiguration,
   NgxColorsTriggerDirective,
 } from '../../../../../ngx-colors/src/public-api';
-import { defaultColors } from '../../../../../ngx-colors/src/lib/utility/default-colors';
-import { ColorOption } from '../../../../../ngx-colors/src/public-api';
-import {
-  AnimationOptions,
-  ConfirmationRequiredOptions,
-  DisplayOptions,
-  LayoutOptions,
-  LockValuesOptions,
-} from '../../../../../ngx-colors/src/lib/types/configuration';
-import { ColorModel } from '../../../../../ngx-colors/src/lib/types/color-model';
 
 type PlaygroundFormValue = {
   layout: LayoutOptions;

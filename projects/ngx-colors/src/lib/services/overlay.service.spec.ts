@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ApplicationRef, Injector } from '@angular/core';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { OverlayService } from './overlay.service';
 import { StateService } from './state.service';
@@ -9,7 +10,12 @@ describe('OverlayService', () => {
   let injector: Injector;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OverlayService, ApplicationRef, StateService],
+      providers: [
+        OverlayService,
+        ApplicationRef,
+        StateService,
+        provideNoopAnimations(),
+      ],
     });
 
     service = TestBed.inject(OverlayService);

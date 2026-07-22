@@ -62,9 +62,11 @@ export class OverlayService {
 
     this.componentRef.instance.triggerNativeElement =
       trigger?.triggerRef.nativeElement;
-    this.componentRef.instance.updatePosition();
-    this.componentRef.instance.focusPanel();
     this.applicationRef.attachView(this.componentRef.hostView);
+    this.componentRef.changeDetectorRef.detectChanges();
+    this.componentRef.instance.updatePosition();
+    this.componentRef.changeDetectorRef.detectChanges();
+    this.componentRef.instance.focusPanel();
     this.opened.emit();
     return this.componentRef;
   }

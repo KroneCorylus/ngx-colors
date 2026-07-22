@@ -771,6 +771,68 @@ describe('NgxColorsTriggerDirective outputModel: "AUTO" literal binding', () => 
 
 @Component({
   template: `
+    <div
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      style="position: fixed; width: 20px; height: 20px"
+    ></div>
+  `,
+})
+class BottomEdgeHostComponent {
+  value: string | null = '#ff00ff';
+}
+
+describe('NgxColorsTriggerDirective first-open smart positioning', () => {
+  let fixture: ComponentFixture<BottomEdgeHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [BottomEdgeHostComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(BottomEdgeHostComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    document.body
+      .querySelector('ngx-colors-overlay')
+      ?.dispatchEvent(new Event('pointerdown'));
+    fixture.detectChanges();
+  });
+
+  it('flips the panel above a trigger at the bottom of the viewport on first open, before any scroll', () => {
+    const trigger: HTMLElement =
+      fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+    trigger.style.top = `${window.innerHeight - 30}px`;
+    trigger.style.left = '10px';
+
+    trigger.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const panel = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay ngx-colors-panel',
+    );
+    if (!panel) {
+      throw new Error('Expected an open panel in the document');
+    }
+    const panelRect = panel.getBoundingClientRect();
+    const triggerRect = trigger.getBoundingClientRect();
+
+    expect(panelRect.height).toBeGreaterThan(0);
+    expect(panelRect.bottom).toBeLessThanOrEqual(window.innerHeight);
+    expect(panelRect.top).toBeLessThan(triggerRect.top);
+  });
+});
+
+@Component({
+  template: `
     <ngx-colors
       ngxColorsTrigger
       (colorChange)="onColorChange($event)"

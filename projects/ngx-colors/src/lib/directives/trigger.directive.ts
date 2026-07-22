@@ -77,6 +77,18 @@ export class NgxColorsTriggerDirective
   @Input() disabled: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
   value: string | undefined | null = undefined;
+
+  @Input() color: string | undefined | null = undefined;
+  @Output()
+  public colorChange: EventEmitter<string | undefined | null> =
+    new EventEmitter<string | undefined | null>();
+  // Fires only when the user actually drove the change (sliders/palette/text
+  // interaction, or confirming a pending value) - not for programmatic writes
+  // via [color], [(ngModel)], or [formControl].
+  @Output()
+  public userChange: EventEmitter<string | undefined | null> =
+    new EventEmitter<string | undefined | null>();
+
   @Output()
   public sliderChange: EventEmitter<Rgba | null> =
     this.stateService.sliderChange$;
@@ -140,6 +152,10 @@ export class NgxColorsTriggerDirective
       }
       this.value = newValue;
       this.onChange(this.value);
+      this.colorChange.emit(this.value);
+      if (state.origin !== 'state') {
+        this.userChange.emit(this.value);
+      }
       if (state.origin == 'confirm') {
         this.overlayService.removePanel();
       }
@@ -177,6 +193,9 @@ export class NgxColorsTriggerDirective
     if (changes['palette']) {
       this.setPalette(changes['palette'].currentValue);
     }
+    if (changes['color']) {
+      this.applyExternalValue(changes['color'].currentValue);
+    }
   }
 
   public openPanel() {
@@ -204,6 +223,10 @@ export class NgxColorsTriggerDirective
   }
 
   writeValue(value: string | undefined | null): void {
+    this.applyExternalValue(value);
+  }
+
+  private applyExternalValue(value: string | undefined | null): void {
     if (value) {
       const model: ColorModel | 'INVALID' =
         ColorHelper.getColorModelByString(value);

@@ -6,6 +6,8 @@ import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NGX_COLORS_CONFIG } from '../interfaces/configuration';
+import { StateService } from '../services/state.service';
+import { Rgba } from '../models/rgba';
 
 @Component({
   template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
@@ -199,5 +201,159 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
 
     expect(fixture.componentInstance.openCount).toBe(3);
     expect(fixture.componentInstance.closeCount).toBe(3);
+  });
+});
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [(color)]="value"
+      (colorChange)="onColorChange($event)"
+      (userChange)="onUserChange($event)"
+    ></ngx-colors>
+  `,
+})
+class ColorInputHostComponent {
+  value: string | null | undefined = '#ff00ff';
+  colorChanges: Array<string | null | undefined> = [];
+  userChanges: Array<string | null | undefined> = [];
+  onColorChange(v: string | null | undefined) {
+    this.colorChanges.push(v);
+  }
+  onUserChange(v: string | null | undefined) {
+    this.userChanges.push(v);
+  }
+}
+
+describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange)', () => {
+  let fixture: ComponentFixture<ColorInputHostComponent>;
+  let directive: NgxColorsTriggerDirective;
+  let stateService: StateService;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ColorInputHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(ColorInputHostComponent);
+    fixture.detectChanges();
+    const de = fixture.debugElement.query(
+      By.directive(NgxColorsTriggerDirective),
+    );
+    directive = de.injector.get(NgxColorsTriggerDirective);
+    stateService = de.injector.get(StateService);
+  });
+
+  it('adopts the initial [color] value with no Forms directive present', () => {
+    expect(directive.value).toBe('#ff00ff');
+  });
+
+  it('applies external [color] changes and emits colorChange but not userChange', () => {
+    fixture.componentInstance.value = '#00ff00';
+    fixture.detectChanges();
+
+    expect(directive.value).toBe('#00ff00');
+    expect(fixture.componentInstance.colorChanges).toContain('#00ff00');
+    expect(fixture.componentInstance.userChanges).toEqual([]);
+  });
+
+  it('emits both colorChange and userChange for every user-driven origin', () => {
+    const userOrigins: Array<'sliders' | 'palette' | 'text' | 'confirm'> = [
+      'sliders',
+      'palette',
+      'text',
+      'confirm',
+    ];
+    for (const origin of userOrigins) {
+      stateService.set({ value: new Rgba(1, 2, 3, 1), origin });
+    }
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.userChanges.length).toBe(
+      userOrigins.length,
+    );
+    expect(
+      fixture.componentInstance.colorChanges.length,
+    ).toBeGreaterThanOrEqual(userOrigins.length);
+  });
+
+  it('does not emit userChange for the "state" origin (programmatic writes)', () => {
+    const userChangesBefore = fixture.componentInstance.userChanges.length;
+    stateService.set({ value: new Rgba(9, 8, 7, 1), origin: 'state' });
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.userChanges.length).toBe(
+      userChangesBefore,
+    );
+    expect(fixture.componentInstance.colorChanges.length).toBeGreaterThan(0);
+  });
+
+  it('round-trips through [(color)] when a user-driven change happens', () => {
+    stateService.set({ value: new Rgba(10, 20, 30, 1), origin: 'palette' });
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.value).toBe(directive.value);
+  });
+});
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [color]="value"
+      [palette]="palette"
+      [outputModel]="'HEXA'"
+      (colorChange)="onColorChange($event)"
+      (userChange)="onUserChange($event)"
+    ></ngx-colors>
+  `,
+})
+class FlatPaletteHostComponent {
+  value: string | null = null;
+  palette: string[] = ['#ff0000', '#00ff00', '#0000ff'];
+  colorChanges: Array<string | null | undefined> = [];
+  userChanges: Array<string | null | undefined> = [];
+  onColorChange(v: string | null | undefined) {
+    this.colorChanges.push(v);
+  }
+  onUserChange(v: string | null | undefined) {
+    this.userChanges.push(v);
+  }
+}
+
+describe('NgxColorsTriggerDirective forms-free end-to-end palette selection', () => {
+  let fixture: ComponentFixture<FlatPaletteHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [FlatPaletteHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(FlatPaletteHostComponent);
+    fixture.detectChanges();
+  });
+
+  function getTriggerElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+
+  it('emits colorChange and userChange when a real palette swatch is clicked, with no Forms module involved', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const swatch = document.body.querySelector<HTMLElement>(
+      '.circle._color-option.bg-transparent',
+    );
+    if (!swatch) {
+      throw new Error('Expected a palette swatch to be rendered');
+    }
+    swatch.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.colorChanges.at(-1)).toBe('#ff0000');
+    expect(fixture.componentInstance.userChanges.at(-1)).toBe('#ff0000');
   });
 });

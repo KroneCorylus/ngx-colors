@@ -328,6 +328,7 @@ export class PlaygroundPageComponent implements OnDestroy {
     'rgba(0, 153, 255, 0.8)',
   );
   twoWayBindingColor: string | null = '#FF5E5B';
+  formsFreeColor: string | null = '#6A7FDB';
 
   playgroundConfig: NgxColorsConfiguration = {};
   playgroundPalette: Observable<ColorOption[]> | ColorOption[] | undefined;

@@ -324,6 +324,27 @@
           </article>
 
           <article class="example">
+            <h3>Forms-free binding</h3>
+            <p>
+              <code>[(color)]</code> / <code>(userChange)</code> - no
+              <code>FormsModule</code>/<code>ReactiveFormsModule</code> involved.
+              <code>userChange</code> only fires for user-driven picks, not for the initial or
+              externally-set value.
+            </p>
+            <ngx-colors
+              ngxColorsTrigger
+              [(color)]="formsFreeColor"
+              layout="pages"
+              (colorChange)="logEvent('Forms-free example', 'colorChange', $event)"
+              (userChange)="logEvent('Forms-free example', 'userChange', $event)"
+            ></ngx-colors>
+            <div class="example__meta">
+              <span>Value:</span>
+              <code>{{ formsFreeColor || 'null' }}</code>
+            </div>
+          </article>
+
+          <article class="example">
             <h3>Disabled trigger</h3>
             <p>Preview the disabled state and observe that no events are fired.</p>
             <ngx-colors

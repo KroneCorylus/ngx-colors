@@ -32,7 +32,7 @@ export class Rgba implements IColorModel {
       rgba.g +
       ', ' +
       rgba.b +
-      (rgba.a != 1 ? ', ' + rgba.a.toPrecision(2) + ')' : ')');
+      (rgba.a != 1 ? ', ' + rgba.a + ')' : ')');
     return output;
   }
 }

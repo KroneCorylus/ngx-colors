@@ -106,7 +106,7 @@ const mockStrings: Array<ColorEquivalence> = [
   },
   {
     hex: ['#fff0', '#ffffff00'],
-    rgba: 'rgba(255, 255, 255, 0.0)',
+    rgba: ['rgba(255, 255, 255, 0.0)', 'rgba(255, 255, 255, 0)'],
     hsla: ['hsla(0, 0%, 100%, 0.0)', 'hsla(0, 0%, 100%, 0)'],
     hsva: 'hsva(0, 0%, 100%, 0)',
     cmyk: '',
@@ -124,6 +124,8 @@ const mockStrings: Array<ColorEquivalence> = [
       'rgba(255, 100, 0, 50%)',
       'rgba(255, 100, 0, 0.50)',
       'rgba(255, 102, 0, 0.50)',
+      'rgba(255, 100, 0, 0.5)',
+      'rgba(255, 102, 0, 0.5)',
     ],
     hsla: ['hsla(24, 100%, 50%, 0.50)', 'hsla(24, 100%, 50%, 0.5)'],
     hsva: 'hsva(24, 100%, 100%, 0.5)',

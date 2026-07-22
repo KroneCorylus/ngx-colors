@@ -16,7 +16,7 @@ import {
   forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, of, shareReplay, takeUntil } from 'rxjs';
+import { Observable, Subject, map, of, shareReplay, takeUntil } from 'rxjs';
 import { OverlayService } from '../services/overlay.service';
 import { ColorHelper } from '../utility/color-helper';
 import { StateService } from '../services/state.service';
@@ -40,9 +40,14 @@ import { ColorModel } from '../types/color-model';
 import { IColorModel } from '../interfaces/color-format';
 import { Labels, NGX_COLORS_LABELS } from '../interfaces/labels';
 import { isInputOrigin } from '../types/changes';
+import {
+  NgxColorsColor,
+  legacyInputsToConfiguration,
+  translateLegacyPalette,
+} from '../compat/v3-compat';
 
 @Directive({
-  selector: '[ngxColorsTrigger]',
+  selector: '[ngxColorsTrigger],[ngx-colors-trigger]',
   standalone: true,
   providers: [
     {
@@ -55,12 +60,7 @@ import { isInputOrigin } from '../types/changes';
   ],
 })
 export class NgxColorsTriggerDirective
-  implements
-    ControlValueAccessor,
-    OnDestroy,
-    OnInit,
-    OnChanges,
-    NgxColorsConfiguration
+  implements ControlValueAccessor, OnDestroy, OnInit, OnChanges
 {
   constructor(
     public triggerRef: ElementRef<HTMLElement>,
@@ -128,8 +128,11 @@ export class NgxColorsTriggerDirective
   @Input()
   public eyedropper: boolean | undefined;
   @Input()
-  public palette: Observable<ColorOption[]> | ColorOption[] | undefined =
-    defaultColors;
+  public palette:
+    | Observable<ColorOption[]>
+    | ColorOption[]
+    | Array<NgxColorsColor>
+    | undefined = defaultColors;
   @Input()
   public animation: AnimationOptions | undefined;
   @Input()
@@ -142,26 +145,62 @@ export class NgxColorsTriggerDirective
   public confirmationRequired: ConfirmationRequiredOptions | undefined;
   @Input()
   public position: PositionOptions | undefined;
+
+  // ---- v3 compatibility (deprecated) - remove this block in the next major version ----
+  /** @deprecated Use `animation` ('slide' | 'popup') instead. */
+  @Input() colorsAnimation: 'slide-in' | 'popup' | undefined;
+  /** @deprecated Use `outputModel` ('HEXA' | 'RGBA' | 'HSLA' | 'HSVA' | 'CMYK' | 'AUTO') instead. */
+  @Input() format: string | undefined;
+  /** @deprecated Use `allowedModels` instead. */
+  @Input() formats: string[] | undefined;
+  /** @deprecated Use `display: { text: false }` instead. */
+  @Input() hideTextInput: boolean | undefined;
+  /** @deprecated Use `display: { sliders: false }` instead. */
+  @Input() hideColorPicker: boolean | undefined;
+  /** @deprecated Use `overlayAttachTo` instead. */
+  @Input() attachTo: string | undefined;
+  /** @deprecated Use `overlayClass` instead. */
+  @Input() overlayClassName: string | undefined;
+  /** @deprecated Use `labels: { accept: ... }` instead. */
+  @Input() acceptLabel: string | undefined;
+  /** @deprecated Use `labels: { cancel: ... }` instead. */
+  @Input() cancelLabel: string | undefined;
+  /** @deprecated 'no-alpha' maps to `lockValues: { alpha: 1 }`; 'only-alpha' is not supported (see MIGRATION.md). */
+  @Input() colorPickerControls:
+    | 'default'
+    | 'only-alpha'
+    | 'no-alpha'
+    | undefined;
+  /** @deprecated Use `colorChange` instead. */
+  @Output()
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  public change: EventEmitter<string | undefined | null> = this.colorChange;
+  /** @deprecated Use `userChange` instead. */
+  @Output()
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  public input: EventEmitter<string | undefined | null> = this.userChange;
+  /** @deprecated Use `sliderChange` instead (emits an `Rgba` object rather than a formatted string). */
+  @Output()
+  public slider: EventEmitter<string | null> = new EventEmitter<
+    string | null
+  >();
+
+  private initLegacyOutputs(): void {
+    this.stateService.sliderChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.slider.emit(value ? this.rgbaToOutputString(value) : null);
+      });
+  }
+  // ---- end of v3 compatibility block ----
+
   public ngOnInit(): void {
     this.setPalette(this.palette);
 
     this.stateService.state.pipe(takeUntil(this.destroy$)).subscribe((state) => {
-      let newValue: string | null = null;
-      if (state?.value) {
-        let color: IColorModel | string = state.value;
-        if (this.stateService.configuration.outputModel == 'AUTO') {
-          color = ColorHelper.rgbaToColorModel(
-            state.value,
-            this.stateService.colorModel,
-          );
-        } else {
-          color = ColorHelper.rgbaToColorModel(
-            state.value,
-            this.stateService.configuration.outputModel,
-          );
-        }
-        newValue = color.toString();
-      }
+      const newValue: string | null = state?.value
+        ? this.rgbaToOutputString(state.value)
+        : null;
       const changed = (newValue ?? null) !== (this.value ?? null);
       const userDriven =
         isInputOrigin(state.origin) || state.origin === 'confirm';
@@ -185,14 +224,40 @@ export class NgxColorsTriggerDirective
         }
       }
     });
+    this.initLegacyOutputs();
     this.applyConfig();
+  }
+
+  private rgbaToOutputString(value: Rgba): string {
+    const model: IColorModel | string =
+      this.stateService.configuration.outputModel == 'AUTO'
+        ? ColorHelper.rgbaToColorModel(value, this.stateService.colorModel)
+        : ColorHelper.rgbaToColorModel(
+            value,
+            this.stateService.configuration.outputModel,
+          );
+    return model.toString();
   }
 
   private applyConfig() {
     this.stateService.configuration = new Configuration(
       { labels: this._labels },
       this.config,
-      this,
+      legacyInputsToConfiguration(this),
+      {
+        display: this.display,
+        layout: this.layout,
+        lockValues: this.lockValues,
+        outputModel: this.outputModel,
+        allowedModels: this.allowedModels,
+        eyedropper: this.eyedropper,
+        animation: this.animation,
+        overlayClass: this.overlayClass,
+        overlayAttachTo: this.overlayAttachTo,
+        labels: this.labels,
+        confirmationRequired: this.confirmationRequired,
+        position: this.position,
+      },
     );
   }
 
@@ -230,13 +295,20 @@ export class NgxColorsTriggerDirective
   }
 
   private setPalette(
-    palette: Observable<ColorOption[]> | ColorOption[] | undefined,
+    palette:
+      | Observable<ColorOption[]>
+      | ColorOption[]
+      | Array<NgxColorsColor>
+      | undefined,
   ) {
     if (!palette) return;
     if (Array.isArray(palette)) {
-      this.stateService.palette$ = of(palette);
+      this.stateService.palette$ = of(translateLegacyPalette(palette));
     } else if (palette instanceof Observable) {
-      this.stateService.palette$ = palette.pipe(shareReplay());
+      this.stateService.palette$ = palette.pipe(
+        map(translateLegacyPalette),
+        shareReplay(),
+      );
     } else {
       throw new Error('The palette provided is not of a valid type');
     }

@@ -11,6 +11,8 @@
   <div class="flex justify-center align-center bg-white _value">
     <input
       [formControl]="inputControl"
+      [placeholder]="placeholder"
+      (keydown.enter)="onEnter()"
       [class.error]="inputControl.hasError('invalidColor')"
     />
   </div>

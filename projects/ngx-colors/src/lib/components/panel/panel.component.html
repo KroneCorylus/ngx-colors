@@ -69,6 +69,7 @@
   @if (this.stateService.configuration.display.text) {
     <ngx-colors-text-input
       [formControl]="this.textInputCtrl"
+      (commit)="this.onTextInputCommit()"
     ></ngx-colors-text-input>
   }
   @if (

@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  forwardRef,
+} from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -30,6 +36,10 @@ import { StateService } from '../../services/state.service';
 export class TextInputComponent implements ControlValueAccessor, OnInit {
   constructor(private stateService: StateService) {}
   value: Rgba | undefined = undefined;
+
+  @Output() commit: EventEmitter<void> = new EventEmitter<void>();
+
+  public placeholder: string = '';
 
   inputControl: FormControl<string | null | undefined> = new FormControl<
     string | undefined
@@ -62,6 +72,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
       (model) => model === this.stateService.colorModel,
     );
     this.colorModelIndex = currentModelIndex >= 0 ? currentModelIndex : 0;
+    this.updatePlaceholder();
   }
 
   public onClickColorModel(): void {
@@ -76,6 +87,18 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
         ).toString(),
       );
     }
+    this.updatePlaceholder();
+  }
+
+  public onEnter(): void {
+    this.commit.emit();
+  }
+
+  private updatePlaceholder(): void {
+    this.placeholder = ColorHelper.rgbaToColorModel(
+      new Rgba(255, 255, 255, 1),
+      this.availableModels[this.colorModelIndex],
+    ).toString();
   }
 
   writeValue(obj: Rgba | undefined): void {

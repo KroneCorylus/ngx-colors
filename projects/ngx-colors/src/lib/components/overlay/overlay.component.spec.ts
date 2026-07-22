@@ -98,6 +98,34 @@ describe('OverlayComponent', () => {
 
       expect(component.x).toBe(1024 - 250);
     });
+
+    it('forces the panel above the trigger when configuration.position is "top", even with room below', () => {
+      const stateService = TestBed.inject(StateService);
+      stateService.configuration.position = 'top';
+      const trigger = document.createElement('div');
+      spyOn(trigger, 'getBoundingClientRect').and.returnValue(
+        makeRect({ top: 100, left: 50, right: 100, bottom: 120 }),
+      );
+      component.triggerNativeElement = trigger;
+
+      component.updatePosition();
+
+      expect(component.y).toBe(100 - 300);
+    });
+
+    it('forces the panel below the trigger when configuration.position is "bottom", even without room', () => {
+      const stateService = TestBed.inject(StateService);
+      stateService.configuration.position = 'bottom';
+      const trigger = document.createElement('div');
+      spyOn(trigger, 'getBoundingClientRect').and.returnValue(
+        makeRect({ top: 700, left: 50, right: 100, bottom: 720 }),
+      );
+      component.triggerNativeElement = trigger;
+
+      component.updatePosition();
+
+      expect(component.y).toBe(720);
+    });
   });
 
   describe('scroll and resize handling', () => {

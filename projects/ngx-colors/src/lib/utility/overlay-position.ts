@@ -15,6 +15,8 @@ export interface OverlayPosition {
   left: number;
 }
 
+export type ForcedPosition = 'top' | 'bottom';
+
 /**
  * Computes where to place the overlay panel relative to its trigger so it
  * stays inside the viewport instead of running off-screen:
@@ -28,9 +30,10 @@ export function computeOverlayPosition(
   trigger: OverlayTriggerRect,
   panel: OverlaySize,
   viewport: OverlaySize,
+  forcedPosition?: ForcedPosition,
 ): OverlayPosition {
   return {
-    top: clampVertical(trigger, panel, viewport),
+    top: clampVertical(trigger, panel, viewport, forcedPosition),
     left: clampHorizontal(trigger, panel, viewport),
   };
 }
@@ -48,7 +51,15 @@ function clampVertical(
   trigger: OverlayTriggerRect,
   panel: OverlaySize,
   viewport: OverlaySize,
+  forcedPosition?: ForcedPosition,
 ): number {
+  if (forcedPosition === 'bottom') {
+    return trigger.bottom;
+  }
+  if (forcedPosition === 'top') {
+    return trigger.top - panel.height;
+  }
+
   const spaceBelow = viewport.height - trigger.bottom;
   const spaceAbove = trigger.top;
   const fitsBelow = panel.height <= spaceBelow;

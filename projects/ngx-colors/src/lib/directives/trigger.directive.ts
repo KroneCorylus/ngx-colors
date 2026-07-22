@@ -33,6 +33,7 @@ import {
   DisplayOptions,
   LayoutOptions,
   LockValuesOptions,
+  PositionOptions,
 } from '../types/configuration';
 import { ColorModel } from '../types/color-model';
 import { IColorModel } from '../interfaces/color-format';
@@ -129,6 +130,8 @@ export class NgxColorsTriggerDirective
   public labels: Labels | undefined;
   @Input()
   public confirmationRequired: ConfirmationRequiredOptions | undefined;
+  @Input()
+  public position: PositionOptions | undefined;
   public ngOnInit(): void {
     this.setPalette(this.palette);
 

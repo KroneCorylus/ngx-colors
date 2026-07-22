@@ -30,4 +30,14 @@ describe('Configuration', () => {
     const config = new Configuration({ display: { sliders: false } });
     expect(config.display).toEqual({ text: true, sliders: false, palette: true });
   });
+
+  it('defaults position to undefined (automatic positioning)', () => {
+    const config = new Configuration();
+    expect(config.position).toBeUndefined();
+  });
+
+  it('applies a forced position from an overwrite', () => {
+    const config = new Configuration({ position: 'top' });
+    expect(config.position).toBe('top');
+  });
 });

@@ -17,3 +17,4 @@ export type ConfirmationRequiredOptions = {
   sliders: boolean;
 };
 export type AnimationOptions = 'popup' | 'slide';
+export type PositionOptions = 'top' | 'bottom';

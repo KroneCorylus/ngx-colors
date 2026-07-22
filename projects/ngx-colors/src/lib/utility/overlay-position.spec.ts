@@ -104,4 +104,47 @@ describe('computeOverlayPosition', () => {
     );
     expect(result).toEqual({ top: 70, left: 200 });
   });
+
+  describe('forcedPosition', () => {
+    it('forces the panel below the trigger even when it would otherwise flip above', () => {
+      const result = computeOverlayPosition(
+        trigger({ top: 700, bottom: 720, left: 0, right: 50 }),
+        PANEL,
+        VIEWPORT,
+        'bottom',
+      );
+      expect(result.top).toBe(720);
+    });
+
+    it('forces the panel above the trigger even when there is plenty of room below', () => {
+      const result = computeOverlayPosition(
+        trigger({ top: 100, bottom: 120, left: 0, right: 50 }),
+        PANEL,
+        VIEWPORT,
+        'top',
+      );
+      expect(result.top).toBe(100 - PANEL.height);
+    });
+
+    it('does not clamp a forced position against the viewport - it can run off-screen', () => {
+      const result = computeOverlayPosition(
+        trigger({ top: 10, bottom: 30, left: 0, right: 50 }),
+        PANEL,
+        VIEWPORT,
+        'top',
+      );
+      expect(result.top).toBe(10 - PANEL.height);
+      expect(result.top).toBeLessThan(0);
+    });
+
+    it('leaves horizontal clamping untouched by a forced vertical position', () => {
+      const result = computeOverlayPosition(
+        trigger({ top: 100, bottom: 120, left: 950, right: 1000 }),
+        PANEL,
+        VIEWPORT,
+        'bottom',
+      );
+      expect(result.left).toBe(VIEWPORT.width - PANEL.width);
+    });
+  });
 });

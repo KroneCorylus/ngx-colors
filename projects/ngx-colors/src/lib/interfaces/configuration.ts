@@ -9,6 +9,7 @@ import {
   DisplayOptions,
   LayoutOptions,
   LockValuesOptions,
+  PositionOptions,
 } from '../types/configuration';
 import { Observable } from 'rxjs';
 import { ColorModel } from '../types/color-model';
@@ -27,4 +28,5 @@ export interface NgxColorsConfiguration {
   overlayAttachTo?: string | HTMLElement | undefined;
   labels?: Labels | undefined;
   confirmationRequired?: ConfirmationRequiredOptions;
+  position?: PositionOptions | undefined;
 }

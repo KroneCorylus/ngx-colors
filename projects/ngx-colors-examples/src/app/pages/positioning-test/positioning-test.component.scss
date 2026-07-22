@@ -122,6 +122,37 @@
   transform: translateY(-1px);
 }
 
+.forced-position {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: 64px;
+}
+
+.forced-position__trigger {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow:
+    0 12px 26px rgba(30, 64, 175, 0.18),
+    0 4px 10px rgba(15, 23, 42, 0.08);
+  z-index: 10;
+}
+
+.forced-position__trigger--top {
+  top: 8px;
+  left: 16px;
+}
+
+.forced-position__trigger--bottom {
+  bottom: 8px;
+  right: 16px;
+}
+
 @media (max-width: 900px) {
   .stage {
     min-height: 460px;

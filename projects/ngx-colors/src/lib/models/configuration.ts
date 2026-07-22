@@ -7,6 +7,7 @@ import {
   DisplayOptions,
   LayoutOptions,
   LockValuesOptions,
+  PositionOptions,
 } from '../types/configuration';
 import { defaultColors } from '../utility/default-colors';
 import { ColorModel } from '../types/color-model';
@@ -50,6 +51,7 @@ export class Configuration implements NgxColorsConfiguration {
     text: false,
     sliders: true,
   };
+  public position: PositionOptions | undefined = undefined;
 
   constructor(
     ...configOverwrites: Array<NgxColorsConfiguration | null | undefined>
@@ -96,6 +98,9 @@ export class Configuration implements NgxColorsConfiguration {
           ...this.confirmationRequired,
           ...overwrite.confirmationRequired,
         };
+      }
+      if (overwrite.position !== undefined) {
+        this.position = overwrite.position;
       }
     }
   }

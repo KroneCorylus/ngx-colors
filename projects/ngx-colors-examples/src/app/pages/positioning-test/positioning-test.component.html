@@ -70,6 +70,39 @@
     </div>
   </section>
 
+  <section class="card">
+    <header class="card__header">
+      <h2>Forced position override</h2>
+      <p>
+        <code>[position]="'top'"</code> / <code>[position]="'bottom'"</code> bypass the automatic
+        flip/clamp entirely. Both triggers below are forced to the side automatic positioning
+        would <em>not</em> have picked, so the panel opens off-screen instead of flipping to fit.
+      </p>
+    </header>
+
+    <div class="forced-position">
+      <div class="forced-position__trigger forced-position__trigger--top">
+        <span class="stage__label">Forced "top", plenty of room below</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="forcedTopControl"
+          [position]="'top'"
+        ></ngx-colors>
+      </div>
+
+      <div class="forced-position__trigger forced-position__trigger--bottom">
+        <span class="stage__label">Forced "bottom", no room below</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="forcedBottomControl"
+          [position]="'bottom'"
+        ></ngx-colors>
+      </div>
+    </div>
+  </section>
+
   <section class="card card--tips">
     <h2>Tips</h2>
     <ul>

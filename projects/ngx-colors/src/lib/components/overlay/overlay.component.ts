@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { PanelComponent } from '../panel/panel.component';
 import { OverlayService } from '../../services/overlay.service';
+import { StateService } from '../../services/state.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { computeOverlayPosition } from '../../utility/overlay-position';
 
@@ -12,7 +13,10 @@ import { computeOverlayPosition } from '../../utility/overlay-position';
   styleUrl: './overlay.component.scss',
 })
 export class OverlayComponent {
-  constructor(private overlayService: OverlayService) {}
+  constructor(
+    private overlayService: OverlayService,
+    private stateService: StateService,
+  ) {}
 
   x: number = 0;
   y: number = 0;
@@ -52,6 +56,7 @@ export class OverlayComponent {
       triggerRect,
       { width: panelRect.width, height: panelRect.height },
       { width: window.innerWidth, height: window.innerHeight },
+      this.stateService.configuration.position,
     );
     this.x = position.left;
     this.y = position.top;

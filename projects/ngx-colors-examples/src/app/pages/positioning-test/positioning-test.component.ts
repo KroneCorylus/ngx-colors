@@ -63,6 +63,9 @@ export class PositioningTestComponent {
     center: 'Center',
   };
 
+  readonly forcedTopControl = new FormControl<string | null>('#8B5CF6');
+  readonly forcedBottomControl = new FormControl<string | null>('#F97316');
+
   reset(position: PositionKey) {
     const control = this.colors[position];
     if (!control) return;

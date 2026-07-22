@@ -5,15 +5,16 @@ import { Hsva } from '../models/hsva';
 import { Rgba } from '../models/rgba';
 import { ColorModel } from '../types/color-model';
 
-export const HEX_REGEX: RegExp = /#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3,4})$/;
+export const HEX_REGEX: RegExp =
+  /^#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3,4})$/;
 export const RGBA_REGEX: RegExp =
-  /(rgb)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d*(?:\.\d+)?%?)\s*)?\)$/;
+  /^(rgb)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d*(?:\.\d+)?%?)\s*)?\)$/;
 export const HSLA_REGEX: RegExp =
-  /(hsl)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d*(?:\.\d+)?%?)\s*)?\)$/;
+  /^(hsl)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d*(?:\.\d+)?%?)\s*)?\)$/;
 export const HSVA_REGEX: RegExp =
-  /(hsv)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d*(?:\.\d+)?%?)\s*)?\)$/;
+  /^(hsv)a?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d*(?:\.\d+)?%?)\s*)?\)$/;
 export const CMYK_REGEX: RegExp =
-  /cmyk\(\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?(?:,\s*?(\d+(?:\.\d+)?)\s*%?)?\)$/;
+  /^cmyk\(\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?\)$/;
 
 export class ColorHelper {
   public static rgbaToColorModel(
@@ -321,6 +322,7 @@ export class ColorHelper {
   }
 
   public static stringToColor(value: string): IColorModel | string {
+    value = value.trim().toLowerCase();
     const parseAlpha = this.parseAlpha;
     const stringParsers: Array<{
       regex: RegExp;
@@ -358,7 +360,7 @@ export class ColorHelper {
             parseInt(execResult[2], 10),
             parseInt(execResult[3], 10) / 100,
             parseInt(execResult[4], 10) / 100,
-            isNaN(parseFloat(execResult[5])) ? 1 : parseFloat(execResult[5]),
+            parseAlpha(execResult[5]),
           );
         },
       },

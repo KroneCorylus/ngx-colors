@@ -4,7 +4,7 @@ import { NgxColorsTriggerDirective } from './trigger.directive';
 import { NgxColorsComponent } from '../../public-api';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGX_COLORS_CONFIG } from '../interfaces/configuration';
 import { StateService } from '../services/state.service';
 import { Rgba } from '../models/rgba';
@@ -354,5 +354,155 @@ describe('NgxColorsTriggerDirective forms-free end-to-end palette selection', ()
 
     expect(fixture.componentInstance.colorChanges.at(-1)).toBe('#ff0000');
     expect(fixture.componentInstance.userChanges.at(-1)).toBe('#ff0000');
+  });
+});
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      [disabled]="isDisabled"
+    ></ngx-colors>
+  `,
+})
+class DisabledHostComponent {
+  value: string | null = '#ff00ff';
+  isDisabled = false;
+}
+
+describe('NgxColorsTriggerDirective disabled state', () => {
+  let fixture: ComponentFixture<DisabledHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DisabledHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(DisabledHostComponent);
+    fixture.detectChanges();
+  });
+
+  function getTriggerElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+
+  function overlayCount(): number {
+    return document.body.getElementsByTagName('ngx-colors-overlay').length;
+  }
+
+  it('does not open the panel on click while disabled', () => {
+    fixture.componentInstance.isDisabled = true;
+    fixture.detectChanges();
+
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(overlayCount()).toBe(0);
+  });
+
+  it('opens the panel normally once re-enabled', () => {
+    fixture.componentInstance.isDisabled = true;
+    fixture.detectChanges();
+    fixture.componentInstance.isDisabled = false;
+    fixture.detectChanges();
+
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(overlayCount()).toBe(1);
+  });
+
+  it('ignores direct openPanel() calls while disabled, not just clicks', () => {
+    const de = fixture.debugElement.query(
+      By.directive(NgxColorsTriggerDirective),
+    );
+    const directive: NgxColorsTriggerDirective = de.injector.get(
+      NgxColorsTriggerDirective,
+    );
+    fixture.componentInstance.isDisabled = true;
+    fixture.detectChanges();
+
+    directive.openPanel();
+
+    expect(overlayCount()).toBe(0);
+  });
+
+  it('dims the host element and marks it aria-disabled', () => {
+    fixture.componentInstance.isDisabled = true;
+    fixture.detectChanges();
+
+    const el = getTriggerElement();
+    expect(el.style.opacity).toBe('0.5');
+    expect(el.style.pointerEvents).toBe('none');
+    expect(el.getAttribute('aria-disabled')).toBe('true');
+  });
+
+  it('restores full opacity and interactivity when re-enabled', () => {
+    fixture.componentInstance.isDisabled = true;
+    fixture.detectChanges();
+    fixture.componentInstance.isDisabled = false;
+    fixture.detectChanges();
+
+    const el = getTriggerElement();
+    expect(el.style.opacity).toBe('1');
+    expect(el.style.pointerEvents).toBe('auto');
+    expect(el.getAttribute('aria-disabled')).toBe('false');
+  });
+});
+
+@Component({
+  template: ` <ngx-colors ngxColorsTrigger [formControl]="control"></ngx-colors> `,
+})
+class ReactiveDisabledHostComponent {
+  control = new FormControl<string | null>('#ff00ff');
+}
+
+describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', () => {
+  let fixture: ComponentFixture<ReactiveDisabledHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ReactiveDisabledHostComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        ReactiveFormsModule,
+      ],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(ReactiveDisabledHostComponent);
+    fixture.detectChanges();
+  });
+
+  function getTriggerElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+
+  function overlayCount(): number {
+    return document.body.getElementsByTagName('ngx-colors-overlay').length;
+  }
+
+  it('does not open the panel on click once the FormControl is disabled', () => {
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
+
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(overlayCount()).toBe(0);
+  });
+
+  it('opens the panel again once the FormControl is re-enabled', () => {
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
+    fixture.componentInstance.control.enable();
+    fixture.detectChanges();
+
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(overlayCount()).toBe(1);
   });
 });

@@ -2,6 +2,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Inject,
   Injector,
@@ -76,6 +77,15 @@ export class NgxColorsTriggerDirective
     this.openPanel();
   }
   @Input() disabled: boolean = false;
+  @HostBinding('style.opacity') get disabledOpacity(): number {
+    return this.disabled ? 0.5 : 1;
+  }
+  @HostBinding('style.pointer-events') get disabledPointerEvents(): string {
+    return this.disabled ? 'none' : 'auto';
+  }
+  @HostBinding('attr.aria-disabled') get disabledAriaAttribute(): boolean {
+    return this.disabled;
+  }
   destroy$: Subject<void> = new Subject<void>();
   value: string | undefined | null = undefined;
 
@@ -202,6 +212,9 @@ export class NgxColorsTriggerDirective
   }
 
   public openPanel() {
+    if (this.disabled) {
+      return;
+    }
     this.onTouch();
     const injector = Injector.create({
       providers: [

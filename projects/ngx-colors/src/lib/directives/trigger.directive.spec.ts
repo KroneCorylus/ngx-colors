@@ -63,6 +63,11 @@ describe('NgxColorsTriggerDirective', () => {
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlay).toBeTruthy();
   });
+  it('stamps dir="ltr" on the overlay for an LTR trigger', () => {
+    elementsWithDirective[0].triggerEventHandler('click', {});
+    const overlay = document.body.querySelector('ngx-colors-overlay');
+    expect(overlay?.getAttribute('dir')).toBe('ltr');
+  });
 });
 
 @Component({
@@ -892,6 +897,42 @@ describe('NgxColorsTriggerDirective RTL positioning', () => {
     expect(panelRect.width).toBeGreaterThan(0);
     expect(Math.abs(panelRect.right - triggerRect.right)).toBeLessThanOrEqual(
       1,
+    );
+  });
+
+  it('stamps the trigger direction on the overlay so its content mirrors', () => {
+    const trigger: HTMLElement =
+      fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+    trigger.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const overlay = document.body.querySelector('ngx-colors-overlay');
+    expect(overlay?.getAttribute('dir')).toBe('rtl');
+  });
+
+  it('renders the palette back icon mirrored under dir="rtl"', () => {
+    const trigger: HTMLElement =
+      fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+    trigger.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const groupSwatch = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay .circle._color-option.bg-transparent',
+    );
+    if (!groupSwatch) {
+      throw new Error('Expected a palette group swatch to be rendered');
+    }
+    groupSwatch.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const backButton = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay [aria-label="back"]',
+    );
+    if (!backButton) {
+      throw new Error('Expected a back button to be rendered');
+    }
+    expect(getComputedStyle(backButton).transform).toBe(
+      'matrix(-1, 0, 0, 1, 0, 0)',
     );
   });
 });

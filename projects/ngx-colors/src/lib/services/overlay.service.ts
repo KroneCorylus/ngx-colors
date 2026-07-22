@@ -33,6 +33,13 @@ export class OverlayService {
 
     const hostElement: HTMLElement =
       document.createElement('ngx-colors-overlay');
+    const directionSource = trigger
+      ? trigger.triggerRef.nativeElement
+      : document.body;
+    hostElement.setAttribute(
+      'dir',
+      getComputedStyle(directionSource).direction === 'rtl' ? 'rtl' : 'ltr',
+    );
     this.overlay = hostElement;
     if (this.stateService.configuration.overlayClass) {
       hostElement.classList.add(this.stateService.configuration.overlayClass);

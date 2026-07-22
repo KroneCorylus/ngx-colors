@@ -164,3 +164,7 @@
 .gap-3 {
   gap: 12px;
 }
+
+:host-context([dir='rtl']) ._mirror-rtl {
+  transform: scaleX(-1);
+}

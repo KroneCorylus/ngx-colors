@@ -1,6 +1,7 @@
-import { Component, Host, OnInit, Optional, Self } from '@angular/core';
+import { Component, Host, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { NgxColorsTriggerDirective } from '../../directives/trigger.directive';
-import { NgControl } from '@angular/forms';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'ngx-colors',
@@ -9,12 +10,14 @@ import { NgControl } from '@angular/forms';
   templateUrl: './ngx-colors.component.html',
   styleUrls: ['./ngx-colors.component.scss', '../../shared/shared.scss'],
 })
-export class NgxColorsComponent implements OnInit {
+export class NgxColorsComponent implements OnInit, OnDestroy {
   constructor(
     @Host() private triggerDirective: NgxColorsTriggerDirective,
-    @Self() @Optional() private ngControl: NgControl,
+    private stateService: StateService,
   ) {}
-  public previewColor: string | null | undefined = 'rgba(255,0,255,0.3)';
+  public previewColor: string | null | undefined = undefined;
+
+  private destroy$: Subject<void> = new Subject<void>();
 
   ngOnInit(): void {
     if (!this.triggerDirective) {
@@ -23,18 +26,15 @@ export class NgxColorsComponent implements OnInit {
       );
       return;
     }
-    if (this.ngControl && this.ngControl.control) {
-      this.ngControl.control.valueChanges?.subscribe((color) => {
-        console.log('[ngx-colors] value', color);
-        this.previewColor = color;
+    this.stateService.state
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((state) => {
+        this.previewColor = state.value?.toString();
       });
-    } else {
-      //fallback when is not used on a ngControl
-      const old = this.triggerDirective.onChange;
-      this.triggerDirective.onChange = (value) => {
-        this.previewColor = value;
-        old(value);
-      };
-    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

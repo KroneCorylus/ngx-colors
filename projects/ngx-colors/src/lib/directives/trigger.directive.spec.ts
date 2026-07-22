@@ -47,9 +47,8 @@ describe('NgxColorsTriggerDirective', () => {
   it('directive should have the value of ngModel', () => {
     expect(directives[0].value).toBe('#ff00ff');
   });
-  it('ngx-colors should have previewColor equals directive value', () => {
-    directives[0].onChange('#ff00ff');
-    expect(ngxColors[0].previewColor).toBe('#ff00ff');
+  it('ngx-colors should show the initial ngModel value as its preview', () => {
+    expect(ngxColors[0].previewColor).toBe('rgb(255, 0, 255)');
   });
   it('should open overlay on click', () => {
     elementsWithDirective[0].triggerEventHandler('click', {});

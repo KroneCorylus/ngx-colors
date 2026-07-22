@@ -3,41 +3,22 @@ import { ColorOption } from '../types/color-option';
 export const defaultColors: Array<ColorOption> = [
   {
     color: '#E57373',
-    name: 'Reds',
+    name: 'Red',
     childs: [
-      {
-        color: '#E57373',
-        childs: [
-          '#FFEBEE',
-          '#FFCDD2',
-          '#EF9A9A',
-          '#E57373',
-          '#EF5350',
-          '#F44336',
-          '#E53935',
-          '#D32F2F',
-          '#C62828',
-        ],
-      },
-      {
-        color: '#F06292',
-        childs: [
-          '#FCE4EC',
-          '#F8BBD0',
-          '#F48FB1',
-          '#F06292',
-          '#EC407A',
-          '#E91E63',
-          '#D81B60',
-          '#C2185B',
-          '#AD1457',
-        ],
-      },
+      '#FFEBEE',
+      '#FFCDD2',
+      '#EF9A9A',
+      '#E57373',
+      '#EF5350',
+      '#F44336',
+      '#E53935',
+      '#D32F2F',
+      '#C62828',
     ],
   },
   {
     color: '#F06292',
-    name: 'ROSAS',
+    name: 'Pink',
     childs: [
       '#FCE4EC',
       '#F8BBD0',
@@ -52,7 +33,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#BA68C8',
-    name: 'Tooltipslargos',
+    name: 'Purple',
     childs: [
       '#F3E5F5',
       '#E1BEE7',
@@ -67,6 +48,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#9575CD',
+    name: 'Deep Purple',
     childs: [
       '#EDE7F6',
       '#D1C4E9',
@@ -81,6 +63,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#7986CB',
+    name: 'Indigo',
     childs: [
       '#E8EAF6',
       '#C5CAE9',
@@ -95,6 +78,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#64B5F6',
+    name: 'Blue',
     childs: [
       '#E3F2FD',
       '#BBDEFB',
@@ -109,6 +93,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#4FC3F7',
+    name: 'Light Blue',
     childs: [
       '#E1F5FE',
       '#B3E5FC',
@@ -123,6 +108,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#4DD0E1',
+    name: 'Cyan',
     childs: [
       '#E0F7FA',
       '#B2EBF2',
@@ -137,6 +123,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#4DB6AC',
+    name: 'Teal',
     childs: [
       '#E0F2F1',
       '#B2DFDB',
@@ -151,6 +138,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#81C784',
+    name: 'Green',
     childs: [
       '#E8F5E9',
       '#C8E6C9',
@@ -165,6 +153,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#AED581',
+    name: 'Light Green',
     childs: [
       '#F1F8E9',
       '#DCEDC8',
@@ -179,6 +168,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#DCE775',
+    name: 'Lime',
     childs: [
       '#F9FBE7',
       '#F0F4C3',
@@ -193,6 +183,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#FFF176',
+    name: 'Yellow',
     childs: [
       '#FFFDE7',
       '#FFF9C4',
@@ -207,6 +198,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#FFD54F',
+    name: 'Amber',
     childs: [
       '#FFF8E1',
       '#FFECB3',
@@ -221,6 +213,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#FFB74D',
+    name: 'Orange',
     childs: [
       '#FFF3E0',
       '#FFE0B2',
@@ -235,6 +228,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#FF8A65',
+    name: 'Deep Orange',
     childs: [
       '#FBE9E7',
       '#FFCCBC',
@@ -249,6 +243,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#A1887F',
+    name: 'Brown',
     childs: [
       '#EFEBE9',
       '#D7CCC8',
@@ -263,6 +258,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#E0E0E0',
+    name: 'Grey',
     childs: [
       '#FFFFFF',
       '#FAFAFA',
@@ -279,6 +275,7 @@ export const defaultColors: Array<ColorOption> = [
   },
   {
     color: '#90A4AE',
+    name: 'Blue Grey',
     childs: [
       '#ECEFF1',
       '#CFD8DC',

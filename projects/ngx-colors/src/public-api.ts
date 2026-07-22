@@ -4,6 +4,7 @@
 
 export * from './lib/components/ngx-colors/ngx-colors.component';
 export * from './lib/directives/trigger.directive';
+export * from './lib/ngx-colors.module';
 export * from './lib/validators/color-validator';
 export * from './lib/utility/color-helper';
 export * from './lib/utility/default-colors';

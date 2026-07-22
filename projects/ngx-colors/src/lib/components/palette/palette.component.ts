@@ -14,7 +14,6 @@ import { Rgba } from '../../models/rgba';
 import { defaultColors } from '../../utility/default-colors';
 import { PaletteColor } from '../../models/color';
 import { CommonModule } from '@angular/common';
-import { ColorHelper } from '../../utility/color-helper';
 import { PaletteStack } from '../../models/palette-stack';
 import { ColorOption } from '../../types/color-option';
 import { paletteAnimation } from '../../utility/animations';
@@ -47,7 +46,7 @@ export class PaletteComponent
   public disabled: boolean = false;
   public paletteStack: PaletteStack = new PaletteStack();
   //Used to highlight the selected color on the palette
-  private selected: string | undefined = undefined;
+  private selected: Rgba | undefined = undefined;
   public indexSelected: number = -1;
 
   public loading = false;
@@ -102,15 +101,25 @@ export class PaletteComponent
     }
   }
 
-  private isSelected(color: PaletteColor, selected: string): boolean {
+  //Compares by underlying rounded value rather than raw string, since
+  //palette entries and the selected value can be written in different
+  //formats/precisions (e.g. "#e57373" vs "#e57373ff") while being the same color.
+  private isSameColor(a: Rgba | undefined, b: Rgba | undefined): boolean {
+    if (!a || !b) return false;
+    const ra = a.toRounded();
+    const rb = b.toRounded();
+    return ra.r === rb.r && ra.g === rb.g && ra.b === rb.b && ra.a === rb.a;
+  }
+
+  private isSelected(color: PaletteColor, selected: Rgba): boolean {
     return (
-      color.preview == selected ||
+      this.isSameColor(color.value, selected) ||
       (!!color.childs?.length &&
         color.childs.some((child) => this.isSelected(child, selected)))
     );
   }
 
-  private getIndexSelected(selected: string | undefined): number {
+  private getIndexSelected(selected: Rgba | undefined): number {
     if (selected === undefined || !this.paletteStack?.size) {
       return -1;
     }
@@ -123,7 +132,7 @@ export class PaletteComponent
     if (color.childs?.length) {
       this.paletteStack.push(color.childs);
     } else {
-      this.selected = color.preview;
+      this.selected = color.value;
       this.value = color.value;
       this.onChange(this.value);
     }
@@ -133,10 +142,7 @@ export class PaletteComponent
   writeValue(obj: Rgba | undefined): void {
     this.value = obj;
     if (this.value) {
-      this.selected = ColorHelper.rgbaToColorModel(
-        this.value,
-        'HEXA',
-      ).toString();
+      this.selected = this.value;
       this.indexSelected = this.getIndexSelected(this.selected);
     }
   }

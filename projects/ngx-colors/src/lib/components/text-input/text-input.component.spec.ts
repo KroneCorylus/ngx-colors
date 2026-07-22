@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TextInputComponent } from './text-input.component';
+import { StateService } from '../../services/state.service';
 
 describe('TextInputComponent', () => {
   let component: TextInputComponent;
@@ -8,7 +9,8 @@ describe('TextInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TextInputComponent]
+      imports: [TextInputComponent],
+      providers: [StateService]
     })
     .compileComponents();
     

@@ -35,11 +35,6 @@ const iterateTests = (
           originalValue,
           colorFormat
         );
-        console.log('key:', key);
-        console.log('value:', originalValue);
-        console.log('expect:', test[convertTo]);
-        console.log('result:', result);
-
         if (typeof test[convertTo] == 'string') {
           expect(result).toBe(test[convertTo]);
         } else {
@@ -158,10 +153,10 @@ const mockStrings: Array<ColorEquivalence> = [
 ];
 const mockTipos = [
   //HEX
-  { valor: '#ff00ff', resultado: 'HEX' },
-  { valor: '#ff0', resultado: 'HEX' },
-  { valor: '#ff00ff', resultado: 'HEX' },
-  { valor: '#ff00', resultado: 'HEX' },
+  { valor: '#ff00ff', resultado: 'HEXA' },
+  { valor: '#ff0', resultado: 'HEXA' },
+  { valor: '#ff00ff', resultado: 'HEXA' },
+  { valor: '#ff00', resultado: 'HEXA' },
   //RGBA
   { valor: 'rgb(255, 0, 255)', resultado: 'RGBA' },
   { valor: 'rgba(255, 0, 255, 0.5)', resultado: 'RGBA' },
@@ -213,7 +208,7 @@ describe('Convert string to RGB string', () => {
 describe('Convert string to HEX string', () => {
   const keys = ['rgba', 'hsla', 'cmyk', 'hsva'];
   const convertTo = 'hex';
-  iterateTests(keys, convertTo, 'HEX');
+  iterateTests(keys, convertTo, 'HEXA');
 });
 
 describe('Convert string to CYMK string', () => {

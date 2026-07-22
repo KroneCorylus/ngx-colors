@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColorPickerComponent } from './color-picker.component';
+import { StateService } from '../../services/state.service';
 
 describe('ColorPickerComponent', () => {
   let component: ColorPickerComponent;
@@ -8,7 +9,8 @@ describe('ColorPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ColorPickerComponent]
+      imports: [ColorPickerComponent],
+      providers: [StateService]
     })
     .compileComponents();
     

@@ -1,0 +1,81 @@
+<div class="page">
+  <section class="card">
+    <h1>Overlay positioning stress test</h1>
+    <p>
+      Open the picker next to each trigger to verify that the overlay smartly repositions when
+      there is not enough space on one side of the viewport. Resize the window or scroll to make
+      sure the overlay keeps tracking the trigger.
+    </p>
+  </section>
+
+  <section class="card">
+    <header class="card__header">
+      <h2>Viewport boundary checks</h2>
+      <p>
+        Each trigger hugs a different edge of the stage. The overlay should flip horizontally and/or
+        vertically depending on available space.
+      </p>
+    </header>
+
+    <div class="stage">
+      <div class="stage__trigger stage__trigger--top-left">
+        <span class="stage__label">{{ labels.topLeft }}</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="colors.topLeft"
+        ></ngx-colors>
+        <button type="button" (click)="reset('topLeft')">Reset</button>
+      </div>
+
+      <div class="stage__trigger stage__trigger--top-right">
+        <span class="stage__label">{{ labels.topRight }}</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="colors.topRight"
+        ></ngx-colors>
+        <button type="button" (click)="reset('topRight')">Reset</button>
+      </div>
+
+      <div class="stage__trigger stage__trigger--bottom-left">
+        <span class="stage__label">{{ labels.bottomLeft }}</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="colors.bottomLeft"
+        ></ngx-colors>
+        <button type="button" (click)="reset('bottomLeft')">Reset</button>
+      </div>
+
+      <div class="stage__trigger stage__trigger--bottom-right">
+        <span class="stage__label">{{ labels.bottomRight }}</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="colors.bottomRight"
+        ></ngx-colors>
+        <button type="button" (click)="reset('bottomRight')">Reset</button>
+      </div>
+
+      <div class="stage__trigger stage__trigger--center">
+        <span class="stage__label">{{ labels.center }}</span>
+        <ngx-colors
+          class="stage__picker"
+          ngxColorsTrigger
+          [formControl]="colors.center"
+        ></ngx-colors>
+        <button type="button" (click)="reset('center')">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card card--tips">
+    <h2>Tips</h2>
+    <ul>
+      <li>Drag the window smaller than the stage to watch the overlay prefer the open side.</li>
+      <li>Scroll the page while an overlay is open to verify that it sticks to its trigger.</li>
+      <li>Use the Reset buttons to clear any value and reopen the picker as needed.</li>
+    </ul>
+  </section>
+</div>

@@ -122,7 +122,7 @@ export class NgxColorsTriggerDirective
   @Input()
   public lockValues: LockValuesOptions | undefined;
   @Input()
-  public outputModel: ColorModel | undefined;
+  public outputModel: ColorModel | 'AUTO' | undefined;
   @Input()
   public allowedModels: Array<ColorModel> | undefined;
   @Input()

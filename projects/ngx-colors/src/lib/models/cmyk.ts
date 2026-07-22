@@ -26,17 +26,10 @@ export class Cmyk implements IColorModel {
     );
   }
   public toString(): string {
-    const cmyk = this.toRounded();
-    return (
-      'cmyk(' +
-      cmyk.c * 100 +
-      '%, ' +
-      cmyk.m * 100 +
-      '%, ' +
-      cmyk.y * 100 +
-      '%, ' +
-      cmyk.k * 100 +
-      '%)'
-    );
+    const c = round(this.c * 100, 2);
+    const m = round(this.m * 100, 2);
+    const y = round(this.y * 100, 2);
+    const k = round(this.k * 100, 2);
+    return 'cmyk(' + c + '%, ' + m + '%, ' + y + '%, ' + k + '%)';
   }
 }

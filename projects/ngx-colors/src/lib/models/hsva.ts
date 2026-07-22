@@ -19,23 +19,14 @@ export class Hsva implements IColorModel {
   }
 
   toString(): string {
-    const hsva = this.toRounded(0, 2, 2, 2);
-    if (hsva.a === 1) {
-      return (
-        'hsv(' + hsva.h + ', ' + hsva.s * 100 + '%, ' + hsva.v * 100 + '%)'
-      );
+    const h = round(this.h, 0);
+    const s = round(this.s * 100, 0);
+    const v = round(this.v * 100, 0);
+    const a = round(this.a, 2);
+    if (a === 1) {
+      return 'hsv(' + h + ', ' + s + '%, ' + v + '%)';
     } else {
-      return (
-        'hsva(' +
-        hsva.h +
-        ', ' +
-        hsva.s * 100 +
-        '%, ' +
-        hsva.v * 100 +
-        '%, ' +
-        hsva.a +
-        ')'
-      );
+      return 'hsva(' + h + ', ' + s + '%, ' + v + '%, ' + a + ')';
     }
   }
 }

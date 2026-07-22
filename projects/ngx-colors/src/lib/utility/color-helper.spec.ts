@@ -231,6 +231,39 @@ describe('Convert string to HSLA string', () => {
   iterateTests(keys, convertTo, 'HSLA');
 });
 
+describe('toString rounding and zero-stripping', () => {
+  it('Cmyk rounds percents to 2 decimals without float artifacts', () => {
+    expect(new Cmyk(0.1422, 0, 0.995, 0.29).toString()).toBe(
+      'cmyk(14.22%, 0%, 99.5%, 29%)',
+    );
+  });
+
+  it('Cmyk strips irrelevant zeros', () => {
+    expect(new Cmyk(0.5, 0.1, 0, 1).toString()).toBe(
+      'cmyk(50%, 10%, 0%, 100%)',
+    );
+  });
+
+  it('Hsva prints artifact-free percents and minimal alpha', () => {
+    expect(new Hsva(75, 0.29, 0.87, 1).toString()).toBe('hsv(75, 29%, 87%)');
+    expect(new Hsva(75, 0.29, 0.87, 0.5).toString()).toBe(
+      'hsva(75, 29%, 87%, 0.5)',
+    );
+  });
+
+  it('Hsla prints artifact-free percents and minimal alpha', () => {
+    expect(new Hsla(120, 0.51, 0.29, 0.5).toString()).toBe(
+      'hsla(120, 51%, 29%, 0.5)',
+    );
+    expect(new Hsla(120, 0.51, 0.29, 1).toString()).toBe('hsl(120, 51%, 29%)');
+  });
+
+  it('Rgba prints minimal alpha', () => {
+    expect(new Rgba(255, 0, 0, 0.5).toString()).toBe('rgba(255, 0, 0, 0.5)');
+    expect(new Rgba(255, 0, 0, 0.87).toString()).toBe('rgba(255, 0, 0, 0.87)');
+  });
+});
+
 describe('Get ColorModel from string', () => {
   mockTipos.forEach((mt) => {
     it(`string: ${mt.valor} to be of type ${mt.resultado}`, () => {

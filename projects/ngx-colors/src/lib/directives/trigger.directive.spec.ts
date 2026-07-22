@@ -608,3 +608,67 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
     expect(overlayCount()).toBe(0);
   });
 });
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [formControl]="control"
+      [palette]="palette"
+    ></ngx-colors>
+  `,
+})
+class CvaDirtyHostComponent {
+  control = new FormControl<string | null>('#ff00ff');
+  palette: string[] = ['#00ff00', '#0000ff'];
+}
+
+describe('NgxColorsTriggerDirective ControlValueAccessor dirty/pristine behavior', () => {
+  let fixture: ComponentFixture<CvaDirtyHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [CvaDirtyHostComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        ReactiveFormsModule,
+      ],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(CvaDirtyHostComponent);
+    fixture.detectChanges();
+  });
+
+  function getTriggerElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+
+  it('stays pristine after the initial value is written', () => {
+    expect(fixture.componentInstance.control.pristine).toBe(true);
+  });
+
+  it('stays pristine after a subsequent programmatic setValue()', () => {
+    fixture.componentInstance.control.setValue('#00ff00');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.pristine).toBe(true);
+  });
+
+  it('becomes dirty once the user actually picks a color', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const swatch = document.body.querySelector<HTMLElement>(
+      '.circle._color-option.bg-transparent',
+    );
+    if (!swatch) {
+      throw new Error('Expected a palette swatch to be rendered');
+    }
+    swatch.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.dirty).toBe(true);
+    expect(fixture.componentInstance.control.value).toBe('#00ff00');
+  });
+});

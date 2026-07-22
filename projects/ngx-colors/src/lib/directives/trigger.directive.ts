@@ -164,9 +164,9 @@ export class NgxColorsTriggerDirective
         newValue = color.toString();
       }
       this.value = newValue;
-      this.onChange(this.value);
       this.colorChange.emit(this.value);
       if (isInputOrigin(state.origin) || state.origin === 'confirm') {
+        this.onChange(this.value);
         this.userChange.emit(this.value);
       }
       if (state.origin === 'confirm' || state.origin === 'cancel') {

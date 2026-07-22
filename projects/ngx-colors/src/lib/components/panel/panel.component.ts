@@ -145,8 +145,8 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   public cancel() {
-    this.stateService.state.pipe(take(1)).subscribe((value) => {
-      this.stateService.set(value);
+    this.stateService.state.pipe(take(1)).subscribe((state) => {
+      this.stateService.set({ value: state.value, origin: 'cancel' });
     });
   }
 

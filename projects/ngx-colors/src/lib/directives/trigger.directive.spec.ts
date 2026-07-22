@@ -506,3 +506,105 @@ describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', (
     expect(overlayCount()).toBe(1);
   });
 });
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      [display]="{ palette: false, sliders: true, text: false }"
+      (close)="onClose()"
+      (userChange)="onUserChange($event)"
+    ></ngx-colors>
+  `,
+})
+class CancelHostComponent {
+  value: string | null = '#ff00ff';
+  closeCount = 0;
+  userChanges: Array<string | null | undefined> = [];
+  onClose() {
+    this.closeCount++;
+  }
+  onUserChange(v: string | null | undefined) {
+    this.userChanges.push(v);
+  }
+}
+
+describe('NgxColorsTriggerDirective Cancel behavior', () => {
+  let fixture: ComponentFixture<CancelHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [CancelHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(CancelHostComponent);
+    fixture.detectChanges();
+  });
+
+  function getTriggerElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+
+  function overlayCount(): number {
+    return document.body.getElementsByTagName('ngx-colors-overlay').length;
+  }
+
+  function getCancelButton(): HTMLButtonElement {
+    const overlay = document.body.querySelector('ngx-colors-overlay');
+    if (!overlay) {
+      throw new Error('Expected an open overlay in the document');
+    }
+    const cancelButton = Array.from(
+      overlay.querySelectorAll<HTMLButtonElement>('button'),
+    ).find((b) => b.textContent?.trim() === 'CANCEL');
+    if (!cancelButton) {
+      throw new Error('Expected a CANCEL button to be rendered');
+    }
+    return cancelButton;
+  }
+
+  it('closes the panel on Cancel even when nothing was changed since opening', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    expect(overlayCount()).toBe(1);
+
+    getCancelButton().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(overlayCount()).toBe(0);
+  });
+
+  it('leaves the bound value unchanged after Cancel', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    getCancelButton().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.value).toBe('#ff00ff');
+  });
+
+  it('emits (close) but not (userChange) when Cancel is clicked', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    fixture.componentInstance.userChanges = [];
+
+    getCancelButton().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.closeCount).toBe(1);
+    expect(fixture.componentInstance.userChanges).toEqual([]);
+  });
+
+  it('closes reliably across repeated open/cancel cycles', () => {
+    for (let i = 0; i < 3; i++) {
+      getTriggerElement().dispatchEvent(new Event('click'));
+      fixture.detectChanges();
+      getCancelButton().dispatchEvent(new Event('click'));
+      fixture.detectChanges();
+    }
+    expect(overlayCount()).toBe(0);
+  });
+});

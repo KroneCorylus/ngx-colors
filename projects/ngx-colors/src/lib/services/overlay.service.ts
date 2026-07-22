@@ -36,6 +36,7 @@ export class OverlayService {
 
     const hostElement: HTMLElement =
       document.createElement('ngx-colors-overlay');
+    this.overlay = hostElement;
     if (this.stateService.configuration.overlayClass) {
       hostElement.classList.add(this.stateService.configuration.overlayClass);
     }
@@ -64,15 +65,7 @@ export class OverlayService {
 
     this.componentRef.instance.triggerNativeElement =
       trigger?.triggerRef.nativeElement;
-    if (trigger) {
-      const viewportOffset =
-        trigger.triggerRef.nativeElement.getBoundingClientRect();
-
-      const top = viewportOffset.top + viewportOffset.height;
-      const left = viewportOffset.left;
-      this.componentRef.instance.x = left;
-      this.componentRef.instance.y = top;
-    }
+    this.componentRef.instance.updatePosition();
     this.applicationRef.attachView(this.componentRef.hostView);
     return this.componentRef;
   }
@@ -81,9 +74,13 @@ export class OverlayService {
     if (this.applicationRef && this.componentRef) {
       this.applicationRef.detachView(this.componentRef.hostView);
       this.componentRef.destroy();
-      if (this.overlay) {
-        this.overlay.remove();
-      }
+      // Explicitly detach the host node instead of relying on destroy() to
+      // do it: it was created and appended by hand in createOverlay(), and
+      // Angular does not take ownership of externally-supplied host
+      // elements, so it is our responsibility to remove it.
+      this.overlay?.remove();
     }
+    this.componentRef = undefined;
+    this.overlay = undefined;
   }
 }

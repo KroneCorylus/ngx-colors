@@ -1,7 +1,8 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { PanelComponent } from '../panel/panel.component';
 import { OverlayService } from '../../services/overlay.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { computeOverlayPosition } from '../../utility/overlay-position';
 
 @Component({
   selector: 'ngx-colors-overlay',
@@ -19,25 +20,40 @@ export class OverlayComponent {
 
   @ViewChild(PanelComponent, { static: true })
   panel!: PanelComponent;
+  @ViewChild(PanelComponent, { read: ElementRef, static: true })
+  panelElementRef!: ElementRef<HTMLElement>;
+
   @HostListener('document:scroll')
   onScroll() {
-    this.onScreenMovement();
+    this.updatePosition();
   }
   @HostListener('window:resize')
   onResize() {
-    this.onScreenMovement();
+    this.updatePosition();
   }
   @HostListener('pointerdown', ['$event'])
   public onClick(): void {
     this.overlayService.removePanel();
   }
 
-  private onScreenMovement() {
+  /**
+   * Recomputes the panel's position relative to its trigger, keeping it
+   * inside the viewport: it opens below the trigger by default, flips above
+   * when there isn't room below (but there is above), and clamps
+   * horizontally so it never runs past the left/right edge of the screen.
+   * Called on initial open (from OverlayService, once the trigger reference
+   * is available) and again on scroll/resize.
+   */
+  public updatePosition(): void {
     if (!this.triggerNativeElement) return;
-    const viewportOffset = this.triggerNativeElement.getBoundingClientRect();
-    const top = viewportOffset.top + viewportOffset.height;
-    const left = viewportOffset.left;
-    this.x = left;
-    this.y = top;
+    const triggerRect = this.triggerNativeElement.getBoundingClientRect();
+    const panelRect = this.panelElementRef.nativeElement.getBoundingClientRect();
+    const position = computeOverlayPosition(
+      triggerRect,
+      { width: panelRect.width, height: panelRect.height },
+      { width: window.innerWidth, height: window.innerHeight },
+    );
+    this.x = position.left;
+    this.y = position.top;
   }
 }

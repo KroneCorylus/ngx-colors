@@ -41,4 +41,23 @@ describe('OverlayService', () => {
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlay).toBeFalsy();
   });
+
+  it('should not throw when removePanel is called with no overlay open', () => {
+    expect(() => service.removePanel()).not.toThrow();
+  });
+
+  it('should not throw when removePanel is called twice in a row', () => {
+    service.createOverlay(undefined, undefined, injector);
+    service.removePanel();
+    expect(() => service.removePanel()).not.toThrow();
+  });
+
+  it('should allow opening a new overlay after the previous one was removed', () => {
+    service.createOverlay(undefined, undefined, injector);
+    service.removePanel();
+    service.createOverlay(undefined, undefined, injector);
+    const overlayCount =
+      document.body.getElementsByTagName('ngx-colors-overlay').length;
+    expect(overlayCount).toBe(1);
+  });
 });

@@ -157,6 +157,11 @@ export class NgxColorsTriggerDirective
   }
 
   public ngOnDestroy(): void {
+    // If the host (or an ancestor) is destroyed while the panel is open -
+    // e.g. behind an *ngIf or on route navigation - the overlay is not part
+    // of this component's view tree, so Angular won't tear it down on its
+    // own. Without this, the panel and its DOM node are leaked permanently.
+    this.overlayService.removePanel();
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -52,7 +52,7 @@ export class PaletteComponent
 
   public loading = false;
 
-  @Output() onColorHover: EventEmitter<Rgba | undefined> = new EventEmitter<
+  @Output() colorHover: EventEmitter<Rgba | undefined> = new EventEmitter<
     Rgba | undefined
   >();
 
@@ -76,7 +76,7 @@ export class PaletteComponent
   }
 
   public onMouseEnter(color: PaletteColor) {
-    this.onColorHover.emit(color.value);
+    this.colorHover.emit(color.value);
   }
 
   private getPalette(palette: Observable<Array<ColorOption>> | undefined) {

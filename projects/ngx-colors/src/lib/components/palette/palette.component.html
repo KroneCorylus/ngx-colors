@@ -56,8 +56,6 @@
   <div
     *ngFor="let color of [].constructor(14)"
     class="circle _color-option overflow-h"
-    (keydown.enter)="this.onClickColor(color)"
-    (click)="this.onClickColor(color)"
   >
     <div class="w-100 circle h-100 skeleton"></div>
   </div>

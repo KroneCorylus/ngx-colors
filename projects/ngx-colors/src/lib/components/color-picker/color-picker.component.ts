@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -36,7 +36,7 @@ import { StateService } from '../../services/state.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorPickerComponent
-  implements OnChanges, ControlValueAccessor, OnInit
+  implements OnChanges, ControlValueAccessor, AfterViewInit
 {
   public hue: string = 'red';
   public preview: string = 'red';
@@ -66,7 +66,7 @@ export class ColorPickerComponent
 
   public _hue: Hsva = new Hsva(1, 1, 1, 1);
   public bgv: string = 'rgb(255,255,255)';
-  public bgs: { [klass: string]: any } | undefined = undefined;
+  public bgs: { background: string } | undefined = undefined;
   //state in hsva
   public _value: Hsva = new Hsva(1, 1, 1, 1);
 
@@ -75,7 +75,6 @@ export class ColorPickerComponent
   //@ts-expect-error eyedroper is a experimental feature.
   public eyeDropperSupport: boolean = !!window.EyeDropper;
 
-  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     const value = changes['value'].currentValue;
     this.setValue(value);

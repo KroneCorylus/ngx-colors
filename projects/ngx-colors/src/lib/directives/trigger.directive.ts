@@ -78,10 +78,10 @@ export class NgxColorsTriggerDirective
   destroy$: Subject<void> = new Subject<void>();
   value: string | undefined | null = undefined;
   @Output()
-  public onSliderChange: EventEmitter<Rgba | null> =
+  public sliderChange: EventEmitter<Rgba | null> =
     this.stateService.sliderChange$;
   @Output()
-  public onColorHover: EventEmitter<Rgba | null> =
+  public colorHover: EventEmitter<Rgba | null> =
     this.stateService.paleteColorHover$;
 
   // CONFIGURATION
@@ -180,7 +180,7 @@ export class NgxColorsTriggerDirective
         { provide: OverlayService, useValue: this.overlayService },
       ],
     });
-    this.overlayService.createOverlay(this, undefined, injector);
+    this.overlayService.createOverlay(this, injector);
   }
 
   private setPalette(

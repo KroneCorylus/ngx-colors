@@ -1,8 +1,8 @@
 <div class="flex flex-col h-100">
   <div
     *ngIf="
-      this.stateService.configuration.lockValues.saturation == undefined &&
-      this.stateService.configuration.lockValues.brightness == undefined
+      this.stateService.configuration.lockValues.saturation === undefined &&
+      this.stateService.configuration.lockValues.brightness === undefined
     "
     class="_sl-box bg-saturation-lightness mb-4"
     #slSlider
@@ -35,7 +35,7 @@
     </div>
     <div class="flex flex-col grow-1 mr-4 ml-4 _hue-alpha-box justify-center">
       <div
-        *ngIf="this.stateService.configuration.lockValues.hue == undefined"
+        *ngIf="this.stateService.configuration.lockValues.hue === undefined"
         ngxColorsSlider
         #hueSlider
         class="grow-1 bg-hue radius-4 pointer _horizontal-slider"
@@ -45,8 +45,8 @@
       </div>
       <div
         *ngIf="
-          this.stateService.configuration.lockValues.saturation == undefined &&
-          this.stateService.configuration.lockValues.brightness != undefined
+          this.stateService.configuration.lockValues.saturation === undefined &&
+          this.stateService.configuration.lockValues.brightness !== undefined
         "
         ngxColorsSlider
         #sSlider
@@ -60,15 +60,15 @@
         class="grow-1 radius-4 pointer _horizontal-slider"
         [style.background]="this.bgv"
         *ngIf="
-          this.stateService.configuration.lockValues.brightness == undefined &&
-          this.stateService.configuration.lockValues.saturation != undefined
+          this.stateService.configuration.lockValues.brightness === undefined &&
+          this.stateService.configuration.lockValues.saturation !== undefined
         "
       >
         <div
           *ngIf="
-            this.stateService.configuration.lockValues.brightness ==
+            this.stateService.configuration.lockValues.brightness ===
               undefined &&
-            this.stateService.configuration.lockValues.saturation != undefined
+            this.stateService.configuration.lockValues.saturation !== undefined
           "
           ngxColorsSlider
           #vSlider
@@ -80,7 +80,7 @@
       </div>
       <div
         class="grow-1 radius-4 bg-transparent pointer _horizontal-slider"
-        *ngIf="this.stateService.configuration.lockValues.alpha == undefined"
+        *ngIf="this.stateService.configuration.lockValues.alpha === undefined"
       >
         <div
           ngxColorsSlider

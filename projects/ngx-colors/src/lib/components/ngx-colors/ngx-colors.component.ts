@@ -30,7 +30,7 @@ export class NgxColorsComponent implements OnInit {
       });
     } else {
       //fallback when is not used on a ngControl
-      let old = this.triggerDirective.onChange;
+      const old = this.triggerDirective.onChange;
       this.triggerDirective.onChange = (value) => {
         this.previewColor = value;
         old(value);

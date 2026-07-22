@@ -40,8 +40,8 @@
             [confirmationRequired]="playgroundConfig.confirmationRequired"
             [disabled]="playgroundDisabled"
             (ngModelChange)="logEvent('Playground control', 'ngModelChange', $event)"
-            (onSliderChange)="logEvent('Playground control', 'onSliderChange', $event)"
-            (onColorHover)="logEvent('Playground control', 'onColorHover', $event)"
+            (sliderChange)="logEvent('Playground control', 'sliderChange', $event)"
+            (colorHover)="logEvent('Playground control', 'colorHover', $event)"
           ></ngx-colors>
 
           <div class="playground__meta">
@@ -293,8 +293,8 @@
               [allowedModels]="['HSVA', 'HEXA']"
               [display]="{ palette: true, sliders: true, text: true }"
               (ngModelChange)="logEvent('Reactive form example', 'ngModelChange', $event)"
-              (onSliderChange)="logEvent('Reactive form example', 'onSliderChange', $event)"
-              (onColorHover)="logEvent('Reactive form example', 'onColorHover', $event)"
+              (sliderChange)="logEvent('Reactive form example', 'sliderChange', $event)"
+              (colorHover)="logEvent('Reactive form example', 'colorHover', $event)"
             ></ngx-colors>
             <div class="example__meta">
               <span>Value:</span>
@@ -313,7 +313,7 @@
               [confirmationRequired]="{ palette: true, text: true, sliders: true }"
               [animation]="'slide'"
               (ngModelChange)="logEvent('NgModel example', 'ngModelChange', $event)"
-              (onSliderChange)="logEvent('NgModel example', 'onSliderChange', $event)"
+              (sliderChange)="logEvent('NgModel example', 'sliderChange', $event)"
             ></ngx-colors>
             <div class="example__meta">
               <span>Value:</span>
@@ -371,7 +371,7 @@
                 [labels]="config.labels"
                 [confirmationRequired]="config.confirmationRequired"
                 (ngModelChange)="logEvent(preset.title, 'ngModelChange', $event)"
-                (onSliderChange)="logEvent(preset.title, 'onSliderChange', $event)"
+                (sliderChange)="logEvent(preset.title, 'sliderChange', $event)"
               ></ngx-colors>
               <div class="preset__value">
                 <span>Value:</span>

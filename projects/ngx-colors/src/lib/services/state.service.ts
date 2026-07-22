@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Observer } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Rgba } from '../models/rgba';
 import { ColorOption } from '../types/color-option';
 import { Configuration } from '../models/configuration';

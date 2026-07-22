@@ -1,18 +1,12 @@
 import {
   ApplicationRef,
   ComponentRef,
-  Inject,
   Injectable,
   Injector,
-  Optional,
   createComponent,
 } from '@angular/core';
 import { OverlayComponent } from '../components/overlay/overlay.component';
 import { NgxColorsTriggerDirective } from '../directives/trigger.directive';
-import {
-  NGX_COLORS_CONFIG,
-  NgxColorsConfiguration,
-} from '../interfaces/configuration';
 import { StateService } from './state.service';
 
 @Injectable()
@@ -27,7 +21,6 @@ export class OverlayService {
 
   createOverlay(
     trigger: NgxColorsTriggerDirective | undefined,
-    attachToId: string | undefined,
     injector: Injector,
   ): ComponentRef<OverlayComponent> {
     if (this.componentRef != undefined) {
@@ -41,14 +34,14 @@ export class OverlayService {
       hostElement.classList.add(this.stateService.configuration.overlayClass);
     }
     let parent = document.body;
-    let attachTo = this.stateService.configuration.overlayAttachTo;
+    const attachTo = this.stateService.configuration.overlayAttachTo;
     if (attachTo) {
       if (typeof attachTo == 'string') {
-        let aux_parent = document.getElementById(attachTo);
-        if (!aux_parent) {
+        const auxParent = document.getElementById(attachTo);
+        if (!auxParent) {
           throw new Error('Overlay parent not found');
         }
-        parent = aux_parent;
+        parent = auxParent;
       } else {
         parent = attachTo;
       }

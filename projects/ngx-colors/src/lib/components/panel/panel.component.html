@@ -1,9 +1,9 @@
 <div class="elevation-z2 bg-white main flex flex-col">
   @if (
-    this.stateService.configuration.layout == "pages" &&
+    this.stateService.configuration.layout === "pages" &&
     this.stateService.configuration.display.sliders &&
     this.stateService.configuration.confirmationRequired?.sliders &&
-    this.currentPage == "sliders"
+    this.currentPage === "sliders"
   ) {
     <div class="_palette-controls px-3">
       <div class="_navigation">
@@ -28,7 +28,7 @@
     "
   >
     @if (
-      (this.stateService.configuration.layout != "pages" ||
+      (this.stateService.configuration.layout !== "pages" ||
         this.currentPage === "sliders") &&
       this.stateService.configuration.display.sliders
     ) {
@@ -38,13 +38,13 @@
       </div>
     }
     @if (
-      (this.stateService.configuration.layout != "pages" ||
+      (this.stateService.configuration.layout !== "pages" ||
         this.currentPage === "palette") &&
       this.stateService.configuration.display.palette
     ) {
       <div style="width: 220px">
         <ngx-colors-palette
-          (onColorHover)="this.onPaletteColorHover($event)"
+          (colorHover)="this.onPaletteColorHover($event)"
           [palette$]="this.stateService.palette$"
           [formControl]="this.paletteCtrl"
         >
@@ -53,7 +53,7 @@
             aria-label="sliders"
             [ngClass]="this.stateService.configuration.animation"
             *ngIf="
-              this.stateService.configuration.layout == 'pages' &&
+              this.stateService.configuration.layout === 'pages' &&
               this.stateService.configuration.display.sliders
             "
             tabindex="0"

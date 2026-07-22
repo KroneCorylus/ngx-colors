@@ -20,22 +20,22 @@ describe('OverlayService', () => {
   });
 
   it('should append overlay element to body', () => {
-    service.createOverlay(undefined, undefined, injector);
+    service.createOverlay(undefined, injector);
     const overlay =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlay).toBeTruthy();
   });
 
   it('should not append multiple overlays', () => {
-    service.createOverlay(undefined, undefined, injector);
-    service.createOverlay(undefined, undefined, injector);
+    service.createOverlay(undefined, injector);
+    service.createOverlay(undefined, injector);
     const overlayCount =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlayCount).toBeLessThan(2);
   });
 
   it('should remove overlay from the DOM', () => {
-    service.createOverlay(undefined, undefined, injector);
+    service.createOverlay(undefined, injector);
     service.removePanel();
     const overlay =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
@@ -47,15 +47,15 @@ describe('OverlayService', () => {
   });
 
   it('should not throw when removePanel is called twice in a row', () => {
-    service.createOverlay(undefined, undefined, injector);
+    service.createOverlay(undefined, injector);
     service.removePanel();
     expect(() => service.removePanel()).not.toThrow();
   });
 
   it('should allow opening a new overlay after the previous one was removed', () => {
-    service.createOverlay(undefined, undefined, injector);
+    service.createOverlay(undefined, injector);
     service.removePanel();
-    service.createOverlay(undefined, undefined, injector);
+    service.createOverlay(undefined, injector);
     const overlayCount =
       document.body.getElementsByTagName('ngx-colors-overlay').length;
     expect(overlayCount).toBe(1);

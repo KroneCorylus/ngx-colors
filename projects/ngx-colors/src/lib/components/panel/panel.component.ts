@@ -13,7 +13,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Rgba } from '../../models/rgba';
-import { Subject, forkJoin, map, merge, take, takeUntil, tap } from 'rxjs';
+import { Subject, map, merge, take, takeUntil, tap } from 'rxjs';
 import { Changes, isInputOrigin } from '../../types/changes';
 import { StateService } from '../../services/state.service';
 import { CommonModule } from '@angular/common';

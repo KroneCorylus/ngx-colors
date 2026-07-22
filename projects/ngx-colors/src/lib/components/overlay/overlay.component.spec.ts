@@ -141,4 +141,100 @@ describe('OverlayComponent', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
+
+  describe('dialog semantics (C16)', () => {
+    it('exposes role=dialog, aria-modal and a non-tabbable tabindex on its host', () => {
+      const host: HTMLElement = fixture.nativeElement;
+      expect(host.getAttribute('role')).toBe('dialog');
+      expect(host.getAttribute('aria-modal')).toBe('true');
+      expect(host.getAttribute('tabindex')).toBe('-1');
+    });
+
+    it('closes the panel on Escape', () => {
+      const overlayService = TestBed.inject(OverlayService);
+      const spy = spyOn(overlayService, 'removePanel');
+      fixture.nativeElement.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+      );
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('focusPanel() moves focus to the overlay host', () => {
+      document.body.appendChild(fixture.nativeElement);
+      component.focusPanel();
+      expect(document.activeElement).toBe(fixture.nativeElement);
+      fixture.nativeElement.remove();
+    });
+
+    it('returns focus to the trigger element on destroy', () => {
+      const trigger = document.createElement('button');
+      document.body.appendChild(trigger);
+      const focusSpy = spyOn(trigger, 'focus');
+      component.triggerNativeElement = trigger;
+
+      component.ngOnDestroy();
+
+      expect(focusSpy).toHaveBeenCalled();
+      trigger.remove();
+    });
+
+    it('does not throw on destroy when no trigger element was recorded', () => {
+      component.triggerNativeElement = undefined;
+      expect(() => component.ngOnDestroy()).not.toThrow();
+    });
+
+    describe('Tab focus trap', () => {
+      let first: HTMLButtonElement;
+      let last: HTMLButtonElement;
+
+      beforeEach(() => {
+        fixture.nativeElement.innerHTML = '';
+        first = document.createElement('button');
+        last = document.createElement('button');
+        fixture.nativeElement.appendChild(first);
+        fixture.nativeElement.appendChild(last);
+        document.body.appendChild(fixture.nativeElement);
+      });
+
+      afterEach(() => {
+        fixture.nativeElement.remove();
+      });
+
+      it('wraps Tab from the last focusable element back to the first', () => {
+        last.focus();
+        const event = new KeyboardEvent('keydown', {
+          key: 'Tab',
+          bubbles: true,
+        });
+        const preventDefault = spyOn(event, 'preventDefault');
+        fixture.nativeElement.dispatchEvent(event);
+        expect(preventDefault).toHaveBeenCalled();
+        expect(document.activeElement).toBe(first);
+      });
+
+      it('wraps Shift+Tab from the first focusable element back to the last', () => {
+        first.focus();
+        const event = new KeyboardEvent('keydown', {
+          key: 'Tab',
+          shiftKey: true,
+          bubbles: true,
+        });
+        const preventDefault = spyOn(event, 'preventDefault');
+        fixture.nativeElement.dispatchEvent(event);
+        expect(preventDefault).toHaveBeenCalled();
+        expect(document.activeElement).toBe(last);
+      });
+
+      it('does not interfere with Tab in the middle of the sequence', () => {
+        first.focus();
+        const event = new KeyboardEvent('keydown', {
+          key: 'Tab',
+          bubbles: true,
+        });
+        const preventDefault = spyOn(event, 'preventDefault');
+        fixture.nativeElement.dispatchEvent(event);
+        expect(preventDefault).not.toHaveBeenCalled();
+      });
+    });
+  });
 });

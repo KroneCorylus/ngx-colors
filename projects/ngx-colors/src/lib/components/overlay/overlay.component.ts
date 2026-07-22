@@ -1,9 +1,19 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { PanelComponent } from '../panel/panel.component';
 import { OverlayService } from '../../services/overlay.service';
 import { StateService } from '../../services/state.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { computeOverlayPosition } from '../../utility/overlay-position';
+
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 @Component({
   selector: 'ngx-colors-overlay',
@@ -12,15 +22,21 @@ import { computeOverlayPosition } from '../../utility/overlay-position';
   templateUrl: './overlay.component.html',
   styleUrl: './overlay.component.scss',
 })
-export class OverlayComponent {
+export class OverlayComponent implements OnDestroy {
   constructor(
     private overlayService: OverlayService,
     private stateService: StateService,
+    private elementRef: ElementRef<HTMLElement>,
   ) {}
 
   x: number = 0;
   y: number = 0;
   triggerNativeElement: HTMLElement | undefined = undefined;
+
+  @HostBinding('attr.role') role = 'dialog';
+  @HostBinding('attr.aria-modal') ariaModal = 'true';
+  @HostBinding('attr.aria-label') ariaLabel = 'Color picker';
+  @HostBinding('attr.tabindex') tabIndex = -1;
 
   @ViewChild(PanelComponent, { static: true })
   panel!: PanelComponent;
@@ -38,6 +54,41 @@ export class OverlayComponent {
   @HostListener('pointerdown', ['$event'])
   public onClick(): void {
     this.overlayService.removePanel();
+  }
+  @HostListener('keydown.escape')
+  public onEscape(): void {
+    this.overlayService.removePanel();
+  }
+  @HostListener('keydown.tab', ['$event'])
+  @HostListener('keydown.shift.tab', ['$event'])
+  public onTab(event: KeyboardEvent): void {
+    const focusable = Array.from(
+      this.elementRef.nativeElement.querySelectorAll<HTMLElement>(
+        FOCUSABLE_SELECTOR,
+      ),
+    );
+    if (!focusable.length) {
+      event.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.triggerNativeElement?.focus();
+  }
+
+  public focusPanel(): void {
+    this.elementRef.nativeElement.focus();
   }
 
   /**

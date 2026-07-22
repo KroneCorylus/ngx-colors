@@ -61,7 +61,6 @@ export class PaletteComponent
     of(defaultColors);
 
   public ngOnInit(): void {
-    console.log('[palette] OnInit');
     this.getPalette(this.palette$);
   }
 
@@ -124,7 +123,6 @@ export class PaletteComponent
     if (color.childs?.length) {
       this.paletteStack.push(color.childs);
     } else {
-      console.log('[palette] color selected', color);
       this.selected = color.preview;
       this.value = color.value;
       this.onChange(this.value);
@@ -133,7 +131,6 @@ export class PaletteComponent
   }
 
   writeValue(obj: Rgba | undefined): void {
-    console.log('[palette] writeValue', obj);
     this.value = obj;
     if (this.value) {
       this.selected = ColorHelper.rgbaToColorModel(
@@ -141,7 +138,6 @@ export class PaletteComponent
         'HEXA',
       ).toString();
       this.indexSelected = this.getIndexSelected(this.selected);
-      console.log('[palette] selected:', this.selected, this.value);
     }
   }
 

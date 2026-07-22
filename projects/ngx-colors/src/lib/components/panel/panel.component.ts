@@ -132,14 +132,11 @@ export class PanelComponent implements OnInit, OnDestroy {
     }
     if (state.origin != 'sliders') {
       this.slidersCtrl.setValue(state.value, { emitEvent: false });
-      console.log('sliderVlaue', this.slidersCtrl.value);
-      console.log('set value sliders', state.value);
     }
   }
 
   public accept() {
     this.stateService.temp.pipe(take(1)).subscribe((tempValue) => {
-      console.log('value temp', tempValue);
       this.stateService.set({ value: tempValue.value, origin: 'confirm' });
     });
   }

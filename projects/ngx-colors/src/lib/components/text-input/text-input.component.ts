@@ -79,7 +79,6 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(obj: Rgba | undefined): void {
-    // console.log('[text-input] writeValue', obj);
     this.value = obj;
     if (this.value) {
       this.inputControl.setValue(

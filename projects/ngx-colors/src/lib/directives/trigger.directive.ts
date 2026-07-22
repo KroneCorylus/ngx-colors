@@ -146,7 +146,6 @@ export class NgxColorsTriggerDirective
     this.setPalette(this.palette);
 
     this.stateService.state.subscribe((state) => {
-      console.log(state);
       let newValue = null;
       if (state?.value) {
         let color: IColorModel | string = state.value;

@@ -104,7 +104,6 @@ export class ColorPickerComponent
   }
 
   private setValue(value: Rgba | undefined, emitEvent: boolean = true) {
-    console.log('magia', value);
     if (!value) {
       this._value = this.getHSVA();
       this._hue = new Hsva(this._value.h, 1, 1, 1);
@@ -168,7 +167,6 @@ export class ColorPickerComponent
     if (sliderCode === 'a') {
       this._value.a = x;
     }
-    console.log(this._value);
     this.value = ColorHelper.hsva2Rgba(this._value);
     this.preview = this.value.toString();
     this.alphaGradient = this.getGradient(undefined, this.value);
@@ -221,7 +219,6 @@ export class ColorPickerComponent
       });
   }
   writeValue(obj: Rgba | undefined): void {
-    console.log('sliders writeValue', obj);
     this.value = obj;
     this.setValue(obj, false);
   }

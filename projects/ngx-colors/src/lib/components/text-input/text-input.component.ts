@@ -57,12 +57,16 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     'CMYK',
   ];
 
+  public focused: boolean = false;
+
   ngOnInit(): void {
     this.inputControl.valueChanges.subscribe((changes) => {
       if (typeof changes === 'string') {
-        if (ColorHelper.getColorModelByString(changes) === 'INVALID') {
+        const model = ColorHelper.getColorModelByString(changes);
+        if (model === 'INVALID' || this.inputControl.invalid) {
           return;
         }
+        this.syncColorModel(model);
         this.value = ColorHelper.stringToRgba(changes);
         this.onChange(this.value);
       }
@@ -94,6 +98,26 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     this.commit.emit();
   }
 
+  public onFocus(): void {
+    this.focused = true;
+  }
+
+  public onBlur(): void {
+    this.focused = false;
+    this.writeValue(this.value);
+    this.onTouch();
+  }
+
+  private syncColorModel(model: ColorModel): void {
+    const index = this.availableModels.indexOf(model);
+    if (index < 0) {
+      return;
+    }
+    this.colorModelIndex = index;
+    this.stateService.colorModel = model;
+    this.updatePlaceholder();
+  }
+
   private updatePlaceholder(): void {
     this.placeholder = ColorHelper.rgbaToColorModel(
       new Rgba(255, 255, 255, 1),
@@ -103,6 +127,9 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
 
   writeValue(obj: Rgba | undefined): void {
     this.value = obj;
+    if (this.focused) {
+      return;
+    }
     if (this.value) {
       this.inputControl.setValue(
         ColorHelper.rgbaToColorModel(

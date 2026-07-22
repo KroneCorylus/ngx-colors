@@ -13,6 +13,8 @@
       [formControl]="inputControl"
       [placeholder]="placeholder"
       (keydown.enter)="onEnter()"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
       [class.error]="inputControl.hasError('invalidColor')"
     />
   </div>

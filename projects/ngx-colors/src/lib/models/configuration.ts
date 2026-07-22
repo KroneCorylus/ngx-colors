@@ -51,8 +51,13 @@ export class Configuration implements NgxColorsConfiguration {
     sliders: true,
   };
 
-  constructor(...configOverwrites: NgxColorsConfiguration[]) {
+  constructor(
+    ...configOverwrites: Array<NgxColorsConfiguration | null | undefined>
+  ) {
     for (const overwrite of configOverwrites) {
+      if (!overwrite) {
+        continue;
+      }
       if (overwrite.display !== undefined) {
         this.display = { ...this.display, ...overwrite.display };
       }

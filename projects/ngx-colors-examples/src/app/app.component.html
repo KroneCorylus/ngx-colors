@@ -1,23 +1,57 @@
-<div class="app-shell">
-  <header class="app-shell__header">
-    <div class="app-shell__brand">
-      <span class="app-shell__title">NGX Colors Examples</span>
-      <span class="app-shell__subtitle">Sample scenarios for the picker</span>
-    </div>
-    <nav class="app-shell__nav">
-      <a
-        routerLink="/"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Playground</a
-      >
-      <a routerLink="/positioning-test" routerLinkActive="active">
-        Overlay Positioning
+<div class="shell">
+  <header class="topbar">
+    <div class="gx-container topbar__inner">
+      <a routerLink="/" class="topbar__brand">
+        <span class="topbar__logo"></span>
+        <span class="topbar__name">ngx-colors</span>
+        <span class="gx-chip">v4 beta</span>
       </a>
-    </nav>
+      <nav class="topbar__nav">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Overview</a
+        >
+        <a routerLink="/examples" routerLinkActive="active">Examples</a>
+        <a routerLink="/api" routerLinkActive="active">API</a>
+        <a routerLink="/playground" routerLinkActive="active">Playground</a>
+      </nav>
+      <div class="topbar__external">
+        <a
+          href="https://github.com/KroneCorylus/ngx-colors/tree/master#readme"
+          target="_blank"
+          rel="noopener"
+          >v3 docs</a
+        >
+        <a
+          class="topbar__github"
+          href="https://github.com/KroneCorylus/ngx-colors"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </div>
+    </div>
   </header>
 
-  <main class="app-shell__content">
+  <main class="shell__content">
     <router-outlet></router-outlet>
   </main>
+
+  <footer class="footer">
+    <div class="gx-container footer__inner">
+      <span class="gx-muted">ngx-colors — MIT licensed</span>
+      <span class="gx-muted">
+        Migrating from v3?
+        <a
+          class="gx-link"
+          href="https://github.com/KroneCorylus/ngx-colors/blob/master/MIGRATION.md"
+          target="_blank"
+          rel="noopener"
+          >Read the migration guide</a
+        >
+      </span>
+    </div>
+  </footer>
 </div>

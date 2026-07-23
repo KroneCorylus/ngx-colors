@@ -224,6 +224,18 @@ describe('OverlayComponent', () => {
         expect(document.activeElement).toBe(last);
       });
 
+      it('swallows Tab entirely when the panel has no focusable elements', () => {
+        first.remove();
+        last.remove();
+        const event = new KeyboardEvent('keydown', {
+          key: 'Tab',
+          bubbles: true,
+        });
+        const preventDefault = spyOn(event, 'preventDefault');
+        fixture.nativeElement.dispatchEvent(event);
+        expect(preventDefault).toHaveBeenCalled();
+      });
+
       it('does not interfere with Tab in the middle of the sequence', () => {
         first.focus();
         const event = new KeyboardEvent('keydown', {

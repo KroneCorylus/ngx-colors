@@ -10,6 +10,7 @@ import { Rgba } from '../models/rgba';
 import { colorValidator } from '../validators/color-validator';
 import {
   NgxColorsColor,
+  legacyInputsToConfiguration,
   translateLegacyPalette,
   validColorValidator,
 } from './v3-compat';
@@ -210,6 +211,44 @@ describe('v3 compat: legacy palette shape', () => {
     expect(colors).toEqual([
       { color: '#ff0000', childs: ['#aa0000', '#ff0000'], name: 'red' },
     ]);
+  });
+});
+
+describe('v3 compat: legacyInputsToConfiguration edge cases', () => {
+  it('maps a legacy formats array to allowedModels, dropping unknown entries', () => {
+    const config = legacyInputsToConfiguration({
+      formats: ['hex', 'rgba', 'bogus'],
+    });
+
+    expect(config.allowedModels).toEqual(['HEXA', 'RGBA']);
+    expect(config.outputModel).toBeUndefined();
+  });
+
+  it('does not set allowedModels when no legacy format is recognized', () => {
+    const config = legacyInputsToConfiguration({ formats: ['bogus'] });
+
+    expect(config.allowedModels).toBeUndefined();
+  });
+
+  it('warns and ignores an invalid legacy format', () => {
+    const warnSpy = spyOn(console, 'warn');
+
+    const config = legacyInputsToConfiguration({ format: 'nope' });
+
+    expect(warnSpy).toHaveBeenCalled();
+    expect(config.outputModel).toBeUndefined();
+    expect(config.allowedModels).toBeUndefined();
+  });
+
+  it('warns that colorPickerControls "only-alpha" is unsupported without locking values', () => {
+    const warnSpy = spyOn(console, 'warn');
+
+    const config = legacyInputsToConfiguration({
+      colorPickerControls: 'only-alpha',
+    });
+
+    expect(warnSpy).toHaveBeenCalled();
+    expect(config.lockValues).toBeUndefined();
   });
 });
 

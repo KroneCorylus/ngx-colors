@@ -264,6 +264,49 @@ describe('toString rounding and zero-stripping', () => {
   });
 });
 
+describe('Error contracts', () => {
+  it('rgbaToColorModel throws on an unknown output format', () => {
+    expect(() =>
+      ColorHelper.rgbaToColorModel(
+        new Rgba(0, 0, 0, 1),
+        'NOPE' as unknown as ColorModel,
+      ),
+    ).toThrowError(/Invalid output format/);
+  });
+
+  it('hex2Rgba throws on a malformed hex string', () => {
+    expect(() => ColorHelper.hex2Rgba('#12345')).toThrowError(
+      /Invalid hex color format/,
+    );
+  });
+
+  it('colorToRgba throws on a value that is not a color model', () => {
+    expect(() =>
+      ColorHelper.colorToRgba({} as unknown as IColorModel),
+    ).toThrowError('The input value is not a valid ColorModel');
+  });
+
+  it('stringToRgba throws on an unparseable color string', () => {
+    expect(() => ColorHelper.stringToRgba('not-a-color')).toThrowError(
+      /Invalid color string/,
+    );
+  });
+});
+
+describe('Remaining hue-range branches', () => {
+  it('hsla2Rgba converts a hue in the 180-240 range', () => {
+    expect(ColorHelper.hsla2Rgba(new Hsla(210, 1, 0.5, 1))).toEqual(
+      new Rgba(0, 128, 255, 1),
+    );
+  });
+
+  it('hsva2Rgba converts a hue in the 180-240 range', () => {
+    expect(
+      ColorHelper.hsva2Rgba(new Hsva(200, 1, 1, 1)).toRounded(),
+    ).toEqual(new Rgba(0, 170, 255, 1));
+  });
+});
+
 describe('Get ColorModel from string', () => {
   mockTipos.forEach((mt) => {
     it(`string: ${mt.valor} to be of type ${mt.resultado}`, () => {

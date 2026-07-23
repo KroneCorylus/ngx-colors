@@ -38,6 +38,17 @@ describe('TextInputComponent', () => {
     });
   });
 
+  describe('color model cycling with a value present', () => {
+    it('reformats the current value into the newly selected model', () => {
+      component.writeValue(new Rgba(255, 0, 0, 1));
+      expect(component.inputControl.value).toBe('rgb(255, 0, 0)');
+
+      component.onClickColorModel();
+
+      expect(component.inputControl.value).toBe('cmyk(0%, 100%, 100%, 0%)');
+    });
+  });
+
   describe('typing behavior', () => {
     function getInput(): HTMLInputElement {
       return fixture.nativeElement.querySelector('input');

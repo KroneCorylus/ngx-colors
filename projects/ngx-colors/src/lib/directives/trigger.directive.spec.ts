@@ -1422,3 +1422,38 @@ describe('NgxColorsTriggerDirective theme', () => {
     fixture.detectChanges();
   });
 });
+
+@Component({
+  template: `
+    <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors>
+  `,
+})
+class InvalidPaletteHostComponent {
+  value: string | null = '#ff00ff';
+}
+
+describe('NgxColorsTriggerDirective invalid palette input', () => {
+  let directive: NgxColorsTriggerDirective;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [InvalidPaletteHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(InvalidPaletteHostComponent);
+    fixture.detectChanges();
+    directive = fixture.debugElement
+      .query(By.directive(NgxColorsTriggerDirective))
+      .injector.get(NgxColorsTriggerDirective);
+  });
+
+  it('throws when the palette is neither an array nor an Observable', () => {
+    directive.palette = 'bogus' as unknown as typeof directive.palette;
+
+    expect(() =>
+      directive.ngOnChanges({
+        palette: new SimpleChange(undefined, directive.palette, false),
+      }),
+    ).toThrowError('The palette provided is not of a valid type');
+  });
+});

@@ -3,9 +3,11 @@ import { ApplicationRef, Injector } from '@angular/core';
 
 import { OverlayService } from './overlay.service';
 import { StateService } from './state.service';
+import { Configuration } from '../models/configuration';
 
 describe('OverlayService', () => {
   let service: OverlayService;
+  let stateService: StateService;
   let injector: Injector;
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,6 +19,7 @@ describe('OverlayService', () => {
     });
 
     service = TestBed.inject(OverlayService);
+    stateService = TestBed.inject(StateService);
   });
 
   it('should be created', () => {
@@ -85,6 +88,70 @@ describe('OverlayService', () => {
     service.closed.subscribe(spy);
     service.removePanel();
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  describe('configuration-driven overlay options', () => {
+    afterEach(() => {
+      service.removePanel();
+    });
+
+    it('applies overlayClass to the overlay host element', () => {
+      stateService.configuration = new Configuration({
+        overlayClass: 'my-overlay-class',
+      });
+
+      service.createOverlay(undefined, injector);
+
+      const overlay = document.body.querySelector('ngx-colors-overlay');
+      expect(overlay?.classList.contains('my-overlay-class')).toBeTrue();
+    });
+
+    it('attaches the overlay to the element matching an overlayAttachTo id', () => {
+      const parent = document.createElement('div');
+      parent.id = 'attach-target';
+      document.body.appendChild(parent);
+      stateService.configuration = new Configuration({
+        overlayAttachTo: 'attach-target',
+      });
+
+      try {
+        service.createOverlay(undefined, injector);
+        expect(
+          parent.querySelector('ngx-colors-overlay'),
+        ).not.toBeNull();
+      } finally {
+        service.removePanel();
+        parent.remove();
+      }
+    });
+
+    it('throws when the overlayAttachTo id does not exist', () => {
+      stateService.configuration = new Configuration({
+        overlayAttachTo: 'does-not-exist',
+      });
+
+      expect(() => service.createOverlay(undefined, injector)).toThrowError(
+        'Overlay parent not found',
+      );
+    });
+
+    it('attaches the overlay to an overlayAttachTo element reference', () => {
+      const parent = document.createElement('div');
+      document.body.appendChild(parent);
+      stateService.configuration = new Configuration({
+        overlayAttachTo: parent,
+      });
+
+      try {
+        service.createOverlay(undefined, injector);
+        expect(
+          parent.querySelector('ngx-colors-overlay'),
+        ).not.toBeNull();
+      } finally {
+        service.removePanel();
+        parent.remove();
+      }
+    });
   });
 
   it('should emit closed then opened when replacing an already-open overlay', () => {

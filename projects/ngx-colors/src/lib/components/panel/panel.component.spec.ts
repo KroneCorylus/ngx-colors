@@ -27,6 +27,89 @@ describe('PanelComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('change propagation between controls', () => {
+    it('a text change updates the palette and sliders controls without re-emitting', () => {
+      const color = new Rgba(1, 2, 3, 1);
+
+      component.textInputCtrl.setValue(color);
+
+      expect(component.paletteCtrl.value).toEqual(color);
+      expect(component.slidersCtrl.value).toEqual(color);
+    });
+
+    it('a text change commits immediately when text confirmation is off (default)', () => {
+      const color = new Rgba(10, 20, 30, 1);
+      let lastEmission: { value: unknown; origin: string } | undefined;
+      stateService.state.subscribe((state) => (lastEmission = state));
+
+      component.textInputCtrl.setValue(color);
+
+      expect(lastEmission?.origin).toBe('text');
+      expect(lastEmission?.value).toEqual(color);
+    });
+
+    it('a sliders change emits on sliderChange$ while dragging', () => {
+      const color = new Rgba(40, 50, 60, 1);
+      const spy = jasmine.createSpy('sliderChange');
+      stateService.sliderChange$.subscribe(spy);
+
+      component.slidersCtrl.setValue(color);
+
+      expect(spy).toHaveBeenCalledWith(color);
+    });
+
+    it('a sliders change stays pending when sliders confirmation is on (default)', () => {
+      const color = new Rgba(40, 50, 60, 1);
+      let lastState: { value: unknown; origin: string } | undefined;
+      let lastTemp: { value: unknown; origin: string } | undefined;
+      stateService.state.subscribe((state) => (lastState = state));
+      stateService.temp.subscribe((temp) => (lastTemp = temp));
+
+      component.slidersCtrl.setValue(color);
+
+      expect(lastTemp?.origin).toBe('sliders');
+      expect(lastTemp?.value).toEqual(color);
+      expect(lastState?.origin).not.toBe('sliders');
+    });
+  });
+
+  describe('page navigation', () => {
+    it('starts on the palette page and switches to sliders and back', () => {
+      expect(component.currentPage).toBe('palette');
+
+      component.onClickShowSliders();
+      expect(component.currentPage).toBe('sliders');
+
+      component.onClickBack();
+      expect(component.currentPage).toBe('palette');
+    });
+  });
+
+  describe('palette hover', () => {
+    it('re-emits hovered colors through the state service', () => {
+      const spy = jasmine.createSpy('hover');
+      stateService.paleteColorHover$.subscribe(spy);
+      const color = new Rgba(9, 8, 7, 1);
+
+      component.onPaletteColorHover(color);
+      component.onPaletteColorHover(undefined);
+
+      expect(spy).toHaveBeenCalledWith(color);
+      expect(spy).toHaveBeenCalledWith(undefined);
+    });
+  });
+
+  describe('outside-click shielding', () => {
+    it('stops pointerdown propagation so clicks inside the panel do not close it', () => {
+      const event = new PointerEvent('pointerdown', { bubbles: true });
+      const stopSpy = spyOn(event, 'stopPropagation');
+
+      fixture.nativeElement.dispatchEvent(event);
+
+      expect(stopSpy).toHaveBeenCalled();
+    });
+  });
+
   describe('cancel', () => {
     it('re-emits the last committed value with origin "cancel"', () => {
       stateService.set({ value: new Rgba(255, 0, 0, 1), origin: 'state' });

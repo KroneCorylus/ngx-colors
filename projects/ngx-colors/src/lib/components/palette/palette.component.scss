@@ -1,6 +1,7 @@
 ._palette {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 34px);
+  justify-content: center;
   box-sizing: border-box;
   gap: 6px 10px;
 }

@@ -68,6 +68,54 @@ describe('NgxColorsTriggerDirective', () => {
     const overlay = document.body.querySelector('ngx-colors-overlay');
     expect(overlay?.getAttribute('dir')).toBe('ltr');
   });
+  it('centers the palette horizontally within the panel', () => {
+    elementsWithDirective[0].triggerEventHandler('click', {});
+    fixture.detectChanges();
+
+    const palette = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay ._palette',
+    );
+    const main = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay ngx-colors-panel .main',
+    );
+    if (!palette || !main) {
+      throw new Error('Expected the palette and panel to be rendered');
+    }
+    const swatches = Array.from(
+      palette.querySelectorAll<HTMLElement>('._color-option'),
+    ).map((el) => el.getBoundingClientRect());
+    const firstRowTop = swatches[0].top;
+    const firstRow = swatches.filter(
+      (rect) => Math.abs(rect.top - firstRowTop) < 1,
+    );
+    const rowRight = Math.max(...firstRow.map((rect) => rect.right));
+
+    const mainStyle = getComputedStyle(main);
+    const mainRect = main.getBoundingClientRect();
+    const leftGap =
+      swatches[0].left - (mainRect.left + parseFloat(mainStyle.paddingLeft));
+    const rightGap =
+      mainRect.right - parseFloat(mainStyle.paddingRight) - rowRight;
+
+    expect(Math.abs(leftGap - rightGap)).toBeLessThanOrEqual(1);
+  });
+
+  it('panel text does not inherit the page text color', () => {
+    document.body.style.color = 'rgb(232, 234, 242)';
+    try {
+      elementsWithDirective[0].triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const chip = document.body.querySelector<HTMLElement>(
+        'ngx-colors-overlay ._format',
+      );
+      if (!chip) {
+        throw new Error('Expected the format chip to be rendered');
+      }
+      expect(getComputedStyle(chip).color).toBe('rgb(89, 91, 101)');
+    } finally {
+      document.body.style.color = '';
+    }
+  });
 });
 
 @Component({

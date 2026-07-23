@@ -170,7 +170,18 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 | `sliderChange`| `Rgba \| null`   | Emits continuously while the user drags a slider                                          |
 | `colorHover`  | `Rgba \| null`   | Emits when the user hovers a palette swatch                                               |
 | `open`        | `string \| null` | Emits when the panel opens, with the current color                                        |
-| `close`       | `void`           | Emits when the panel closes                                                               |
+| `close`       | `string \| null` | Emits when the panel closes, with the current color                                       |
+
+### Methods
+
+Grab the directive with `@ViewChild(NgxColorsTriggerDirective)` to control the panel
+programmatically:
+
+| Member         | Signature       | Description                                                        |
+| -------------- | --------------- | ------------------------------------------------------------------ |
+| `openPanel()`  | `(): void`      | Opens the panel. No-op if disabled or already open                 |
+| `closePanel()` | `(): void`      | Closes the panel (keeps the committed value). No-op if not open    |
+| `isOpen`       | `boolean` (get) | Whether the panel is currently open                                |
 
 ### Global configuration
 

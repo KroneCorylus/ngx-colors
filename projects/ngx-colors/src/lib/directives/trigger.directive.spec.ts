@@ -282,6 +282,59 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
     expect(fixture.componentInstance.openCount).toBe(3);
     expect(fixture.componentInstance.closeCount).toBe(3);
   });
+
+  describe('public openPanel()/closePanel()/isOpen', () => {
+    function directive(): NgxColorsTriggerDirective {
+      return fixture.debugElement
+        .query(By.directive(NgxColorsTriggerDirective))
+        .injector.get(NgxColorsTriggerDirective);
+    }
+
+    it('openPanel() opens the panel and sets isOpen', () => {
+      expect(directive().isOpen).toBe(false);
+      directive().openPanel();
+      fixture.detectChanges();
+
+      expect(overlayCount()).toBe(1);
+      expect(directive().isOpen).toBe(true);
+      expect(fixture.componentInstance.openCount).toBe(1);
+    });
+
+    it('openPanel() is a no-op when already open (no extra open/close)', () => {
+      directive().openPanel();
+      fixture.detectChanges();
+      directive().openPanel();
+      fixture.detectChanges();
+
+      expect(overlayCount()).toBe(1);
+      expect(fixture.componentInstance.openCount).toBe(1);
+      expect(fixture.componentInstance.closeCount).toBe(0);
+    });
+
+    it('closePanel() closes the panel and emits (close)', () => {
+      directive().openPanel();
+      fixture.detectChanges();
+
+      directive().closePanel();
+      fixture.detectChanges();
+
+      expect(overlayCount()).toBe(0);
+      expect(directive().isOpen).toBe(false);
+      expect(fixture.componentInstance.closeCount).toBe(1);
+    });
+
+    it('closePanel() is a no-op when nothing is open', () => {
+      directive().closePanel();
+      fixture.detectChanges();
+
+      expect(overlayCount()).toBe(0);
+      expect(fixture.componentInstance.closeCount).toBe(0);
+    });
+  });
+
+  function overlayCount(): number {
+    return document.body.getElementsByTagName('ngx-colors-overlay').length;
+  }
 });
 
 @Component({

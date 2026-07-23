@@ -293,8 +293,12 @@ export class NgxColorsTriggerDirective
     }
   }
 
+  public get isOpen(): boolean {
+    return this.overlayService.componentRef != undefined;
+  }
+
   public openPanel() {
-    if (this.disabled) {
+    if (this.disabled || this.isOpen) {
       return;
     }
     this.onTouch();
@@ -305,6 +309,10 @@ export class NgxColorsTriggerDirective
       ],
     });
     this.overlayService.createOverlay(this, injector);
+  }
+
+  public closePanel() {
+    this.overlayService.removePanel();
   }
 
   private setPalette(

@@ -143,6 +143,25 @@ export const OUTPUTS: ApiRow[] = [
   },
 ];
 
+export const METHODS: ApiRow[] = [
+  {
+    name: 'openPanel()',
+    type: '(): void',
+    description: 'Opens the panel. No-op if the trigger is disabled or already open.',
+  },
+  {
+    name: 'closePanel()',
+    type: '(): void',
+    description:
+      'Closes the panel, keeping the committed value. No-op if nothing is open.',
+  },
+  {
+    name: 'isOpen',
+    type: 'boolean (getter)',
+    description: 'Whether the panel is currently open.',
+  },
+];
+
 export const EXPORTS: ApiRow[] = [
   {
     name: 'NgxColorsComponent',

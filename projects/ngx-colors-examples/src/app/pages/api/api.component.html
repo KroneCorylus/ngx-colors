@@ -78,6 +78,41 @@
     </div>
   </section>
 
+  <section id="methods" class="api-section">
+    <h2 class="gx-h3">Methods</h2>
+    <p class="gx-muted api-section__note">
+      Grab the directive with
+      <span class="gx-inline-code"
+        >&#64;ViewChild(NgxColorsTriggerDirective)</span
+      >
+      to control the panel programmatically.
+    </p>
+    <div class="gx-table-wrapper">
+      <table class="gx-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Signature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of methods; track row.name) {
+            <tr>
+              <td>
+                <code>{{ row.name }}</code>
+              </td>
+              <td>
+                <code>{{ row.type }}</code>
+              </td>
+              <td>{{ row.description }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section id="global-configuration" class="api-section">
     <h2 class="gx-h3">Global configuration</h2>
     <p class="gx-muted api-section__note">

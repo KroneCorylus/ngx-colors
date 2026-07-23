@@ -183,4 +183,16 @@ describe('computeOverlayPosition', () => {
       expect(result.left).toBe(VIEWPORT.width - PANEL.width);
     });
   });
+
+  describe('GH #124 wide viewport (>1870px)', () => {
+    it('keeps a right-edge trigger on-screen on a 1920px viewport', () => {
+      const result = computeOverlayPosition(
+        { top: 100, bottom: 130, left: 1850, right: 1900 },
+        { width: 250, height: 300 },
+        { width: 1920, height: 1080 },
+      );
+      expect(result.left).toBeGreaterThanOrEqual(0);
+      expect(result.left + 250).toBeLessThanOrEqual(1920);
+    });
+  });
 });

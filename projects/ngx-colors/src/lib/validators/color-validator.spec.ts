@@ -99,3 +99,18 @@ describe('colorValidator', () => {
     });
   });
 });
+
+describe('colorValidator GH #126 (HSL/CMYK v3 wrongly rejected)', () => {
+  const cases = [
+    'hsl(210, 10%, 20%)',
+    'hsl(120, 10%, 40%)',
+    'hsla(200, 30%, 60%, 0.5)',
+    'cmyk(10%, 20%, 30%, 40%)',
+    'cmyk(10, 20, 30, 40)',
+  ];
+  cases.forEach((value) => {
+    it(`accepts "${value}"`, () => {
+      expect(check(value)).toBeNull();
+    });
+  });
+});

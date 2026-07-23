@@ -608,7 +608,8 @@ describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', (
       ngxColorsTrigger
       [(ngModel)]="value"
       [display]="{ palette: false, sliders: true, text: false }"
-      (close)="onClose()"
+      [confirmationRequired]="{ palette: false, text: false, sliders: true }"
+      (close)="onClose($event)"
       (userChange)="onUserChange($event)"
     ></ngx-colors>
   `,
@@ -616,9 +617,11 @@ describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', (
 class CancelHostComponent {
   value: string | null = '#ff00ff';
   closeCount = 0;
+  closeValues: Array<string | null | undefined> = [];
   userChanges: Array<string | null | undefined> = [];
-  onClose() {
+  onClose(v: string | null | undefined) {
     this.closeCount++;
+    this.closeValues.push(v);
   }
   onUserChange(v: string | null | undefined) {
     this.userChanges.push(v);
@@ -706,6 +709,25 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
       fixture.detectChanges();
     }
     expect(overlayCount()).toBe(0);
+  });
+
+  it('GH #129: cancel after a slider change discards it and (close) carries the pre-drag color', () => {
+    const stateService = fixture.debugElement
+      .query(By.directive(NgxColorsTriggerDirective))
+      .injector.get(StateService);
+
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    stateService.setTemp({ value: new Rgba(0, 0, 255, 1), origin: 'sliders' });
+    fixture.detectChanges();
+
+    getCancelButton().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.value).toBe('#ff00ff');
+    expect(fixture.componentInstance.userChanges).toEqual([]);
+    expect(fixture.componentInstance.closeValues.at(-1)).toBe('#ff00ff');
   });
 });
 
@@ -897,6 +919,27 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
     expect(panelRect.height).toBeGreaterThan(0);
     expect(panelRect.bottom).toBeLessThanOrEqual(window.innerHeight);
     expect(panelRect.top).toBeLessThan(triggerRect.top);
+  });
+
+  xit('GH #115: keeps the panel in the viewport after switching to the sliders page (pending fix)', () => {
+    const trigger: HTMLElement =
+      fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+    trigger.style.top = `${window.innerHeight - 60}px`;
+    trigger.style.left = '20px';
+
+    trigger.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    document.body
+      .querySelector<HTMLElement>('ngx-colors-overlay [aria-label="sliders"]')
+      ?.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    const panel = document.body.querySelector<HTMLElement>(
+      'ngx-colors-overlay ngx-colors-panel',
+    );
+    const rect = panel!.getBoundingClientRect();
+    expect(rect.bottom).toBeLessThanOrEqual(window.innerHeight + 1);
   });
 });
 

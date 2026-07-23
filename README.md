@@ -19,7 +19,8 @@ https://ngx-colors.web.app/
 
 Most v3 code keeps working thanks to a built-in (deprecated) compatibility layer. See
 **[MIGRATION.md](./MIGRATION.md)** for the full list of changes, what is deprecated, and how
-to migrate each API.
+to migrate each API. The archived v3 documentation lives in
+**[V3-DOCUMENTATION.md](./V3-DOCUMENTATION.md)**.
 
 ## Installation
 

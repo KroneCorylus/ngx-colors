@@ -7,6 +7,9 @@ still accepted, marked `@deprecated`, and translated to the new API at runtime.
 > **The entire compatibility layer will be removed in the next major version.** Treat every
 > item in the "Deprecated but still working" table as a migration TODO, not a permanent API.
 
+The archived v3 documentation (API reference, examples) is preserved in
+[V3-DOCUMENTATION.md](./V3-DOCUMENTATION.md).
+
 ## Requirements
 
 | | v3 | v4 |

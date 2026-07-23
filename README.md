@@ -39,7 +39,8 @@ to migrate each API. The archived v3 documentation lives in
 npm install ngx-colors
 ```
 
-The picker uses Angular animations. Standalone apps need `provideAnimations()`:
+The picker uses Angular animations — the app must enable them. Standalone apps use
+`provideAnimations()`:
 
 ```ts
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -47,6 +48,17 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 bootstrapApplication(AppComponent, {
   providers: [provideAnimations()],
 });
+```
+
+NgModule apps import `BrowserAnimationsModule`:
+
+```ts
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+@NgModule({
+  imports: [BrowserAnimationsModule, NgxColorsModule],
+  ...
+})
 ```
 
 ##### Import the standalone component and directive:
@@ -157,7 +169,7 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 | `userChange`  | `string \| null` | Emits only for user-driven changes (palette click, text edit, confirmed slider change)    |
 | `sliderChange`| `Rgba \| null`   | Emits continuously while the user drags a slider                                          |
 | `colorHover`  | `Rgba \| null`   | Emits when the user hovers a palette swatch                                               |
-| `open`        | `void`           | Emits when the panel opens                                                                |
+| `open`        | `string \| null` | Emits when the panel opens, with the current color                                        |
 | `close`       | `void`           | Emits when the panel closes                                                               |
 
 ### Global configuration

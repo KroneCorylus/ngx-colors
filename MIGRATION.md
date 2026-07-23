@@ -58,10 +58,7 @@ token → deprecated v3 inputs → new v4 inputs.
 
 These are not covered by the compat layer.
 
-1. **`(open)` / `(close)` no longer emit the color.** v3 passed the current color string;
-   v4 emits `void`. Read the value from your binding, `value`, or `(colorChange)` instead.
-
-2. **`colorPickerControls="only-alpha"` was removed** (by design, including the v3 behavior of
+1. **`colorPickerControls="only-alpha"` was removed** (by design, including the v3 behavior of
    re-painting the palette swatches while dragging alpha). Equivalent setup: lock the other
    channels so only the alpha slider remains, and choose a layout that shows sliders next to
    the palette:
@@ -73,7 +70,7 @@ These are not covered by the compat layer.
    ></ngx-colors>
    ```
 
-3. **Emitted color strings changed format.**
+2. **Emitted color strings changed format.**
    - CMYK is now percent-based: `cmyk(25, 0, 99, 13)` → `cmyk(25%, 0%, 99%, 13%)` (the parser
      accepts both).
    - Alpha renders minimally everywhere: `0.50` → `0.5`, `0.0` → `0`.
@@ -83,20 +80,20 @@ These are not covered by the compat layer.
    - HSVA strings (`hsv(…)`/`hsva(…)`) are new and can appear with `outputModel: 'AUTO'` if
      the user types one.
 
-4. **Overlay DOM and styling hooks changed.** v3 appended
+3. **Overlay DOM and styling hooks changed.** v3 appended
    `<div id="ngx-colors-overlay" class="ngx-colors-overlay">`; v4 renders an
    `<ngx-colors-overlay>` element. CSS targeting the old id/class (or the panel's internal
    markup, which is completely different — the panel is now 220px wide, not 250px) must be
    redone. `overlayClass` still adds your class to the overlay element.
 
-5. **Default animation changed** from `slide-in` to `popup`. Bind
+4. **Default animation changed** from `slide-in` to `popup`. Bind
    `colorsAnimation="slide-in"` (deprecated) or `animation="slide"` to keep the old feel.
 
-6. **`colorChange` is quieter than v3's `change`.** Programmatic writes of the same value no
+5. **`colorChange` is quieter than v3's `change`.** Programmatic writes of the same value no
    longer re-emit, and there is no emission on init when nothing is bound. User-driven picks
    emit every time, like v3.
 
-7. **The validator accepts more formats** (hsv/hsva strings, 4-digit hex, percent alpha).
+6. **The validator accepts more formats** (hsv/hsva strings, 4-digit hex, percent alpha).
    Forms that treated those as invalid will now accept them. Range validation matches v3:
    out-of-range channels (`rgb(300, …)`, `hsl(400, …)`, alpha > 1) are rejected, and empty
    values pass (pair with `Validators.required` as in v3).

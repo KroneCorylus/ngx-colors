@@ -41,8 +41,8 @@
             (userChange)="logEvent('Playground control', 'userChange', $event)"
             (sliderChange)="logEvent('Playground control', 'sliderChange', $event)"
             (colorHover)="logEvent('Playground control', 'colorHover', $event)"
-            (open)="logEvent('Playground control', 'open', undefined)"
-            (close)="logEvent('Playground control', 'close', undefined)"
+            (open)="logEvent('Playground control', 'open', $event)"
+            (close)="logEvent('Playground control', 'close', $event)"
           ></ngx-colors>
 
           <div class="playground__meta">

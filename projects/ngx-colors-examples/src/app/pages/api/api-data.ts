@@ -133,13 +133,13 @@ export const OUTPUTS: ApiRow[] = [
   },
   {
     name: 'open',
-    type: 'void',
-    description: 'Emits when the panel opens.',
+    type: 'string | null',
+    description: 'Emits when the panel opens, with the current color.',
   },
   {
     name: 'close',
-    type: 'void',
-    description: 'Emits when the panel closes.',
+    type: 'string | null',
+    description: 'Emits when the panel closes, with the current color.',
   },
 ];
 

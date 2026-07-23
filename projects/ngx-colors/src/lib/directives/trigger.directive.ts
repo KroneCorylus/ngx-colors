@@ -105,13 +105,17 @@ export class NgxColorsTriggerDirective
   @Output()
   public colorHover: EventEmitter<Rgba | null> =
     this.stateService.paleteColorHover$;
-  //Keep naming for parity with old version
+  //Keep naming and payload (the current color) for parity with old version
   @Output()
   // eslint-disable-next-line @angular-eslint/no-output-native
-  public open: EventEmitter<void> = this.overlayService.opened;
+  public open: EventEmitter<string | undefined | null> = new EventEmitter<
+    string | undefined | null
+  >();
   @Output()
   // eslint-disable-next-line @angular-eslint/no-output-native
-  public close: EventEmitter<void> = this.overlayService.closed;
+  public close: EventEmitter<string | undefined | null> = new EventEmitter<
+    string | undefined | null
+  >();
 
   // CONFIGURATION
   @Input()
@@ -196,6 +200,13 @@ export class NgxColorsTriggerDirective
   public ngOnInit(): void {
     this.applyConfig();
     this.setPalette(this.stateService.configuration.palette);
+
+    this.overlayService.opened
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.open.emit(this.value));
+    this.overlayService.closed
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.close.emit(this.value));
 
     this.stateService.state.pipe(takeUntil(this.destroy$)).subscribe((state) => {
       const newValue: string | null = state?.value

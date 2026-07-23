@@ -190,8 +190,8 @@ describe('NgxColorsTriggerDirective overlay cleanup', () => {
     <ngx-colors
       ngxColorsTrigger
       [(ngModel)]="value"
-      (open)="onOpen()"
-      (close)="onClose()"
+      (open)="onOpen($event)"
+      (close)="onClose($event)"
     ></ngx-colors>
   `,
 })
@@ -199,11 +199,15 @@ class OpenCloseHostComponent {
   value = '#ff00ff';
   openCount = 0;
   closeCount = 0;
-  onOpen() {
+  openValues: Array<string | null | undefined> = [];
+  closeValues: Array<string | null | undefined> = [];
+  onOpen(value: string | null | undefined) {
     this.openCount++;
+    this.openValues.push(value);
   }
-  onClose() {
+  onClose(value: string | null | undefined) {
     this.closeCount++;
+    this.closeValues.push(value);
   }
 }
 
@@ -254,6 +258,17 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
 
     expect(fixture.componentInstance.openCount).toBe(1);
     expect(fixture.componentInstance.closeCount).toBe(1);
+  });
+
+  it('emits the current color with (open) and (close), like v3', () => {
+    getTriggerElement().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    getOverlayElement().dispatchEvent(new Event('pointerdown'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.openValues).toEqual(['#ff00ff']);
+    expect(fixture.componentInstance.closeValues).toEqual(['#ff00ff']);
   });
 
   it('emits open/close in the right order across repeated open/close cycles', () => {

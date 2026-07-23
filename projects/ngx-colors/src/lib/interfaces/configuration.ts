@@ -29,4 +29,5 @@ export interface NgxColorsConfiguration {
   labels?: Labels | undefined;
   confirmationRequired?: ConfirmationRequiredOptions;
   position?: PositionOptions | undefined;
+  closeOnHidden?: boolean;
 }

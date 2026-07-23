@@ -1269,3 +1269,107 @@ describe('NgxColorsTriggerDirective palette via NGX_COLORS_CONFIG', () => {
     expect(colors).toEqual(['#abcdef']);
   });
 });
+
+@Component({
+  template: `
+    <ngx-colors ngxColorsTrigger #picker="ngxColorsTrigger"></ngx-colors>
+    <button (click)="picker.openPanel()">open</button>
+  `,
+})
+class ExportAsHostComponent {}
+
+describe('NgxColorsTriggerDirective exportAs', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ExportAsHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, NoopAnimationsModule],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+  });
+
+  it('is referenceable via a template ref and drives openPanel()', () => {
+    const fixture = TestBed.createComponent(ExportAsHostComponent);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('button').dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(
+      document.body.getElementsByTagName('ngx-colors-overlay').length,
+    ).toBe(1);
+  });
+});
+
+@Component({
+  template: `
+    <ngx-colors
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      [closeOnHidden]="closeOnHidden"
+    ></ngx-colors>
+  `,
+})
+class CloseOnHiddenHostComponent {
+  value: string | null = '#ff00ff';
+  closeOnHidden = true;
+}
+
+describe('NgxColorsTriggerDirective closeOnHidden (GH #116)', () => {
+  let fixture: ComponentFixture<CloseOnHiddenHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [CloseOnHiddenHostComponent],
+      imports: [
+        NgxColorsTriggerDirective,
+        NgxColorsComponent,
+        FormsModule,
+        NoopAnimationsModule,
+      ],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(CloseOnHiddenHostComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    document.body
+      .querySelector('ngx-colors-overlay')
+      ?.dispatchEvent(new Event('pointerdown'));
+    fixture.detectChanges();
+  });
+
+  function triggerEl(): HTMLElement {
+    return fixture.nativeElement.querySelector('[ngxColorsTrigger]');
+  }
+  function overlayCount(): number {
+    return document.body.getElementsByTagName('ngx-colors-overlay').length;
+  }
+
+  it('closes the panel when the trigger becomes hidden', (done) => {
+    triggerEl().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    expect(overlayCount()).toBe(1);
+
+    triggerEl().style.display = 'none';
+    setTimeout(() => {
+      expect(overlayCount()).toBe(0);
+      done();
+    }, 350);
+  });
+
+  it('keeps the panel open when the trigger hides and closeOnHidden is false', (done) => {
+    fixture.componentInstance.closeOnHidden = false;
+    fixture.detectChanges();
+
+    triggerEl().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    expect(overlayCount()).toBe(1);
+
+    triggerEl().style.display = 'none';
+    setTimeout(() => {
+      expect(overlayCount()).toBe(1);
+      done();
+    }, 350);
+  });
+});

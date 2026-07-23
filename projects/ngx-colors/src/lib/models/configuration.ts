@@ -53,6 +53,7 @@ export class Configuration implements NgxColorsConfiguration {
     sliders: true,
   };
   public position: PositionOptions | undefined = undefined;
+  public closeOnHidden: boolean = false;
 
   constructor(
     ...configOverwrites: Array<NgxColorsConfiguration | null | undefined>
@@ -102,6 +103,9 @@ export class Configuration implements NgxColorsConfiguration {
       }
       if (overwrite.position !== undefined) {
         this.position = overwrite.position;
+      }
+      if (overwrite.closeOnHidden !== undefined) {
+        this.closeOnHidden = overwrite.closeOnHidden;
       }
     }
   }

@@ -160,6 +160,7 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 | `overlayClass`         | `string`                                      | `undefined`                        | Extra class added to the overlay element                                                                               |
 | `overlayAttachTo`      | `string \| HTMLElement`                       | `document.body`                    | Element (or element id) the overlay is appended to                                                                     |
 | `position`             | `'top' \| 'bottom'`                           | auto                               | Forces the panel above/below the trigger instead of auto-flipping                                                      |
+| `closeOnHidden`        | `boolean`                                     | `false`                            | Closes the panel when the trigger becomes hidden/scrolled out of view (via `IntersectionObserver`). Pair with `overlayAttachTo` the dialog element to use the picker inside a native `<dialog>` |
 
 ### Outputs
 

@@ -149,6 +149,9 @@ export class NgxColorsTriggerDirective
   public confirmationRequired: ConfirmationRequiredOptions | undefined;
   @Input()
   public position: PositionOptions | undefined;
+  @Input()
+  public closeOnHidden: boolean | undefined;
+  private triggerObserver: IntersectionObserver | undefined;
 
   // ---- v3 compatibility (deprecated) - remove this block in the next major version ----
   /** @deprecated Use `animation` ('slide' | 'popup') instead. */
@@ -207,7 +210,10 @@ export class NgxColorsTriggerDirective
       .subscribe(() => this.open.emit(this.value));
     this.overlayService.closed
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.close.emit(this.value));
+      .subscribe(() => {
+        this.disconnectTriggerObserver();
+        this.close.emit(this.value);
+      });
 
     this.stateService.state.pipe(takeUntil(this.destroy$)).subscribe((state) => {
       const newValue: string | null = state?.value
@@ -271,6 +277,7 @@ export class NgxColorsTriggerDirective
         labels: this.labels,
         confirmationRequired: this.confirmationRequired,
         position: this.position,
+        closeOnHidden: this.closeOnHidden,
       },
     );
   }
@@ -280,6 +287,7 @@ export class NgxColorsTriggerDirective
     // e.g. behind an *ngIf or on route navigation - the overlay is not part
     // of this component's view tree, so Angular won't tear it down on its
     // own. Without this, the panel and its DOM node are leaked permanently.
+    this.disconnectTriggerObserver();
     this.overlayService.removePanel();
     this.destroy$.next();
     this.destroy$.complete();
@@ -310,10 +318,31 @@ export class NgxColorsTriggerDirective
       ],
     });
     this.overlayService.createOverlay(this, injector);
+    this.observeTriggerVisibility();
   }
 
   public closePanel() {
     this.overlayService.removePanel();
+  }
+
+  private observeTriggerVisibility(): void {
+    if (
+      !this.stateService.configuration.closeOnHidden ||
+      typeof IntersectionObserver === 'undefined'
+    ) {
+      return;
+    }
+    this.triggerObserver = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => !entry.isIntersecting)) {
+        this.closePanel();
+      }
+    });
+    this.triggerObserver.observe(this.triggerRef.nativeElement);
+  }
+
+  private disconnectTriggerObserver(): void {
+    this.triggerObserver?.disconnect();
+    this.triggerObserver = undefined;
   }
 
   private setPalette(

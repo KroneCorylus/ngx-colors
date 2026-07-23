@@ -106,6 +106,13 @@ export const INPUTS: ApiRow[] = [
     description:
       'Forces the panel above or below the trigger instead of auto-flipping.',
   },
+  {
+    name: 'closeOnHidden',
+    type: 'boolean',
+    default: 'false',
+    description:
+      'Closes the panel when the trigger is hidden or scrolled out of view (IntersectionObserver). Combine with overlayAttachTo (the dialog element) to use the picker inside a native <dialog>.',
+  },
 ];
 
 export const OUTPUTS: ApiRow[] = [

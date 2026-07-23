@@ -87,10 +87,12 @@
   cursor: pointer;
 }
 
-.feature__icon {
-  font-size: 26px;
+.feature__dot {
   display: inline-block;
-  margin-bottom: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-bottom: 14px;
 }
 
 .feature__more {

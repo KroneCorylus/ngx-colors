@@ -41,6 +41,53 @@ palette: ColorOption[] = [
   asyncPaletteTs: `palette$: Observable<ColorOption[]> = this.http
   .get<ColorOption[]>('/api/brand-colors');`,
 
+  mostUsedService: `@Injectable({ providedIn: 'root' })
+export class MostUsedColorsService {
+  private readonly subjects = new Map<string, BehaviorSubject<ColorOption[]>>();
+
+  palette(key: string): Observable<ColorOption[]> {
+    return this.subject(key).asObservable();
+  }
+
+  registerUse(key: string, color: string | null | undefined): void {
+    if (!color) return;
+    const usage = this.load(key);
+    const normalized = color.toLowerCase();
+    usage[normalized] = {
+      count: (usage[normalized]?.count ?? 0) + 1,
+      lastUsed: Date.now(),
+    };
+    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(usage));
+    this.subject(key).next(this.toPalette(usage));
+  }
+
+  private toPalette(usage: Usage): ColorOption[] {
+    const mostUsed = Object.entries(usage)
+      .sort(([, a], [, b]) => b.count - a.count || b.lastUsed - a.lastUsed)
+      .slice(0, MAX_COLORS)
+      .map(([color]) => color);
+    const seeds = SEED_COLORS.filter((seed) => !mostUsed.includes(seed))
+      .slice(0, Math.max(0, MAX_COLORS - mostUsed.length));
+    return [...mostUsed, ...seeds];
+  }
+  // subject() and load() omitted - see the repo for the full service
+}`,
+
+  mostUsedTs: `private mostUsed = inject(MostUsedColorsService);
+
+mostUsedPalette$ = this.mostUsed.palette('editor');
+
+onPick(color: string | null | undefined): void {
+  this.mostUsed.registerUse('editor', color);
+}`,
+
+  mostUsedHtml: `<ngx-colors
+  ngxColorsTrigger
+  [(ngModel)]="color"
+  [palette]="mostUsedPalette$"
+  (userChange)="onPick($event)"
+></ngx-colors>`,
+
   outputModel: `<ngx-colors
   ngxColorsTrigger
   [(ngModel)]="color"

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { MostUsedColorsService } from '../../services/most-used-colors.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, delay, of } from 'rxjs';
 import {
@@ -40,6 +41,7 @@ export class ExamplesPageComponent {
     { id: 'forms-free', label: 'Without forms' },
     { id: 'custom-palette', label: 'Custom palette' },
     { id: 'async-palette', label: 'Async palette' },
+    { id: 'most-used', label: 'Most-used palette' },
     { id: 'output-format', label: 'Output format' },
     { id: 'confirmation', label: 'Confirmation' },
     { id: 'locked-channels', label: 'Locked channels' },
@@ -92,6 +94,14 @@ export class ExamplesPageComponent {
   ];
 
   asyncPalette$: Observable<ColorOption[]> = this.buildAsyncPalette();
+
+  private readonly mostUsed = inject(MostUsedColorsService);
+  mostUsedColor: string | null = null;
+  readonly mostUsedPalette$ = this.mostUsed.palette('examples-demo');
+
+  onMostUsedPick(color: string | null | undefined): void {
+    this.mostUsed.registerUse('examples-demo', color);
+  }
 
   events: EventEntry[] = [];
 

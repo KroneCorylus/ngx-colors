@@ -185,6 +185,42 @@
     </section>
 
     <section
+      id="most-used"
+      class="gx-card example"
+      [class.example--stacked]="
+        wide(snippets.mostUsedService, snippets.mostUsedTs)
+      "
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Most-used colors as the palette</h2>
+        <p class="gx-muted">
+          A small service counts how often each color is picked (per key,
+          persisted in localStorage) and exposes the top 10 as an
+          <span class="gx-inline-code">Observable&lt;ColorOption[]&gt;</span>
+          palette. It starts seeded with this site's colors; every pick you
+          make replaces them, ordered by usage, live.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="mostUsedColor"
+            [palette]="mostUsedPalette$"
+            (userChange)="onMostUsedPick($event)"
+          ></ngx-colors>
+          <span class="gx-value">{{ mostUsedColor || 'pick a color' }}</span>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.mostUsedHtml" language="html" />
+        <app-code-block [code]="snippets.mostUsedTs" language="typescript" />
+        <app-code-block
+          [code]="snippets.mostUsedService"
+          language="typescript"
+        />
+      </div>
+    </section>
+
+    <section
       id="output-format"
       class="gx-card example"
       [class.example--stacked]="wide(snippets.outputModel)"

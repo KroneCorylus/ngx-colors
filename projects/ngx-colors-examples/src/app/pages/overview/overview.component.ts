@@ -35,65 +35,65 @@ export class OverviewPageComponent {
   ];
 
   readonly features: Array<{
-    icon: string;
+    color: string;
     title: string;
     text: string;
     link?: string;
   }> = [
     {
-      icon: '🎨',
+      color: '#ff5e5b',
       title: 'Palettes',
       link: 'custom-palette',
       text: 'Flat color lists or nested groups, with names shown as tooltips. Configurable per picker or globally.',
     },
     {
-      icon: '📡',
+      color: '#ffb74d',
       title: 'Async palettes',
       link: 'async-palette',
       text: 'The palette input also accepts an Observable<ColorOption[]> — for example, colors loaded from an API. A loading skeleton shows until it emits.',
     },
     {
-      icon: '🧪',
+      color: '#ffed8a',
       title: 'Five color models',
       link: 'output-format',
       text: 'HEX(A), RGBA, HSLA, HSVA and CMYK. With outputModel AUTO the value is emitted in the format it was set in.',
     },
     {
-      icon: '📋',
+      color: '#7ae582',
       title: 'Forms',
       link: 'reactive',
       text: 'ngModel, Reactive Forms, or [(color)] two-way binding without a Forms module. Includes colorValidator().',
     },
     {
-      icon: '✅',
+      color: '#4dd0e1',
       title: 'Confirmation',
       link: 'confirmation',
       text: 'Configure per input type — palette, text, sliders — whether changes apply immediately or after ACCEPT.',
     },
     {
-      icon: '🔒',
+      color: '#68a6f8',
       title: 'Locked channels',
       link: 'locked-channels',
       text: 'Lock hue, saturation, brightness or alpha to a fixed value; the corresponding slider is hidden.',
     },
     {
-      icon: '💧',
+      color: '#b388ff',
       title: 'Eyedropper',
       link: 'eyedropper',
       text: 'Pick a color from the screen in browsers that support the EyeDropper API.',
     },
     {
-      icon: '♿',
+      color: '#f06292',
       title: 'Accessibility',
       text: 'Dialog semantics, focus trap, Escape to close, keyboard activation and focus restore.',
     },
     {
-      icon: '🌍',
+      color: '#26c6da',
       title: 'RTL',
       text: 'Panel position, layout and directional icons follow the trigger’s computed direction. No configuration.',
     },
     {
-      icon: '📐',
+      color: '#9ccc65',
       title: 'Positioning',
       text: 'The panel flips above the trigger when there is no room below and clamps to the viewport.',
     },
@@ -129,6 +129,23 @@ export class OverviewPageComponent {
 
   readonly snippetUsage =
     '<ngx-colors ngxColorsTrigger [(ngModel)]="color"></ngx-colors>';
+
+  readonly snippetAnimationsStandalone = [
+    "import { provideAnimations } from '@angular/platform-browser/animations';",
+    '',
+    'bootstrapApplication(AppComponent, {',
+    '  providers: [provideAnimations()],',
+    '});',
+  ].join('\n');
+
+  readonly snippetAnimationsModule = [
+    "import { BrowserAnimationsModule } from '@angular/platform-browser/animations';",
+    '',
+    '@NgModule({',
+    '  imports: [BrowserAnimationsModule, NgxColorsModule],',
+    '  ...',
+    '})',
+  ].join('\n');
 
   scrollTo(id: string): void {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });

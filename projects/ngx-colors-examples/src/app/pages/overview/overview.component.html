@@ -91,9 +91,22 @@
           swatch button. They can be combined or used separately.
         </p>
         <p class="gx-muted">
-          The picker uses Angular animations — standalone apps need
-          <span class="gx-inline-code">provideAnimations()</span>.
+          The picker uses Angular animations — the app must enable them.
+          Standalone apps use
+          <span class="gx-inline-code">provideAnimations()</span>:
         </p>
+        <app-code-block
+          [code]="snippetAnimationsStandalone"
+          language="typescript"
+        />
+        <p class="gx-muted">
+          NgModule apps import
+          <span class="gx-inline-code">BrowserAnimationsModule</span>:
+        </p>
+        <app-code-block
+          [code]="snippetAnimationsModule"
+          language="typescript"
+        />
       </div>
     </div>
   </div>
@@ -111,7 +124,11 @@
           [routerLink]="feature.link ? ['/examples'] : null"
           [fragment]="feature.link"
         >
-          <span class="feature__icon">{{ feature.icon }}</span>
+          <span
+            class="feature__dot"
+            [style.background]="feature.color"
+            [style.box-shadow]="'0 0 16px ' + feature.color + '55'"
+          ></span>
           <h3 class="gx-h3">{{ feature.title }}</h3>
           <p class="gx-muted">{{ feature.text }}</p>
           @if (feature.link) {

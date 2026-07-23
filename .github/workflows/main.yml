@@ -1,8 +1,8 @@
 name: Test
 
-on: 
+on:
   workflow_dispatch
-  
+
 jobs:
   build:
 
@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js 20.13.1
+    - name: Use Node.js v22.22.3
       uses: actions/setup-node@v1
       with:
         node-version: 20.13.1
@@ -23,3 +23,5 @@ jobs:
       run: npm install
     - name: Test
       run: ng test ngx-colors --browsers ChromeHeadless --no-watch
+    - name: Lint
+      run: ng lint

@@ -1,4 +1,6 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostBinding,
@@ -22,16 +24,18 @@ const FOCUSABLE_SELECTOR =
   templateUrl: './overlay.component.html',
   styleUrl: './overlay.component.scss',
 })
-export class OverlayComponent implements OnDestroy {
+export class OverlayComponent implements AfterViewInit, OnDestroy {
   constructor(
     private overlayService: OverlayService,
     private stateService: StateService,
     private elementRef: ElementRef<HTMLElement>,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   x: number = 0;
   y: number = 0;
   triggerNativeElement: HTMLElement | undefined = undefined;
+  private resizeObserver: ResizeObserver | undefined;
 
   @HostBinding('attr.role') role = 'dialog';
   @HostBinding('attr.aria-modal') ariaModal = 'true';
@@ -83,7 +87,19 @@ export class OverlayComponent implements OnDestroy {
     }
   }
 
+  public ngAfterViewInit(): void {
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    this.resizeObserver = new ResizeObserver(() => {
+      this.updatePosition();
+      this.cdr.detectChanges();
+    });
+    this.resizeObserver.observe(this.panelElementRef.nativeElement);
+  }
+
   public ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
     this.triggerNativeElement?.focus();
   }
 

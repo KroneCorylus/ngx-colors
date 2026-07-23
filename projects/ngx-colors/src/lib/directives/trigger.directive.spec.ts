@@ -974,7 +974,7 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
     expect(panelRect.top).toBeLessThan(triggerRect.top);
   });
 
-  xit('GH #115: keeps the panel in the viewport after switching to the sliders page (pending fix)', () => {
+  it('GH #115: keeps the panel in the viewport after switching to the sliders page', (done) => {
     const trigger: HTMLElement =
       fixture.nativeElement.querySelector('[ngxColorsTrigger]');
     trigger.style.top = `${window.innerHeight - 60}px`;
@@ -988,11 +988,15 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
       ?.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
-    const panel = document.body.querySelector<HTMLElement>(
-      'ngx-colors-overlay ngx-colors-panel',
-    );
-    const rect = panel!.getBoundingClientRect();
-    expect(rect.bottom).toBeLessThanOrEqual(window.innerHeight + 1);
+    setTimeout(() => {
+      fixture.detectChanges();
+      const panel = document.body.querySelector<HTMLElement>(
+        'ngx-colors-overlay ngx-colors-panel',
+      );
+      const rect = panel!.getBoundingClientRect();
+      expect(rect.bottom).toBeLessThanOrEqual(window.innerHeight + 1);
+      done();
+    }, 120);
   });
 });
 

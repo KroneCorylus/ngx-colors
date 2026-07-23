@@ -3,8 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PaletteComponent } from './palette.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StateService } from '../../services/state.service';
-import { of } from 'rxjs';
+import { BehaviorSubject, Subject, of } from 'rxjs';
 import { ColorHelper } from '../../utility/color-helper';
+import { ColorOption } from '../../types/color-option';
 
 describe('PaletteComponent', () => {
   let component: PaletteComponent;
@@ -24,7 +25,41 @@ describe('PaletteComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+});
 
+describe('PaletteComponent loading skeleton', () => {
+  let component: PaletteComponent;
+  let fixture: ComponentFixture<PaletteComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [PaletteComponent, BrowserAnimationsModule],
+      providers: [StateService],
+    }).compileComponents();
+    fixture = TestBed.createComponent(PaletteComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('clears the skeleton on first emission even if the stream never completes', () => {
+    const palette$ = new BehaviorSubject<ColorOption[]>(['#ff0000']);
+    component.palette$ = palette$.asObservable();
+    fixture.detectChanges();
+
+    expect(component.loading).toBeFalse();
+    expect(component.paletteStack.peek.length).toBe(1);
+  });
+
+  it('shows the skeleton until a live stream emits for the first time', () => {
+    const palette$ = new Subject<ColorOption[]>();
+    component.palette$ = palette$.asObservable();
+    fixture.detectChanges();
+
+    expect(component.loading).toBeTrue();
+
+    palette$.next(['#ff0000']);
+
+    expect(component.loading).toBeFalse();
+  });
 });
 
 describe('PaletteComponent selection matching (C13)', () => {

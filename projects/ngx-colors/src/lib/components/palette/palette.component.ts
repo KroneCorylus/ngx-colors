@@ -87,6 +87,8 @@ export class PaletteComponent
         next: (colors) => {
           this.paletteStack.clear();
           this.paletteStack.push(colors.map((c) => new PaletteColor(c)));
+          this.loading = false;
+          this.cd.detectChanges();
         },
         error: (err) => {
           console.error(err);

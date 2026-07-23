@@ -45,6 +45,7 @@ export class ExamplesPageComponent {
     { id: 'output-format', label: 'Output format' },
     { id: 'confirmation', label: 'Confirmation' },
     { id: 'locked-channels', label: 'Locked channels' },
+    { id: 'grayscale', label: 'Grayscale' },
     { id: 'palette-only', label: 'Palette only' },
     { id: 'eyedropper', label: 'Eyedropper' },
     { id: 'events', label: 'Events' },
@@ -69,6 +70,18 @@ export class ExamplesPageComponent {
   modelColor: string | null = '#7ae582';
   confirmationColor: string | null = '#ffb74d';
   lockedColor: string | null = 'rgba(46, 125, 224, 0.9)';
+  grayColor: string | null = '#9e9e9e';
+  readonly grayscale: ColorOption[] = [
+    '#ffffff',
+    '#e0e0e0',
+    '#bdbdbd',
+    '#9e9e9e',
+    '#757575',
+    '#616161',
+    '#424242',
+    '#212121',
+    '#000000',
+  ];
   paletteOnlyColor: string | null = '#f06292';
   eyedropperColor: string | null = '#ffed8a';
   eventsColor: string | null = '#68a6f8';

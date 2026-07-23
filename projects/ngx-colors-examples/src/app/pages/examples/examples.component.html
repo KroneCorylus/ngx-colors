@@ -308,6 +308,40 @@
     </section>
 
     <section
+      id="grayscale"
+      class="gx-card example"
+      [class.example--stacked]="
+        wide(snippets.grayscaleHtml, snippets.grayscaleTs)
+      "
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Grayscale</h2>
+        <p class="gx-muted">
+          A grayscale palette plus
+          <span class="gx-inline-code"
+            >lockValues: &#123; saturation: 0 &#125;</span
+          >
+          hides the saturation control, and
+          <span class="gx-inline-code">clamp: true</span> desaturates anything
+          picked with the sliders — so every result is a shade of gray.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="grayColor"
+            [palette]="grayscale"
+            [lockValues]="{ saturation: 0, clamp: true }"
+          ></ngx-colors>
+          <span class="gx-value">{{ grayColor }}</span>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.grayscaleHtml" language="html" />
+        <app-code-block [code]="snippets.grayscaleTs" language="typescript" />
+      </div>
+    </section>
+
+    <section
       id="palette-only"
       class="gx-card example"
       [class.example--stacked]="wide(snippets.paletteOnly)"

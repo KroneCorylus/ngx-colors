@@ -110,6 +110,18 @@ onPick(color: string | null | undefined): void {
   layout="full-horizontal"
 ></ngx-colors>`,
 
+  grayscaleHtml: `<ngx-colors
+  ngxColorsTrigger
+  [(ngModel)]="color"
+  [palette]="grayscale"
+  [lockValues]="{ saturation: 0, clamp: true }"
+></ngx-colors>`,
+
+  grayscaleTs: `grayscale: ColorOption[] = [
+  '#ffffff', '#e0e0e0', '#bdbdbd', '#9e9e9e', '#757575',
+  '#616161', '#424242', '#212121', '#000000',
+];`,
+
   paletteOnly: `<ngx-colors
   ngxColorsTrigger
   [(ngModel)]="color"

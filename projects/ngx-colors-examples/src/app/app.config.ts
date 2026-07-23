@@ -3,7 +3,6 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
-import { NGX_COLORS_LABELS } from '../../../ngx-colors/src/public-api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,12 +14,5 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideAnimations(),
-    {
-      provide: NGX_COLORS_LABELS,
-      useValue: {
-        accept: 'YEAH!',
-        cancel: 'NOP',
-      },
-    },
   ],
 };

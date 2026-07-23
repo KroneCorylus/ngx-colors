@@ -319,9 +319,9 @@
         <p class="gx-muted">
           A grayscale palette plus
           <span class="gx-inline-code"
-            >lockValues: &#123; saturation: 0 &#125;</span
+            >lockValues: &#123; hue: 0, saturation: 0 &#125;</span
           >
-          hides the saturation control, and
+          hides the hue and saturation controls (leaving only brightness), and
           <span class="gx-inline-code">clamp: true</span> desaturates anything
           picked with the sliders — so every result is a shade of gray.
         </p>
@@ -330,7 +330,7 @@
             ngxColorsTrigger
             [(ngModel)]="grayColor"
             [palette]="grayscale"
-            [lockValues]="{ saturation: 0, clamp: true }"
+            [lockValues]="{ hue: 0, saturation: 0, clamp: true }"
           ></ngx-colors>
           <span class="gx-value">{{ grayColor }}</span>
         </div>

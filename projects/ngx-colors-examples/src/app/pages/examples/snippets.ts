@@ -114,7 +114,7 @@ onPick(color: string | null | undefined): void {
   ngxColorsTrigger
   [(ngModel)]="color"
   [palette]="grayscale"
-  [lockValues]="{ saturation: 0, clamp: true }"
+  [lockValues]="{ hue: 0, saturation: 0, clamp: true }"
 ></ngx-colors>`,
 
   grayscaleTs: `grayscale: ColorOption[] = [

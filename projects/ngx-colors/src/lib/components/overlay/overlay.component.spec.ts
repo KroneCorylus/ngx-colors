@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverlayComponent } from './overlay.component';
 import { OverlayService } from '../../services/overlay.service';
 import { StateService } from '../../services/state.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 function makeRect(rect: Partial<DOMRect>): DOMRect {
   return {
@@ -26,7 +25,7 @@ describe('OverlayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayComponent, BrowserAnimationsModule],
+      imports: [OverlayComponent],
       providers: [OverlayService, StateService],
     }).compileComponents();
 

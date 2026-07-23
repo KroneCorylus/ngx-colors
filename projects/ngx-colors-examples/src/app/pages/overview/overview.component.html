@@ -91,22 +91,10 @@
           swatch button. They can be combined or used separately.
         </p>
         <p class="gx-muted">
-          The picker uses Angular animations — the app must enable them.
-          Standalone apps use
-          <span class="gx-inline-code">provideAnimations()</span>:
+          No extra setup — the picker uses plain CSS animations, so you don't
+          need <span class="gx-inline-code">provideAnimations()</span> or
+          <span class="gx-inline-code">BrowserAnimationsModule</span>.
         </p>
-        <app-code-block
-          [code]="snippetAnimationsStandalone"
-          language="typescript"
-        />
-        <p class="gx-muted">
-          NgModule apps import
-          <span class="gx-inline-code">BrowserAnimationsModule</span>:
-        </p>
-        <app-code-block
-          [code]="snippetAnimationsModule"
-          language="typescript"
-        />
       </div>
     </div>
   </div>

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { firstValueFrom } from 'rxjs';
 import { NgxColorsTriggerDirective } from '../directives/trigger.directive';
 import { NgxColorsComponent } from '../components/ngx-colors/ngx-colors.component';
@@ -54,7 +53,6 @@ describe('v3 compat: legacy selector, inputs and outputs', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(LegacyHostComponent);
@@ -149,7 +147,6 @@ describe('v3 compat: new API wins over legacy inputs', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(PrecedenceHostComponent);
@@ -195,7 +192,6 @@ describe('v3 compat: legacy palette shape', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
     }).compileComponents();
     const fixture = TestBed.createComponent(LegacyPaletteHostComponent);

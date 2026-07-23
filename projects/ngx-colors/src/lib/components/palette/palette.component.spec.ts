@@ -6,7 +6,6 @@ import {
 } from '@angular/core/testing';
 
 import { PaletteComponent } from './palette.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StateService } from '../../services/state.service';
 import { BehaviorSubject, Subject, delay, of } from 'rxjs';
 import { ColorHelper } from '../../utility/color-helper';
@@ -18,7 +17,7 @@ describe('PaletteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaletteComponent, BrowserAnimationsModule],
+      imports: [PaletteComponent],
       providers: [StateService],
     }).compileComponents();
 
@@ -38,7 +37,7 @@ describe('PaletteComponent loading skeleton', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaletteComponent, BrowserAnimationsModule],
+      imports: [PaletteComponent],
       providers: [StateService],
     }).compileComponents();
     fixture = TestBed.createComponent(PaletteComponent);
@@ -105,7 +104,7 @@ describe('PaletteComponent selection matching (C13)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaletteComponent, BrowserAnimationsModule],
+      imports: [PaletteComponent],
       providers: [StateService],
     }).compileComponents();
 

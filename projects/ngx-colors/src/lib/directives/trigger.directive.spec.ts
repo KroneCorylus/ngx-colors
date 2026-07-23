@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxColorsTriggerDirective } from './trigger.directive';
 import { NgxColorsComponent } from '../../public-api';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGX_COLORS_CONFIG } from '../interfaces/configuration';
@@ -31,7 +30,6 @@ describe('NgxColorsTriggerDirective', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
     }).compileComponents();
 
@@ -100,6 +98,32 @@ describe('NgxColorsTriggerDirective', () => {
     expect(Math.abs(leftGap - rightGap)).toBeLessThanOrEqual(1);
   });
 
+  it('applies a CSS entrance animation to palette swatches (no @angular/animations)', () => {
+    elementsWithDirective[0].triggerEventHandler('click', {});
+    fixture.detectChanges();
+    const swatch = document.body.querySelector<HTMLElement>(
+      '.circle._color-option.bg-transparent',
+    );
+    if (!swatch) {
+      throw new Error('Expected a palette swatch to be rendered');
+    }
+    const animationName = getComputedStyle(swatch).animationName;
+    expect(animationName).not.toBe('none');
+    const hasKeyframes = Array.from(document.styleSheets).some((sheet) => {
+      let rules: CSSRuleList;
+      try {
+        rules = sheet.cssRules;
+      } catch {
+        return false;
+      }
+      return Array.from(rules).some(
+        (rule) =>
+          rule instanceof CSSKeyframesRule && rule.name === animationName,
+      );
+    });
+    expect(hasKeyframes).toBe(true);
+  });
+
   it('panel text does not inherit the page text color', () => {
     document.body.style.color = 'rgb(232, 234, 242)';
     try {
@@ -143,7 +167,6 @@ describe('NgxColorsTriggerDirective overlay cleanup', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       // A minimal config is enough here: these tests exercise overlay
       // lifecycle, not the configuration merge itself.
@@ -221,7 +244,6 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -370,7 +392,6 @@ describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange
       imports: [
         NgxColorsTriggerDirective,
         NgxColorsComponent,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -469,7 +490,6 @@ describe('NgxColorsTriggerDirective forms-free end-to-end palette selection', ()
       imports: [
         NgxColorsTriggerDirective,
         NgxColorsComponent,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -523,7 +543,6 @@ describe('NgxColorsTriggerDirective disabled state', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -616,7 +635,6 @@ describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', (
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         ReactiveFormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -691,7 +709,6 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -808,7 +825,6 @@ describe('NgxColorsTriggerDirective ControlValueAccessor dirty/pristine behavior
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         ReactiveFormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -874,7 +890,6 @@ describe('NgxColorsTriggerDirective outputModel: "AUTO" literal binding', () => 
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -936,7 +951,6 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -1025,7 +1039,6 @@ describe('NgxColorsTriggerDirective RTL positioning', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -1126,7 +1139,6 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
       imports: [
         NgxColorsTriggerDirective,
         NgxColorsComponent,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
@@ -1233,7 +1245,6 @@ describe('NgxColorsTriggerDirective palette via NGX_COLORS_CONFIG', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [
         {
@@ -1282,7 +1293,7 @@ describe('NgxColorsTriggerDirective exportAs', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ExportAsHostComponent],
-      imports: [NgxColorsTriggerDirective, NgxColorsComponent, NoopAnimationsModule],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
   });
@@ -1324,7 +1335,6 @@ describe('NgxColorsTriggerDirective closeOnHidden (GH #116)', () => {
         NgxColorsTriggerDirective,
         NgxColorsComponent,
         FormsModule,
-        NoopAnimationsModule,
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();

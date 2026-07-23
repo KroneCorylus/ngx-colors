@@ -16,7 +16,6 @@ import { PaletteColor } from '../../models/color';
 import { CommonModule } from '@angular/common';
 import { PaletteStack } from '../../models/palette-stack';
 import { ColorOption } from '../../types/color-option';
-import { paletteAnimation } from '../../utility/animations';
 import { StateService } from '../../services/state.service';
 
 @Component({
@@ -32,7 +31,6 @@ import { StateService } from '../../services/state.service';
   ],
   templateUrl: './palette.component.html',
   styleUrls: ['./palette.component.scss', '../../shared/shared.scss'],
-  animations: [paletteAnimation],
 })
 export class PaletteComponent
   implements OnInit, ControlValueAccessor, OnDestroy

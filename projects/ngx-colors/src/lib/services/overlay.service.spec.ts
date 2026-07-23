@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { ApplicationRef, Injector } from '@angular/core';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { OverlayService } from './overlay.service';
 import { StateService } from './state.service';
@@ -14,7 +13,6 @@ describe('OverlayService', () => {
         OverlayService,
         ApplicationRef,
         StateService,
-        provideNoopAnimations(),
       ],
     });
 

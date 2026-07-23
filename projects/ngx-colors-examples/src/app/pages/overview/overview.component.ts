@@ -130,23 +130,6 @@ export class OverviewPageComponent {
   readonly snippetUsage =
     '<ngx-colors ngxColorsTrigger [(ngModel)]="color"></ngx-colors>';
 
-  readonly snippetAnimationsStandalone = [
-    "import { provideAnimations } from '@angular/platform-browser/animations';",
-    '',
-    'bootstrapApplication(AppComponent, {',
-    '  providers: [provideAnimations()],',
-    '});',
-  ].join('\n');
-
-  readonly snippetAnimationsModule = [
-    "import { BrowserAnimationsModule } from '@angular/platform-browser/animations';",
-    '',
-    '@NgModule({',
-    '  imports: [BrowserAnimationsModule, NgxColorsModule],',
-    '  ...',
-    '})',
-  ].join('\n');
-
   scrollTo(id: string): void {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   }

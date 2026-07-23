@@ -39,27 +39,8 @@ to migrate each API. The archived v3 documentation lives in
 npm install ngx-colors
 ```
 
-The picker uses Angular animations — the app must enable them. Standalone apps use
-`provideAnimations()`:
-
-```ts
-import { provideAnimations } from '@angular/platform-browser/animations';
-
-bootstrapApplication(AppComponent, {
-  providers: [provideAnimations()],
-});
-```
-
-NgModule apps import `BrowserAnimationsModule`:
-
-```ts
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-@NgModule({
-  imports: [BrowserAnimationsModule, NgxColorsModule],
-  ...
-})
-```
+No extra setup — the picker uses plain CSS animations, so you do **not** need
+`provideAnimations()` or `BrowserAnimationsModule`.
 
 ##### Import the standalone component and directive:
 

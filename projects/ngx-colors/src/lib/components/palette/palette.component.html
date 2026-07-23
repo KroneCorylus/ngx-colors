@@ -1,4 +1,4 @@
-<div class="_palette" [@paletteAnimation]="this.paletteStack.peek">
+<div class="_palette">
   <div
     *ngIf="this.paletteStack.size > 1"
     aria-label="back"
@@ -17,6 +17,7 @@
       (mouseenter)="this.onMouseEnter(color)"
       class="circle _color-option bg-transparent pointer"
       [ngClass]="this.stateService.configuration.animation"
+      [style.animation-delay.ms]="index * 10"
       tabindex="0"
       [attr.aria-label]="index"
       (keydown.enter)="this.onClickColor(color)"

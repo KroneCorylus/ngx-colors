@@ -16,7 +16,7 @@ import {
 import { Rgba } from '../../models/rgba';
 import { ColorHelper } from '../../utility/color-helper';
 import { ColorModel } from '../../types/color-model';
-import { ColorValidator } from '../../validators/color-validator';
+import { colorValidator } from '../../validators/color-validator';
 import { StateService } from '../../services/state.service';
 
 @Component({
@@ -43,7 +43,7 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
 
   inputControl: FormControl<string | null | undefined> = new FormControl<
     string | undefined
-  >('', [ColorValidator()]);
+  >('', [colorValidator()]);
 
   disabled: boolean = false;
 

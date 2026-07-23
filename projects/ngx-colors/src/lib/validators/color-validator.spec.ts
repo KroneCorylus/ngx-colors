@@ -1,7 +1,7 @@
 import { AbstractControl } from '@angular/forms';
-import { ColorValidator } from './color-validator';
+import { colorValidator } from './color-validator';
 
-const validate = ColorValidator();
+const validate = colorValidator();
 const check = (value: string | null | undefined) =>
   validate({ value } as AbstractControl);
 
@@ -80,7 +80,7 @@ const INVALID_CASES: string[] = [
   'cmyk(0, 0, 0, 101)',
 ];
 
-describe('ColorValidator', () => {
+describe('colorValidator', () => {
   it('accepts empty values, leaving required-ness to Validators.required', () => {
     expect(check('')).toBeNull();
     expect(check(null)).toBeNull();

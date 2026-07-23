@@ -4,7 +4,7 @@
  * and will be removed in the next major version.
  */
 import { ValidatorFn } from '@angular/forms';
-import { ColorValidator } from '../validators/color-validator';
+import { colorValidator } from '../validators/color-validator';
 import { ColorModel } from '../types/color-model';
 import { ColorOption } from '../types/color-option';
 import { NgxColorsConfiguration } from '../interfaces/configuration';
@@ -32,11 +32,11 @@ export class NgxColorsColor {
 }
 
 /**
- * @deprecated Use `ColorValidator` instead (same behavior, same
+ * @deprecated Use `colorValidator` instead (same behavior, same
  * `{ invalidColor: true }` error key). Will be removed in the next major
  * version.
  */
-export const validColorValidator: () => ValidatorFn = ColorValidator;
+export const validColorValidator: () => ValidatorFn = colorValidator;
 
 export type LegacyTriggerInputs = {
   colorsAnimation?: 'slide-in' | 'popup';

@@ -8,7 +8,7 @@ import { NgxColorsTriggerDirective } from '../directives/trigger.directive';
 import { NgxColorsComponent } from '../components/ngx-colors/ngx-colors.component';
 import { StateService } from '../services/state.service';
 import { Rgba } from '../models/rgba';
-import { ColorValidator } from '../validators/color-validator';
+import { colorValidator } from '../validators/color-validator';
 import {
   NgxColorsColor,
   translateLegacyPalette,
@@ -227,8 +227,8 @@ describe('v3 compat: standalone helpers', () => {
     expect(translateLegacyPalette(options)).toEqual(options);
   });
 
-  it('validColorValidator is an alias of ColorValidator', () => {
-    expect(validColorValidator).toBe(ColorValidator);
+  it('validColorValidator is an alias of colorValidator', () => {
+    expect(validColorValidator).toBe(colorValidator);
     const validate = validColorValidator();
     expect(validate({ value: 'not-a-color' } as AbstractControl)).toEqual({
       invalidColor: true,

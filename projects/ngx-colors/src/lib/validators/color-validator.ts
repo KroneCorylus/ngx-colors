@@ -6,7 +6,7 @@ import { Hsla } from '../models/hsla';
 import { Hsva } from '../models/hsva';
 import { Cmyk } from '../models/cmyk';
 
-export function ColorValidator(): ValidatorFn {
+export function colorValidator(): ValidatorFn {
   return (control: AbstractControl<string>): ValidationErrors | null => {
     if (!control.value) {
       return null;

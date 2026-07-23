@@ -6,6 +6,6 @@
 .main {
   // padding: 3px;
   box-sizing: border-box;
-  border: 3px solid white;
+  border: 3px solid var(--ngx-colors-swatch-ring, #ffffff);
   cursor: pointer;
 }

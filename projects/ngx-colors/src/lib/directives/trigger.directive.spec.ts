@@ -66,6 +66,11 @@ describe('NgxColorsTriggerDirective', () => {
     const overlay = document.body.querySelector('ngx-colors-overlay');
     expect(overlay?.getAttribute('dir')).toBe('ltr');
   });
+  it('stamps the default (light) theme on the overlay', () => {
+    elementsWithDirective[0].triggerEventHandler('click', {});
+    const overlay = document.body.querySelector('ngx-colors-overlay');
+    expect(overlay?.getAttribute('data-ngx-colors-theme')).toBe('light');
+  });
   it('centers the palette horizontally within the panel', () => {
     elementsWithDirective[0].triggerEventHandler('click', {});
     fixture.detectChanges();
@@ -1381,5 +1386,39 @@ describe('NgxColorsTriggerDirective closeOnHidden (GH #116)', () => {
       expect(overlayCount()).toBe(1);
       done();
     }, 350);
+  });
+});
+
+@Component({
+  template: `
+    <ngx-colors ngxColorsTrigger [(ngModel)]="value" [theme]="'dark'"></ngx-colors>
+  `,
+})
+class ThemeHostComponent {
+  value: string | null = '#ff00ff';
+}
+
+describe('NgxColorsTriggerDirective theme', () => {
+  let fixture: ComponentFixture<ThemeHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ThemeHostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+      providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(ThemeHostComponent);
+    fixture.detectChanges();
+  });
+
+  it('stamps [theme]="dark" on the overlay', () => {
+    (
+      fixture.nativeElement.querySelector('[ngxColorsTrigger]') as HTMLElement
+    ).dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    const overlay = document.body.querySelector('ngx-colors-overlay');
+    expect(overlay?.getAttribute('data-ngx-colors-theme')).toBe('dark');
+    overlay?.dispatchEvent(new Event('pointerdown'));
+    fixture.detectChanges();
   });
 });

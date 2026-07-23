@@ -504,3 +504,14 @@ a.gx-link {
 ._default-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
+
+.brand-theme {
+  --ngx-colors-surface: #2a1a3e;
+  --ngx-colors-text: #e0d4f5;
+  --ngx-colors-text-strong: #ffffff;
+  --ngx-colors-border: #4a3a5e;
+  --ngx-colors-hover: rgba(255, 255, 255, 0.1);
+  --ngx-colors-radius: 14px;
+  --ngx-colors-tooltip-bg: #1a0a2e;
+  --ngx-colors-tooltip-text: #e0d4f5;
+}

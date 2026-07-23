@@ -40,6 +40,10 @@ export class OverlayService {
       'dir',
       getComputedStyle(directionSource).direction === 'rtl' ? 'rtl' : 'ltr',
     );
+    hostElement.setAttribute(
+      'data-ngx-colors-theme',
+      this.stateService.configuration.theme,
+    );
     this.overlay = hostElement;
     if (this.stateService.configuration.overlayClass) {
       hostElement.classList.add(this.stateService.configuration.overlayClass);

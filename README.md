@@ -142,6 +142,7 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 | `overlayAttachTo`      | `string \| HTMLElement`                       | `document.body`                    | Element (or element id) the overlay is appended to                                                                     |
 | `position`             | `'top' \| 'bottom'`                           | auto                               | Forces the panel above/below the trigger instead of auto-flipping                                                      |
 | `closeOnHidden`        | `boolean`                                     | `false`                            | Closes the panel when the trigger becomes hidden/scrolled out of view (via `IntersectionObserver`). Pair with `overlayAttachTo` the dialog element to use the picker inside a native `<dialog>` |
+| `theme`                | `'light' \| 'dark' \| 'auto'`                 | `'light'`                          | Panel color theme. `auto` follows `prefers-color-scheme`. For finer control, override the CSS custom properties below |
 
 ### Outputs
 
@@ -215,6 +216,45 @@ colorFormControl = new FormControl('#ff0000', [colorValidator()]);
 
 Returns `{ invalidColor: true }` for strings that are not a valid color (unknown format or
 out-of-range channels). Empty values pass — combine with `Validators.required` as needed.
+
+## Theming
+
+The picker ships a built-in `light` (default) and `dark` theme, selectable with the `theme`
+input (or globally via `NGX_COLORS_CONFIG`):
+
+```html
+<ngx-colors ngxColorsTrigger [(ngModel)]="color" theme="dark"></ngx-colors>
+```
+
+`theme="auto"` follows the OS `prefers-color-scheme`.
+
+For any other look, override the CSS custom properties. They cascade to the panel from
+anywhere above it (e.g. `:root`), so you can theme all pickers globally or scope it:
+
+```css
+:root {
+  --ngx-colors-surface: #1b1e2b;
+  --ngx-colors-text: #c8ccd8;
+  --ngx-colors-border: #2c3040;
+  --ngx-colors-radius: 10px;
+}
+```
+
+| Token | What it colors | Light default |
+| --- | --- | --- |
+| `--ngx-colors-surface` | panel background | `#ffffff` |
+| `--ngx-colors-text` | text, inputs, icons | `#595b65` |
+| `--ngx-colors-text-strong` | accept/cancel buttons | `#222222` |
+| `--ngx-colors-border` | input/field borders | `#f3f3f3` |
+| `--ngx-colors-hover` | hover wash | `rgba(0,0,0,0.05)` |
+| `--ngx-colors-error` | invalid text input | `#f44336` |
+| `--ngx-colors-tooltip-bg` / `--ngx-colors-tooltip-text` | palette tooltips | `#2f3033` / `#f2f0f4` |
+| `--ngx-colors-skeleton` | async-palette loading | `#efefef` |
+| `--ngx-colors-selected-ring` | selected swatch ring | `rgba(255,255,255,0.6)` |
+| `--ngx-colors-checkerboard` / `--ngx-colors-checkerboard-alt` | alpha transparency grid | `#cccccc` / `#ffffff` |
+| `--ngx-colors-elevation` | panel shadow | (material elevation) |
+| `--ngx-colors-radius` | corner radius | `4px` |
+| `--ngx-colors-swatch-ring` | `<ngx-colors>` button ring | `#ffffff` |
 
 ## RTL
 

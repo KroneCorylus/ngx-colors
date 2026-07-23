@@ -34,6 +34,7 @@ import {
   LayoutOptions,
   LockValuesOptions,
   PositionOptions,
+  ThemeOptions,
 } from '../types/configuration';
 import { ColorModel } from '../types/color-model';
 import { IColorModel } from '../interfaces/color-format';
@@ -151,6 +152,8 @@ export class NgxColorsTriggerDirective
   public position: PositionOptions | undefined;
   @Input()
   public closeOnHidden: boolean | undefined;
+  @Input()
+  public theme: ThemeOptions | undefined;
   private triggerObserver: IntersectionObserver | undefined;
 
   // ---- v3 compatibility (deprecated) - remove this block in the next major version ----
@@ -278,6 +281,7 @@ export class NgxColorsTriggerDirective
         confirmationRequired: this.confirmationRequired,
         position: this.position,
         closeOnHidden: this.closeOnHidden,
+        theme: this.theme,
       },
     );
   }

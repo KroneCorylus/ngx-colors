@@ -10,6 +10,7 @@ import {
   LayoutOptions,
   LockValuesOptions,
   PositionOptions,
+  ThemeOptions,
 } from '../types/configuration';
 import { Observable } from 'rxjs';
 import { ColorModel } from '../types/color-model';
@@ -30,4 +31,5 @@ export interface NgxColorsConfiguration {
   confirmationRequired?: ConfirmationRequiredOptions;
   position?: PositionOptions | undefined;
   closeOnHidden?: boolean;
+  theme?: ThemeOptions;
 }

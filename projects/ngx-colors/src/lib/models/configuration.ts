@@ -8,6 +8,7 @@ import {
   LayoutOptions,
   LockValuesOptions,
   PositionOptions,
+  ThemeOptions,
 } from '../types/configuration';
 import { defaultColors } from '../utility/default-colors';
 import { ColorModel } from '../types/color-model';
@@ -54,6 +55,7 @@ export class Configuration implements NgxColorsConfiguration {
   };
   public position: PositionOptions | undefined = undefined;
   public closeOnHidden: boolean = false;
+  public theme: ThemeOptions = 'light';
 
   constructor(
     ...configOverwrites: Array<NgxColorsConfiguration | null | undefined>
@@ -106,6 +108,9 @@ export class Configuration implements NgxColorsConfiguration {
       }
       if (overwrite.closeOnHidden !== undefined) {
         this.closeOnHidden = overwrite.closeOnHidden;
+      }
+      if (overwrite.theme !== undefined) {
+        this.theme = overwrite.theme;
       }
     }
   }

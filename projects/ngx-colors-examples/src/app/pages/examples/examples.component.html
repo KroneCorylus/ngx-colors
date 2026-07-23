@@ -342,6 +342,51 @@
     </section>
 
     <section
+      id="theming"
+      class="gx-card example"
+      [class.example--stacked]="
+        wide(snippets.themeCustomHtml, snippets.themeCustomCss)
+      "
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Theming</h2>
+        <p class="gx-muted">
+          Built-in <span class="gx-inline-code">theme="dark"</span> (or
+          <span class="gx-inline-code">"auto"</span>, which follows the OS). For
+          any other look, override the
+          <span class="gx-inline-code">--ngx-colors-*</span> CSS custom
+          properties. The overlay is appended to
+          <span class="gx-inline-code">&lt;body&gt;</span>, so scope custom
+          tokens with <span class="gx-inline-code">overlayClass</span> (or set
+          them on <span class="gx-inline-code">:root</span> for all pickers).
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <div class="example__theme-item">
+            <ngx-colors
+              ngxColorsTrigger
+              [(ngModel)]="darkThemeColor"
+              theme="dark"
+            ></ngx-colors>
+            <span class="gx-muted">dark</span>
+          </div>
+          <div class="example__theme-item">
+            <ngx-colors
+              ngxColorsTrigger
+              [(ngModel)]="customThemeColor"
+              [overlayClass]="'brand-theme'"
+            ></ngx-colors>
+            <span class="gx-muted">custom (brand-theme)</span>
+          </div>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.themeDark" language="html" />
+        <app-code-block [code]="snippets.themeCustomHtml" language="html" />
+        <app-code-block [code]="snippets.themeCustomCss" language="css" />
+      </div>
+    </section>
+
+    <section
       id="palette-only"
       class="gx-card example"
       [class.example--stacked]="wide(snippets.paletteOnly)"

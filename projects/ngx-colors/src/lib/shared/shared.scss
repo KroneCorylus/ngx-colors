@@ -3,10 +3,12 @@
   height: 34px;
 }
 .elevation {
-  box-shadow:
+  box-shadow: var(
+    --ngx-colors-elevation,
     0 1px 1px #0003,
     0 1px 1px 1px #00000024,
-    0 1px 1px 1px #0000001f;
+    0 1px 1px 1px #0000001f
+  );
 }
 .elevation-z2 {
   box-shadow:
@@ -19,7 +21,7 @@
 }
 .hover-effect {
   &:hover {
-    background-color: #0000000d !important;
+    background-color: var(--ngx-colors-hover, rgba(0, 0, 0, 0.05)) !important;
     transition:
       opacity 0.2s cubic-bezier(0.35, 0, 0.25, 1),
       background-color 0.2s cubic-bezier(0.35, 0, 0.25, 1);
@@ -49,13 +51,13 @@
   height: 100%;
 }
 .bg-white {
-  background: white;
+  background: var(--ngx-colors-surface, #ffffff);
 }
 .overflow-h {
   overflow: hidden;
 }
 .bg-gray {
-  background: #f3f3f3;
+  background: var(--ngx-colors-border, #f3f3f3);
 }
 
 .flex {
@@ -125,13 +127,20 @@
   background-size: 16px 16px;
   background-image: linear-gradient(
       45deg,
-      #ccc 25%,
+      var(--ngx-colors-checkerboard, #cccccc) 25%,
       transparent 25%,
       transparent 75%,
-      #ccc 75%,
-      #ccc 100%
+      var(--ngx-colors-checkerboard, #cccccc) 75%,
+      var(--ngx-colors-checkerboard, #cccccc) 100%
     ),
-    linear-gradient(45deg, #ccc 25%, white 25%, white 75%, #ccc 75%, #ccc 100%);
+    linear-gradient(
+      45deg,
+      var(--ngx-colors-checkerboard, #cccccc) 25%,
+      var(--ngx-colors-checkerboard-alt, #ffffff) 25%,
+      var(--ngx-colors-checkerboard-alt, #ffffff) 75%,
+      var(--ngx-colors-checkerboard, #cccccc) 75%,
+      var(--ngx-colors-checkerboard, #cccccc) 100%
+    );
 }
 
 //DEBUG

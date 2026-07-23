@@ -113,6 +113,13 @@ export const INPUTS: ApiRow[] = [
     description:
       'Closes the panel when the trigger is hidden or scrolled out of view (IntersectionObserver). Combine with overlayAttachTo (the dialog element) to use the picker inside a native <dialog>.',
   },
+  {
+    name: 'theme',
+    type: "'light' | 'dark' | 'auto'",
+    default: "'light'",
+    description:
+      "Panel color theme; 'auto' follows prefers-color-scheme. For anything else, override the --ngx-colors-* CSS custom properties (surface, text, border, radius, …).",
+  },
 ];
 
 export const OUTPUTS: ApiRow[] = [

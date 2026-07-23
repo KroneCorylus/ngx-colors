@@ -19,3 +19,4 @@ export type ConfirmationRequiredOptions = {
 };
 export type AnimationOptions = 'popup' | 'slide';
 export type PositionOptions = 'top' | 'bottom';
+export type ThemeOptions = 'light' | 'dark' | 'auto';

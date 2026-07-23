@@ -1,5 +1,5 @@
 import { Component, DebugElement, SimpleChange, Type } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxColorsTriggerDirective } from './trigger.directive';
 import { NgxColorsComponent } from '../../public-api';
@@ -1053,6 +1053,24 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
     stateService.set({ value: new Rgba(9, 9, 9, 1), origin: 'state' });
 
     expect(emissions).toEqual([]);
+  });
+
+  it('replays only the latest palette to late subscribers', () => {
+    const source = new BehaviorSubject<string[]>(['#111111']);
+    directive.palette = source.asObservable();
+    directive.ngOnChanges({
+      palette: new SimpleChange(undefined, directive.palette, false),
+    });
+
+    const firstPanel = stateService.palette$?.subscribe();
+    firstPanel?.unsubscribe();
+    source.next(['#222222']);
+    source.next(['#333333']);
+
+    const received: unknown[] = [];
+    stateService.palette$?.subscribe((colors) => received.push(colors));
+
+    expect(received).toEqual([['#333333']]);
   });
 
   it('applies an updated [palette] input to the palette stream', (done) => {

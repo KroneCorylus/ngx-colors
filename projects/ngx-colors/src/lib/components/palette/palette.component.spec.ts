@@ -1,9 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 
 import { PaletteComponent } from './palette.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StateService } from '../../services/state.service';
-import { BehaviorSubject, Subject, of } from 'rxjs';
+import { BehaviorSubject, Subject, delay, of } from 'rxjs';
 import { ColorHelper } from '../../utility/color-helper';
 import { ColorOption } from '../../types/color-option';
 
@@ -59,6 +64,33 @@ describe('PaletteComponent loading skeleton', () => {
     palette$.next(['#ff0000']);
 
     expect(component.loading).toBeFalse();
+  });
+
+  it('shows the skeleton while a delayed palette resolves, then renders it', fakeAsync(() => {
+    component.palette$ = of<ColorOption[]>(['#ff0000', '#00ff00']).pipe(
+      delay(500),
+    );
+    fixture.detectChanges();
+
+    expect(component.loading).toBeTrue();
+
+    tick(500);
+
+    expect(component.loading).toBeFalse();
+    expect(component.paletteStack.peek.length).toBe(2);
+  }));
+
+  it('applies later emissions of a live palette to the current stack', () => {
+    const palette$ = new BehaviorSubject<ColorOption[]>(['#ff0000']);
+    component.palette$ = palette$.asObservable();
+    fixture.detectChanges();
+
+    expect(component.paletteStack.peek.length).toBe(1);
+
+    palette$.next(['#00ff00', '#0000ff', '#ff00ff']);
+
+    expect(component.paletteStack.peek.length).toBe(3);
+    expect(component.paletteStack.size).toBe(1);
   });
 });
 

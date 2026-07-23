@@ -309,7 +309,7 @@ export class NgxColorsTriggerDirective
     } else if (palette instanceof Observable) {
       this.stateService.palette$ = palette.pipe(
         map(translateLegacyPalette),
-        shareReplay(),
+        shareReplay(1),
       );
     } else {
       throw new Error('The palette provided is not of a valid type');

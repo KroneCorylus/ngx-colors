@@ -110,26 +110,6 @@ onPick(color: string | null | undefined): void {
   layout="full-horizontal"
 ></ngx-colors>`,
 
-  themeDark: `<ngx-colors ngxColorsTrigger [(ngModel)]="color" theme="dark"></ngx-colors>
-<!-- theme="auto" follows the OS prefers-color-scheme -->`,
-
-  themeCustomHtml: `<ngx-colors
-  ngxColorsTrigger
-  [(ngModel)]="color"
-  [overlayClass]="'brand-theme'"
-></ngx-colors>`,
-
-  themeCustomCss: `/* global stylesheet - the overlay is appended to <body>,
-   so scope the tokens with the overlayClass (not a wrapper) */
-.brand-theme {
-  --ngx-colors-surface: #2a1a3e;
-  --ngx-colors-text: #e0d4f5;
-  --ngx-colors-text-strong: #ffffff;
-  --ngx-colors-border: #4a3a5e;
-  --ngx-colors-hover: rgba(255, 255, 255, 0.1);
-  --ngx-colors-radius: 14px;
-}`,
-
   grayscaleHtml: `<ngx-colors
   ngxColorsTrigger
   [(ngModel)]="color"

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { OverviewPageComponent } from './pages/overview/overview.component';
 import { ExamplesPageComponent } from './pages/examples/examples.component';
 import { ApiPageComponent } from './pages/api/api.component';
+import { ThemingPageComponent } from './pages/theming/theming.component';
 import { PlaygroundPageComponent } from './pages/playground/playground.component';
 import { PositioningTestComponent } from './pages/positioning-test/positioning-test.component';
 import { DialogTestComponent } from './pages/dialog-test/dialog-test.component';
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path: 'api',
     component: ApiPageComponent,
+  },
+  {
+    path: 'theming',
+    component: ThemingPageComponent,
   },
   {
     path: 'playground',

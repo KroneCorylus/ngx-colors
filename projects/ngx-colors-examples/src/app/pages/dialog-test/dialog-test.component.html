@@ -1,0 +1,96 @@
+<div class="gx-container gx-section dt">
+  <span class="gx-kicker">Dev — GH #116</span>
+  <h1 class="gx-h2">Picker inside a native &lt;dialog&gt;</h1>
+  <p class="gx-lead">
+    A native <code class="gx-inline-code">&lt;dialog&gt;</code> opened with
+    <code class="gx-inline-code">showModal()</code> renders on the browser top
+    layer, above everything. An overlay attached to
+    <code class="gx-inline-code">document.body</code> (the default) paints
+    <em>behind</em> the dialog backdrop. Attaching the overlay to the dialog
+    element itself puts it inside the top layer, on top.
+  </p>
+
+  <div class="dt__bar">
+    <button type="button" class="gx-btn gx-btn--primary" (click)="open()">
+      Open dialog
+    </button>
+    <span class="gx-chip">stray overlays in DOM: {{ overlayCount() }}</span>
+  </div>
+
+  <dialog #dlg class="dt__dialog">
+    <h2 class="gx-h3">Dialog content</h2>
+
+    <div class="dt__row">
+      <div>
+        <p class="gx-muted">
+          <strong>Default</strong> — <code>overlayAttachTo</code> unset. Expected
+          bug: panel renders behind the backdrop.
+        </p>
+        <ngx-colors ngxColorsTrigger #triggerA="ngxColorsTrigger" [(ngModel)]="colorA"></ngx-colors>
+        <span class="gx-value">{{ colorA }}</span>
+      </div>
+
+      <div>
+        <p class="gx-muted">
+          <strong>Recipe</strong> —
+          <code>[overlayAttachTo]="dlg"</code> +
+          <code>[closeOnHidden]="true"</code>. Renders on top, and closing the
+          dialog closes the panel too (no lingering).
+        </p>
+        <ngx-colors
+          ngxColorsTrigger
+          #triggerB="ngxColorsTrigger"
+          [(ngModel)]="colorB"
+          [overlayAttachTo]="dlg"
+          [closeOnHidden]="true"
+        ></ngx-colors>
+        <span class="gx-value">{{ colorB }}</span>
+      </div>
+    </div>
+
+    <div class="dt__auto">
+      <p class="gx-muted">
+        <strong>Watch it linger (bug)</strong> — open this picker (default,
+        body-attached). 3s later the dialog closes on its own; the panel stays
+        orphaned on the page.
+      </p>
+      <div class="dt__auto-row">
+        <ngx-colors
+          ngxColorsTrigger
+          [(ngModel)]="colorC"
+          (open)="onAutoCloseOpen()"
+        ></ngx-colors>
+        <span class="gx-value">{{ colorC }}</span>
+        @if (countdown > 0) {
+          <span class="gx-chip">closing dialog in {{ countdown }}s…</span>
+        }
+      </div>
+
+      <p class="gx-muted" style="margin-top: 16px">
+        <strong>Watch the fix</strong> —
+        <code>[overlayAttachTo]="dlg"</code> +
+        <code>[closeOnHidden]="true"</code>. Same 3s countdown, but when the
+        dialog closes the panel closes with it.
+      </p>
+      <div class="dt__auto-row">
+        <ngx-colors
+          ngxColorsTrigger
+          [(ngModel)]="colorD"
+          [overlayAttachTo]="dlg"
+          [closeOnHidden]="true"
+          (open)="onAutoCloseOpen()"
+        ></ngx-colors>
+        <span class="gx-value">{{ colorD }}</span>
+        @if (countdown > 0) {
+          <span class="gx-chip">closing dialog in {{ countdown }}s…</span>
+        }
+      </div>
+    </div>
+
+    <div class="dt__actions">
+      <button type="button" class="gx-btn gx-btn--ghost" (click)="close()">
+        Close dialog
+      </button>
+    </div>
+  </dialog>
+</div>

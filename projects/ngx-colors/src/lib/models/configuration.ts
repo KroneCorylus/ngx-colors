@@ -24,6 +24,7 @@ export class Configuration implements NgxColorsConfiguration {
     alpha: undefined,
     brightness: undefined,
     saturation: undefined,
+    clamp: false,
   };
   public outputModel: ColorModel | 'AUTO' = 'AUTO';
   public allowedModels: Array<ColorModel> = [

@@ -61,10 +61,10 @@ export const INPUTS: ApiRow[] = [
   },
   {
     name: 'lockValues',
-    type: '{ hue?, saturation?, brightness?, alpha? }',
+    type: '{ hue?, saturation?, brightness?, alpha?, clamp? }',
     default: 'none locked',
     description:
-      'Locks a channel to a fixed value and hides its slider. Hue is 0-360, the rest 0-1.',
+      'Locks a channel to a fixed value and hides its slider (hue 0-360, rest 0-1). clamp: true also forces incoming/picked colors onto the locked channels; default false keeps the color’s own value for locked channels.',
   },
   {
     name: 'confirmationRequired',

@@ -10,6 +10,7 @@ export type LockValuesOptions = {
   saturation?: number | undefined;
   brightness?: number | undefined;
   alpha?: number | undefined;
+  clamp?: boolean | undefined;
 };
 export type ConfirmationRequiredOptions = {
   palette: boolean;

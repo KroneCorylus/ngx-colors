@@ -106,7 +106,7 @@ onPick(color: string | null | undefined): void {
   ngxColorsTrigger
   [(ngModel)]="color"
   [display]="{ palette: false, text: false, sliders: true }"
-  [lockValues]="{ hue: 210, saturation: 0.8, brightness: 0.9 }"
+  [lockValues]="{ hue: 210, saturation: 0.8, brightness: 0.9, clamp: true }"
   layout="full-horizontal"
 ></ngx-colors>`,
 

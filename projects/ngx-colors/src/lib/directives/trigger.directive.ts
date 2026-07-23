@@ -47,6 +47,7 @@ import {
 
 @Directive({
   selector: '[ngxColorsTrigger],[ngx-colors-trigger]',
+  exportAs: 'ngxColorsTrigger',
   standalone: true,
   providers: [
     {

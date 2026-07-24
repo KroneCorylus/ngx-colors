@@ -453,6 +453,7 @@ table.gx-table {
 }
 
 .gx-sidenav a {
+  position: relative;
   text-decoration: none;
   color: var(--gx-text-soft);
   font-size: 14px;
@@ -466,6 +467,26 @@ table.gx-table {
   &:hover {
     color: var(--gx-text);
     background: var(--gx-panel-strong);
+  }
+
+  &.active {
+    color: var(--gx-text);
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      right: calc(-16px - var(--gx-border-w));
+      width: 2px;
+      border-radius: 2px;
+      background: var(--gx-accent);
+
+      @media (max-width: 860px) {
+        display: none;
+      }
+    }
   }
 }
 

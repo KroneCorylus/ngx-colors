@@ -11,6 +11,7 @@ import {
   colorValidator,
 } from '../../../../../ngx-colors/src/public-api';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
+import { ScrollSpyDirective } from '../../directives/scroll-spy.directive';
 import { SNIPPETS } from './snippets';
 
 type EventEntry = { name: string; value: string };
@@ -25,6 +26,7 @@ type EventEntry = { name: string; value: string };
     NgxColorsComponent,
     NgxColorsTriggerDirective,
     CodeBlockComponent,
+    ScrollSpyDirective,
   ],
   templateUrl: './examples.component.html',
   styleUrl: './examples.component.scss',

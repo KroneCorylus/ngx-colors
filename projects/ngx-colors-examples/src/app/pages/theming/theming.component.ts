@@ -6,6 +6,7 @@ import {
   NgxColorsTriggerDirective,
 } from '../../../../../ngx-colors/src/public-api';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
+import { ScrollSpyDirective } from '../../directives/scroll-spy.directive';
 
 type TokenRow = {
   name: string;
@@ -23,6 +24,7 @@ type TokenRow = {
     NgxColorsComponent,
     NgxColorsTriggerDirective,
     CodeBlockComponent,
+    ScrollSpyDirective,
   ],
   templateUrl: './theming.component.html',
   styleUrl: './theming.component.scss',

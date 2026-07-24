@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
+import { ScrollSpyDirective } from '../../directives/scroll-spy.directive';
 import {
   ApiRow,
   DEPRECATED,
@@ -13,7 +14,7 @@ import {
 @Component({
   selector: 'app-api-page',
   standalone: true,
-  imports: [CommonModule, CodeBlockComponent],
+  imports: [CommonModule, CodeBlockComponent, ScrollSpyDirective],
   templateUrl: './api.component.html',
   styleUrl: './api.component.scss',
 })

@@ -42,36 +42,40 @@ export class SliderDirective implements OnInit, OnDestroy {
     fromEvent<PointerEvent>(document, 'pointercancel')
   );
 
-  private pointerDown$: Observable<PointerEvent> = fromEvent<PointerEvent>(
-    this.elRef.nativeElement,
-    'pointerdown'
-  );
+  private pointerDown$: Observable<PointerEvent>;
 
-  private drag$: Observable<[number, number]> = this.pointerDown$.pipe(
-    switchMap((pointerDownEvent) =>
-      fromEvent<PointerEvent>(document, 'pointermove').pipe(
-        startWith(pointerDownEvent),
-        takeUntil(this.pointerUp$)
-      )
-    ),
-    auditTime(50),
-    distinctUntilChanged((prev, curr) => {
-      return prev.pageY === curr.pageY && prev.pageX === curr.pageX;
-    }),
-    map((event) => this.getCoordFromEvent(event)),
-    takeUntil(this.destroy$)
-  );
+  private drag$: Observable<[number, number]>;
+
   constructor(
     private elRef: ElementRef,
     private _ngZone: NgZone
-  ) {}
+  ) {
+    this.pointerDown$ = fromEvent<PointerEvent>(
+      this.elRef.nativeElement,
+      'pointerdown'
+    );
+    this.drag$ = this.pointerDown$.pipe(
+      switchMap((pointerDownEvent) =>
+        fromEvent<PointerEvent>(document, 'pointermove').pipe(
+          startWith(pointerDownEvent),
+          takeUntil(this.pointerUp$)
+        )
+      ),
+      auditTime(50),
+      distinctUntilChanged((prev, curr) => {
+        return prev.pageY === curr.pageY && prev.pageX === curr.pageX;
+      }),
+      map((event) => this.getCoordFromEvent(event)),
+      takeUntil(this.destroy$)
+    );
+  }
 
   ngOnInit(): void {
     this.elRef.nativeElement.style.position = 'relative';
     this._ngZone.runOutsideAngular(() => {
       this.drag$.subscribe(([x, y]: [number, number]) => {
         this.setThumbPosition(x, y);
-        this.sliderChange.emit([x, y]);
+        this._ngZone.run(() => this.sliderChange.emit([x, y]));
       });
     });
   }

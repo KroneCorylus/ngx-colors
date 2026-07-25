@@ -231,6 +231,50 @@ describe('Convert string to HSLA string', () => {
   iterateTests(keys, convertTo, 'HSLA');
 });
 
+describe('Out-of-range clamping on conversion to Rgba', () => {
+  it('keeps out-of-range values raw at parse time so the validator can reject them', () => {
+    const rgba = ColorHelper.stringToColor('rgb(999, 0, 0)') as Rgba;
+    expect(rgba.r).toBe(999);
+  });
+
+  it('clamps rgb channels above 255', () => {
+    const rgba = ColorHelper.stringToRgba('rgb(999, 300, 0)');
+    expect(rgba.r).toBe(255);
+    expect(rgba.g).toBe(255);
+    expect(rgba.b).toBe(0);
+  });
+
+  it('clamps alpha above 1', () => {
+    expect(ColorHelper.stringToRgba('rgba(0, 0, 0, 1.5)').a).toBe(1);
+    expect(ColorHelper.stringToRgba('rgba(0, 0, 0, 150%)').a).toBe(1);
+  });
+
+  it('treats an hsl hue of exactly 360 as 0 instead of collapsing to grey', () => {
+    const rgba = ColorHelper.stringToRgba('hsl(360, 100%, 50%)');
+    expect(rgba.r).toBe(255);
+    expect(rgba.g).toBe(0);
+    expect(rgba.b).toBe(0);
+  });
+
+  it('wraps hsl hue beyond 360 like CSS', () => {
+    expect(ColorHelper.stringToRgba('hsl(400, 50%, 50%)')).toEqual(
+      ColorHelper.stringToRgba('hsl(40, 50%, 50%)'),
+    );
+  });
+
+  it('clamps negative rgb produced by out-of-range cmyk', () => {
+    const rgba = ColorHelper.stringToRgba('cmyk(150, 0, 0, 0)');
+    expect(rgba.r).toBe(0);
+    expect(rgba.g).toBe(255);
+    expect(rgba.b).toBe(255);
+  });
+
+  it('returns the same instance when the value is already in range', () => {
+    const rgba = new Rgba(10, 20, 30, 1);
+    expect(ColorHelper.colorToRgba(rgba)).toBe(rgba);
+  });
+});
+
 describe('toString rounding and zero-stripping', () => {
   it('Cmyk rounds percents to 2 decimals without float artifacts', () => {
     expect(new Cmyk(0.1422, 0, 0.995, 0.29).toString()).toBe(

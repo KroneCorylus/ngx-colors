@@ -106,7 +106,7 @@ export class NgxColorsTriggerDirective
     this.stateService.sliderChange$;
   @Output()
   public colorHover: EventEmitter<Rgba | null> =
-    this.stateService.paleteColorHover$;
+    this.stateService.paletteColorHover$;
   //Keep naming and payload (the current color) for parity with old version
   @Output()
   // eslint-disable-next-line @angular-eslint/no-output-native

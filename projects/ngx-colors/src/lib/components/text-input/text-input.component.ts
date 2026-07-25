@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
   forwardRef,
@@ -13,6 +14,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { Rgba } from '../../models/rgba';
 import { ColorHelper } from '../../utility/color-helper';
 import { ColorModel } from '../../types/color-model';
@@ -33,9 +35,13 @@ import { StateService } from '../../services/state.service';
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.scss', '../../shared/shared.scss'],
 })
-export class TextInputComponent implements ControlValueAccessor, OnInit {
+export class TextInputComponent
+  implements ControlValueAccessor, OnInit, OnDestroy
+{
   constructor(private stateService: StateService) {}
   value: Rgba | undefined = undefined;
+
+  private destroy$: Subject<void> = new Subject<void>();
 
   @Output() commit: EventEmitter<void> = new EventEmitter<void>();
 
@@ -59,18 +65,25 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
 
   public focused: boolean = false;
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
-    this.inputControl.valueChanges.subscribe((changes) => {
-      if (typeof changes === 'string') {
-        const model = ColorHelper.getColorModelByString(changes);
-        if (model === 'INVALID' || this.inputControl.invalid) {
-          return;
+    this.inputControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((changes) => {
+        if (typeof changes === 'string') {
+          const model = ColorHelper.getColorModelByString(changes);
+          if (model === 'INVALID' || this.inputControl.invalid) {
+            return;
+          }
+          this.syncColorModel(model);
+          this.value = ColorHelper.stringToRgba(changes);
+          this.onChange(this.value);
         }
-        this.syncColorModel(model);
-        this.value = ColorHelper.stringToRgba(changes);
-        this.onChange(this.value);
-      }
-    });
+      });
     this.availableModels = this.stateService.configuration.allowedModels;
     const currentModelIndex = this.availableModels.findIndex(
       (model) => model === this.stateService.colorModel,

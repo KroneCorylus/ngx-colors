@@ -76,8 +76,9 @@ export class ColorPickerComponent
   public eyeDropperSupport: boolean = !!window.EyeDropper;
 
   ngOnChanges(changes: SimpleChanges): void {
-    const value = changes['value'].currentValue;
-    this.setValue(value);
+    if (changes['value']) {
+      this.setValue(changes['value'].currentValue);
+    }
   }
   ngAfterViewInit() {
     this.setThumbs();

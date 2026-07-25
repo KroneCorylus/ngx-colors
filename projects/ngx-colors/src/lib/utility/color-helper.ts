@@ -16,6 +16,86 @@ export const HSVA_REGEX: RegExp =
 export const CMYK_REGEX: RegExp =
   /^cmyk\(\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?,\s*(\d+(?:\.\d+)?)\s*%?\)$/;
 
+function clampChannel(value: number, max: number): number {
+  return Math.min(Math.max(value, 0), max);
+}
+
+function wrapHue(value: number): number {
+  return ((value % 360) + 360) % 360;
+}
+
+function parseAlpha(alphaString: string): number {
+  let alpha;
+  if (alphaString) {
+    const percIndex = alphaString.indexOf('%');
+    if (percIndex > 0) {
+      alpha = parseFloat(alphaString.substring(0, percIndex)) / 100;
+    } else {
+      alpha = parseFloat(alphaString);
+    }
+  }
+  return alpha ?? 1;
+}
+
+const STRING_PARSERS: Array<{
+  regex: RegExp;
+  parseFunction: (
+    execResult: RegExpExecArray,
+    originalValue: string,
+  ) => IColorModel | string;
+}> = [
+  {
+    regex: RGBA_REGEX,
+    parseFunction: function (execResult: RegExpExecArray, _: string) {
+      return new Rgba(
+        parseInt(execResult[2], 10),
+        parseInt(execResult[3], 10),
+        parseInt(execResult[4], 10),
+        parseAlpha(execResult[5]),
+      );
+    },
+  },
+  {
+    regex: HSLA_REGEX,
+    parseFunction: function (execResult: RegExpExecArray, _: string) {
+      return new Hsla(
+        parseInt(execResult[2], 10),
+        parseInt(execResult[3], 10) / 100,
+        parseInt(execResult[4], 10) / 100,
+        parseAlpha(execResult[5]),
+      );
+    },
+  },
+  {
+    regex: HSVA_REGEX,
+    parseFunction: function (execResult: RegExpExecArray, _: string) {
+      return new Hsva(
+        parseInt(execResult[2], 10),
+        parseInt(execResult[3], 10) / 100,
+        parseInt(execResult[4], 10) / 100,
+        parseAlpha(execResult[5]),
+      );
+    },
+  },
+  {
+    regex: CMYK_REGEX,
+    parseFunction: function (execResult: RegExpExecArray, _: string) {
+      return new Cmyk(
+        Number(execResult[1]) / 100,
+        Number(execResult[2]) / 100,
+        Number(execResult[3]) / 100,
+        Number(execResult[4]) / 100,
+      );
+    },
+  },
+  {
+    regex: HEX_REGEX,
+    parseFunction: function (_: RegExpExecArray, originalValue: string) {
+      return originalValue;
+    },
+  },
+];
+
 export class ColorHelper {
   public static rgbaToColorModel(
     rgba: Rgba,
@@ -139,7 +219,8 @@ export class ColorHelper {
   }
   //everything to rgba
   public static hsla2Rgba(hsla: Hsla): Rgba {
-    const { h, s, l, a } = hsla;
+    const { s, l, a } = hsla;
+    const h = wrapHue(hsla.h);
 
     const sNorm = s;
     const lNorm = l;
@@ -282,19 +363,32 @@ export class ColorHelper {
   }
 
   public static colorToRgba(value: IColorModel | string) {
+    let rgba: Rgba;
     if (value instanceof Hsla) {
-      return this.hsla2Rgba(value);
+      rgba = this.hsla2Rgba(value);
     } else if (value instanceof Hsva) {
-      return this.hsva2Rgba(value);
+      rgba = this.hsva2Rgba(value);
     } else if (value instanceof Cmyk) {
-      return this.cmykToRgb(value);
+      rgba = this.cmykToRgb(value);
     } else if (typeof value == 'string') {
-      return this.hex2Rgba(value);
+      rgba = this.hex2Rgba(value);
     } else if (value instanceof Rgba) {
-      return value;
+      rgba = value;
     } else {
       throw new Error('The input value is not a valid ColorModel');
     }
+    return this.clampRgba(rgba);
+  }
+
+  private static clampRgba(rgba: Rgba): Rgba {
+    const r = clampChannel(rgba.r, 255);
+    const g = clampChannel(rgba.g, 255);
+    const b = clampChannel(rgba.b, 255);
+    const a = clampChannel(rgba.a, 1);
+    if (r === rgba.r && g === rgba.g && b === rgba.b && a === rgba.a) {
+      return rgba;
+    }
+    return new Rgba(r, g, b, a);
   }
 
   public static stringToRgba(value: string): Rgba {
@@ -308,83 +402,10 @@ export class ColorHelper {
     return this.stringToColorModel(value, colorModel).toString();
   }
 
-  private static parseAlpha(alphaString: string): number {
-    let alpha;
-    if (alphaString) {
-      const percIndex = alphaString.indexOf('%');
-      if (percIndex > 0) {
-        alpha = parseFloat(alphaString.substring(0, percIndex)) / 100;
-      } else {
-        alpha = parseFloat(alphaString);
-      }
-    }
-    return alpha ?? 1;
-  }
-
   public static stringToColor(value: string): IColorModel | string {
     value = value.trim().toLowerCase();
-    const parseAlpha = this.parseAlpha;
-    const stringParsers: Array<{
-      regex: RegExp;
-      parseFunction: (
-        execResult: RegExpExecArray,
-        originalValue: string,
-      ) => IColorModel | string;
-    }> = [
-      {
-        regex: RGBA_REGEX,
-        parseFunction: function (execResult: RegExpExecArray, _: string) {
-          return new Rgba(
-            parseInt(execResult[2], 10),
-            parseInt(execResult[3], 10),
-            parseInt(execResult[4], 10),
-            parseAlpha(execResult[5]),
-          );
-        },
-      },
-      {
-        regex: HSLA_REGEX,
-        parseFunction: function (execResult: RegExpExecArray, _: string) {
-          return new Hsla(
-            parseInt(execResult[2], 10),
-            parseInt(execResult[3], 10) / 100,
-            parseInt(execResult[4], 10) / 100,
-            parseAlpha(execResult[5]),
-          );
-        },
-      },
-      {
-        regex: HSVA_REGEX,
-        parseFunction: function (execResult: RegExpExecArray, _: string) {
-          return new Hsva(
-            parseInt(execResult[2], 10),
-            parseInt(execResult[3], 10) / 100,
-            parseInt(execResult[4], 10) / 100,
-            parseAlpha(execResult[5]),
-          );
-        },
-      },
-      {
-        regex: CMYK_REGEX,
-        parseFunction: function (execResult: RegExpExecArray, _: string) {
-          return new Cmyk(
-            Number(execResult[1]) / 100,
-            Number(execResult[2]) / 100,
-            Number(execResult[3]) / 100,
-            Number(execResult[4]) / 100,
-          );
-        },
-      },
-      {
-        regex: HEX_REGEX,
-        parseFunction: function (_: RegExpExecArray, originalValue: string) {
-          return originalValue;
-        },
-      },
-    ];
-
-    for (let i = 0; i < stringParsers.length; i++) {
-      const parser = stringParsers[i];
+    for (let i = 0; i < STRING_PARSERS.length; i++) {
+      const parser = STRING_PARSERS[i];
       const match = parser.regex.exec(value);
       if (match) {
         return parser.parseFunction(match, value);

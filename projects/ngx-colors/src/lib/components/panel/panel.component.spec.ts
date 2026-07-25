@@ -88,7 +88,7 @@ describe('PanelComponent', () => {
   describe('palette hover', () => {
     it('re-emits hovered colors through the state service', () => {
       const spy = jasmine.createSpy('hover');
-      stateService.paleteColorHover$.subscribe(spy);
+      stateService.paletteColorHover$.subscribe(spy);
       const color = new Rgba(9, 8, 7, 1);
 
       component.onPaletteColorHover(color);

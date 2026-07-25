@@ -1,140 +1,238 @@
+import { CommonModule } from '@angular/common';
 import {
-  Component,
-  OnInit,
-  OnDestroy,
   AfterViewInit,
-  ViewChild,
-  ViewEncapsulation,
-  ElementRef,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Input,
-  Output,
+  Component,
   EventEmitter,
+  Input,
   OnChanges,
-} from "@angular/core";
-
-import { Cmyk, Hsla, Hsva, Rgba } from "../../clases/formats";
-import { ColorFormats } from "../../enums/formats";
-import { SliderDimension, SliderPosition } from "../../clases/slider";
-
-import { ConverterService } from "../../services/converter.service";
+  Output,
+  SimpleChanges,
+  ViewChild,
+  forwardRef,
+} from '@angular/core';
+import { SliderDirective } from '../../directives/slider.directive';
+import { ThumbComponent } from '../thumb/thumb.component';
+import { Hsva } from '../../models/hsva';
+import { ColorHelper } from '../../utility/color-helper';
+import { Rgba } from '../../models/rgba';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { StateService } from '../../services/state.service';
 
 @Component({
-  selector: "color-picker",
-  templateUrl: "./color-picker.component.html",
-  styleUrls: ["./color-picker.component.scss"],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'ngx-colors-color-picker',
+  standalone: true,
+  imports: [CommonModule, SliderDirective, ThumbComponent],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorPickerComponent),
+      multi: true,
+    },
+  ],
+  templateUrl: './color-picker.component.html',
+  styleUrls: ['./color-picker.component.scss', '../../shared/shared.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorPickerComponent
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges
+  implements OnChanges, ControlValueAccessor, AfterViewInit
 {
-  //IO color
-  @Input() color: Hsva = new Hsva(0, 1, 1, 1);
-  @Input() controls: "default" | "only-alpha" | "no-alpha" = "default";
-  @Output() sliderChange: EventEmitter<Hsva> = new EventEmitter<Hsva>(false);
-  @Output() onAlphaChange: EventEmitter<any> = new EventEmitter<any>(false);
-  //Event triggered when any slider change
-  // @Output() colorSelectedChange:EventEmitter<Hsva> = new EventEmitter<Hsva>(false);
+  public hue: string = 'red';
+  public preview: string = 'red';
+  public alphaGradient: { background: string } = {
+    background:
+      'linear-gradient(90deg, rgba(36,0,0,0) 0%, ' + this.hue + ' 100%)',
+  };
 
-  private hsva: Hsva = new Hsva(0, 1, 1, 1);
-  private outputColor: Hsva;
-  public selectedColor: string = "#000000";
-  private fallbackColor: string = "#000000";
-
-  // private sHue: number;
-  private sliderDimMax: SliderDimension;
-  public slider: SliderPosition;
-
-  public hueSliderColor: string;
-  public alphaSliderColor: string;
-
-  @ViewChild("hueSlider", { static: false }) hueSlider: ElementRef;
-  @ViewChild("alphaSlider", { static: false }) alphaSlider: ElementRef;
-
+  //state in rgba (output format)
+  @Input() value: Rgba | undefined = new Rgba(255, 0, 0, 1);
+  @Output() valueChange: EventEmitter<Rgba> = new EventEmitter<Rgba>();
   constructor(
-    private service: ConverterService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public stateService: StateService,
   ) {}
 
-  ngOnInit(): void {
-    if (!this.color) {
-      this.color = new Hsva(0, 1, 1, 1);
+  @ViewChild('slSlider', { read: SliderDirective, static: false })
+  slSlider!: SliderDirective;
+  @ViewChild('alphaSlider', { read: SliderDirective, static: false })
+  alphaSlider!: SliderDirective;
+  @ViewChild('hueSlider', { read: SliderDirective, static: false })
+  hueSlider!: SliderDirective;
+  @ViewChild('sSlider', { read: SliderDirective, static: false })
+  sSlider!: SliderDirective;
+  @ViewChild('vSlider', { read: SliderDirective, static: false })
+  vSlider!: SliderDirective;
+
+  public _hue: Hsva = new Hsva(1, 1, 1, 1);
+  public bgv: string = 'rgb(255,255,255)';
+  public bgs: { background: string } | undefined = undefined;
+  //state in hsva
+  public _value: Hsva = new Hsva(1, 1, 1, 1);
+
+  public disabled: boolean = false;
+
+  //@ts-expect-error eyedroper is a experimental feature.
+  public eyeDropperSupport: boolean = !!window.EyeDropper;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const value = changes['value'].currentValue;
+    this.setValue(value);
+  }
+  ngAfterViewInit() {
+    this.setThumbs();
+  }
+
+  private getHSVA(): Hsva {
+    let hue = 1;
+    let saturation = 1;
+    let brightness = 1;
+    let alpha = 1;
+    if (this.stateService.configuration.lockValues.hue != undefined) {
+      hue = this.stateService.configuration.lockValues.hue;
     }
-    this.slider = new SliderPosition(0, 0, 0, 0);
-    this.update();
+    if (this.stateService.configuration.lockValues.saturation != undefined) {
+      saturation = this.stateService.configuration.lockValues.saturation;
+    }
+    if (this.stateService.configuration.lockValues.brightness != undefined) {
+      brightness = this.stateService.configuration.lockValues.brightness;
+    }
+    if (this.stateService.configuration.lockValues.alpha != undefined) {
+      alpha = this.stateService.configuration.lockValues.alpha;
+    }
+    return new Hsva(hue, saturation, brightness, alpha);
   }
 
-  ngOnDestroy(): void {}
-
-  ngOnChanges(changes: any): void {
-    if (changes.color && this.color) {
-      this.update();
+  private setValue(value: Rgba | undefined, emitEvent: boolean = true) {
+    if (!value) {
+      this._value = this.getHSVA();
+      this._hue = new Hsva(this._value.h, 1, 1, 1);
+      // TODO: should show that null is seteded
+      this.preview = ColorHelper.hsva2Rgba(this._value).toString();
+    }
+    if (value instanceof Rgba) {
+      this._value = ColorHelper.rgbaToColorModel(value, 'HSVA') as Hsva;
+      this._hue.h = this._value.h;
+      this.preview = value.toString();
+    }
+    this.hue = ColorHelper.hsva2Rgba(this._hue).toString();
+    this.alphaGradient = this.getGradient(
+      undefined,
+      this.value ?? new Rgba(255, 0, 0, 1),
+    );
+    this.bgv = ColorHelper.hsva2Rgba(
+      new Hsva(this._value.h, this._value.s, 1, 1),
+    ).toString();
+    const left = ColorHelper.hsva2Rgba(
+      new Hsva(this._value.h, 0, this._value.v, 1),
+    );
+    const right = ColorHelper.hsva2Rgba(
+      new Hsva(this._value.h, 1, this._value.v, 1),
+    );
+    this.bgs = this.getGradient(left, right);
+    this.setThumbs();
+    this.cdr.detectChanges();
+    if (emitEvent) {
+      this.onChange(this.value);
     }
   }
 
-  ngAfterViewInit(): void {
-    const hueWidth = this.hueSlider?.nativeElement.offsetWidth || 140;
-    const alphaWidth = this.alphaSlider?.nativeElement.offsetWidth || 140;
-    this.sliderDimMax = new SliderDimension(hueWidth, 220, 130, alphaWidth);
-    this.update();
+  private setThumbs() {
+    this.slSlider?.setThumbPosition(this._value.s, 1 - this._value.v);
+    this.hueSlider?.setThumbPosition(this._value.h / 360, 0);
+    this.alphaSlider?.setThumbPosition(this._value.a, 0);
   }
 
-  public onSliderChange(type: string, event) {
-    switch (type) {
-      case "saturation-lightness":
-        this.hsva.onColorChange(event);
-        break;
-      case "hue":
-        this.hsva.onHueChange(event);
-        break;
-      case "alpha":
-        this.hsva.onAlphaChange(event);
-        this.onAlphaChange.emit(event);
-        break;
-      case "value":
-        this.hsva.onValueChange(event);
-        break;
+  //Fired on change of slider directive.
+  public onChangeCoord(
+    sliderCode: 'h' | 'sv' | 'a' | 's' | 'v',
+    coord: [number, number],
+  ) {
+    const [x, y] = coord;
+    if (sliderCode === 'h') {
+      this._hue.h = x * 360;
+      this._value.h = x * 360;
+      this.hue = ColorHelper.hsva2Rgba(this._hue).toString();
     }
-    // this.sHue = this.hsva.h;
-    this.update();
-    this.setColor(this.outputColor);
+    if (sliderCode === 'sv') {
+      this._value.s = x;
+      this._value.v = 1 - y;
+    }
+    if (sliderCode === 's') {
+      this._value.s = x;
+    }
+    if (sliderCode === 'v') {
+      this._value.v = x;
+    }
+    if (sliderCode === 'a') {
+      this._value.a = x;
+    }
+    this.value = ColorHelper.hsva2Rgba(this._value);
+    this.preview = this.value.toString();
+    this.alphaGradient = this.getGradient(undefined, this.value);
+    this.bgv = ColorHelper.hsva2Rgba(
+      new Hsva(this._value.h, this._value.s, 1, 1),
+    ).toString();
+    const left = ColorHelper.hsva2Rgba(
+      new Hsva(this._value.h, 0, this._value.v, 1),
+    );
+    const right = ColorHelper.hsva2Rgba(
+      new Hsva(this._value.h, 1, this._value.v, 1),
+    );
+    this.bgs = this.getGradient(left, right);
+    this.onChange(this.value);
+    this.cdr.detectChanges();
   }
 
-  setColor(color) {
-    this.color = color;
-    this.sliderChange.emit(this.color);
-  }
-
-  public getBackgroundColor(color) {
+  private getGradient(left: Rgba | undefined, right: Rgba | undefined) {
+    let colorLeft = 'transparent';
+    let colorRight = 'transparent';
+    if (left) {
+      colorLeft = new Rgba(left.r, left.g, left.b, 1).toString();
+    }
+    if (right) {
+      colorRight = new Rgba(right.r, right.g, right.b, 1).toString();
+    }
     return {
-      background:
-        "linear-gradient(90deg, rgba(36,0,0,0) 0%, " + color + " 100%)",
+      background: `linear-gradient(90deg, ${colorLeft} 0%, ${colorRight} 100%)`,
     };
   }
 
-  private update(): void {
-    this.hsva = this.color;
-    if (this.sliderDimMax) {
-      let rgba = this.service.hsvaToRgba(this.hsva).denormalize();
-      let hue = this.service
-        .hsvaToRgba(new Hsva(this.hsva.h, 1, 1, 1))
-        .denormalize();
-
-      this.hueSliderColor = "rgb(" + hue.r + "," + hue.g + "," + hue.b + ")";
-      this.alphaSliderColor =
-        "rgb(" + rgba.r + "," + rgba.g + "," + rgba.b + ")";
-
-      this.outputColor = this.hsva;
-      this.selectedColor = this.service.hsvaToRgba(this.hsva).toString();
-
-      this.slider = new SliderPosition(
-        // (this.sHue || this.hsva.h) * this.sliderDimMax.h - 8,
-        this.hsva.h * this.sliderDimMax.h - 5,
-        this.hsva.s * this.sliderDimMax.s - 8,
-        (1 - this.hsva.v) * this.sliderDimMax.v - 8,
-        this.hsva.a * this.sliderDimMax.a - 5
-      );
-      this.cdr.detectChanges();
+  public onClickEyeDropper() {
+    if (!this.eyeDropperSupport) {
+      console.error('EyeDropper not supported');
+      return;
     }
+    //@ts-expect-error eyedroper is a experimental feature.
+    const eyeDropper = new EyeDropper();
+    eyeDropper
+      .open()
+      .then((result: { sRGBHex: string }) => {
+        const probeColor: Rgba = ColorHelper.stringToRgba(result.sRGBHex);
+        //in unix systems the eyeDropper always return 0 on the alpha channel.
+        probeColor.a = 1;
+        this.value = probeColor;
+        this.setValue(probeColor);
+      })
+      .catch((err: DOMException) => {
+        console.error(err);
+      });
+  }
+  writeValue(obj: Rgba | undefined): void {
+    this.value = obj;
+    this.setValue(obj, false);
+  }
+
+  onChange: (value: Rgba | undefined) => void = () => {};
+  onTouch: () => void = () => {};
+
+  registerOnChange(fn: (value: Rgba | undefined) => void): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouch = fn;
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }

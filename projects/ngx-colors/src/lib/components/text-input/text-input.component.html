@@ -1,0 +1,22 @@
+<div class="flex radius-4 w-100">
+  <div
+    class="flex justify-center align-center _format hover-effect pointer mr-1 radius-4"
+    (click)="onClickColorModel()"
+    (keydown.enter)="onClickColorModel()"
+    aria-label="change format"
+    tabindex="0"
+  >
+    {{ this.availableModels[this.colorModelIndex] }}
+  </div>
+  <div class="flex justify-center align-center bg-white _value">
+    <input
+      dir="ltr"
+      [formControl]="inputControl"
+      [placeholder]="placeholder"
+      (keydown.enter)="onEnter()"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      [class.error]="inputControl.hasError('invalidColor')"
+    />
+  </div>
+</div>

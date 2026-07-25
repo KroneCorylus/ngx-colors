@@ -1,0 +1,169 @@
+<section class="hero">
+  @for (bubble of bubbles; track $index) {
+    <span
+      class="hero__bubble"
+      [style.background]="bubble.color"
+      [style.width.px]="bubble.size"
+      [style.height.px]="bubble.size"
+      [style.top]="bubble.top"
+      [style.left]="bubble.left"
+      [style.animation-delay]="bubble.delay"
+    ></span>
+  }
+  <span class="gx-kicker">ngx-colors</span>
+  <h1 class="gx-h1">
+    A <span class="gx-gradient-text">color picker</span> for Angular
+  </h1>
+  <p class="gx-lead hero__lede">
+    Pick colors from a palette, sliders or a text input — in HEX, RGBA, HSLA,
+    HSVA or CMYK. Integrates with Angular forms.
+  </p>
+  <div class="hero__actions">
+    <a
+      class="gx-btn gx-btn--primary"
+      href="#installation"
+      (click)="scrollTo('installation'); $event.preventDefault()"
+      >Get Started</a
+    >
+    <a
+      class="gx-btn gx-btn--ghost"
+      href="https://github.com/KroneCorylus/ngx-colors"
+      target="_blank"
+      rel="noopener"
+      >See on GitHub</a
+    >
+  </div>
+  <div class="hero__demo gx-card">
+    <div
+      class="hero__gradient"
+      [style.background]="
+        'linear-gradient(135deg, ' + heroFrom + ', ' + heroTo + ')'
+      "
+    ></div>
+    <div class="hero__pickers">
+      <ngx-colors ngxColorsTrigger [(ngModel)]="heroFrom"></ngx-colors>
+      <ngx-colors ngxColorsTrigger [(ngModel)]="heroTo"></ngx-colors>
+    </div>
+  </div>
+  <div class="hero__migration">
+    Migrating from v3:
+    <a
+      class="gx-link"
+      href="https://github.com/KroneCorylus/ngx-colors/blob/master/MIGRATION.md"
+      target="_blank"
+      rel="noopener"
+      >migration guide</a
+    >
+    ·
+    <a
+      class="gx-link"
+      href="https://github.com/KroneCorylus/ngx-colors/blob/master/V3-DOCUMENTATION.md"
+      target="_blank"
+      rel="noopener"
+      >v3 documentation</a
+    >
+  </div>
+</section>
+
+<section id="installation" class="gx-section">
+  <div class="gx-container">
+    <span class="gx-kicker">Setup</span>
+    <h2 class="gx-h2">Installation</h2>
+    <div class="gx-grid gx-grid--2 quickstart">
+      <div class="quickstart__col">
+        <h3 class="gx-h3">1 — Install</h3>
+        <app-code-block [code]="snippetInstall" language="shell" />
+        <h3 class="gx-h3 quickstart__spaced">2 — Import</h3>
+        <app-code-block [code]="snippetStandalone" language="typescript" />
+        <p class="gx-muted">
+          NgModule apps use
+          <span class="gx-inline-code">NgxColorsModule</span> instead:
+        </p>
+        <app-code-block [code]="snippetModule" language="typescript" />
+      </div>
+      <div class="quickstart__col">
+        <h3 class="gx-h3">3 — Use</h3>
+        <app-code-block [code]="snippetUsage" language="html" />
+        <p class="gx-muted">
+          The <span class="gx-inline-code">ngxColorsTrigger</span> directive
+          turns any element into a trigger;
+          <span class="gx-inline-code">&lt;ngx-colors&gt;</span> is a premade
+          swatch button. They can be combined or used separately.
+        </p>
+        <p class="gx-muted">
+          No extra setup — the picker uses plain CSS animations, so you don't
+          need <span class="gx-inline-code">provideAnimations()</span> or
+          <span class="gx-inline-code">BrowserAnimationsModule</span>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gx-section">
+  <div class="gx-container">
+    <span class="gx-kicker">Features</span>
+    <h2 class="gx-h2">What's included</h2>
+    <div class="gx-grid gx-grid--3 features">
+      @for (feature of features; track feature.title) {
+        <a
+          class="gx-card gx-card--hover feature"
+          [class.feature--linked]="!!feature.link"
+          [routerLink]="feature.link ? ['/examples'] : null"
+          [fragment]="feature.link"
+        >
+          <span
+            class="feature__dot"
+            [style.background]="feature.color"
+            [style.box-shadow]="'0 0 16px ' + feature.color + '55'"
+          ></span>
+          <h3 class="gx-h3">{{ feature.title }}</h3>
+          <p class="gx-muted">{{ feature.text }}</p>
+          @if (feature.link) {
+            <span class="feature__more">See example →</span>
+          }
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="gx-section">
+  <div class="gx-container">
+    <span class="gx-kicker">Versions</span>
+    <h2 class="gx-h2">Compatibility</h2>
+    <div class="compat">
+      <div class="gx-table-wrapper">
+        <table class="gx-table">
+          <thead>
+            <tr>
+              <th>Angular</th>
+              <th>Latest ngx-colors compatible</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of compatibility; track row.angular) {
+              <tr>
+                <td>
+                  <code>{{ row.angular }}</code>
+                </td>
+                <td>{{ row.version }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="gx-muted migration-note">
+      The deprecated v3 API still works in 4.x through a compatibility layer.
+      See the
+      <a
+        class="gx-link"
+        href="https://github.com/KroneCorylus/ngx-colors/blob/master/MIGRATION.md"
+        target="_blank"
+        rel="noopener"
+        >migration guide</a
+      >.
+    </p>
+  </div>
+</section>

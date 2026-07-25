@@ -1,0 +1,58 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="gx-container topbar__inner">
+      <a routerLink="/" class="topbar__brand">
+        <span class="topbar__logo"></span>
+        <span class="topbar__name">ngx-colors</span>
+        <span class="gx-chip">v4 beta</span>
+      </a>
+      <nav class="topbar__nav">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Overview</a
+        >
+        <a routerLink="/examples" routerLinkActive="active">Examples</a>
+        <a routerLink="/api" routerLinkActive="active">API</a>
+        <a routerLink="/theming" routerLinkActive="active">Theming</a>
+        <a routerLink="/playground" routerLinkActive="active">Playground</a>
+      </nav>
+      <div class="topbar__external">
+        <a
+          href="https://github.com/KroneCorylus/ngx-colors/blob/master/V3-DOCUMENTATION.md"
+          target="_blank"
+          rel="noopener"
+          >v3 docs</a
+        >
+        <a
+          class="topbar__github"
+          href="https://github.com/KroneCorylus/ngx-colors"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </div>
+    </div>
+  </header>
+
+  <main class="shell__content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <div class="gx-container footer__inner">
+      <span class="gx-muted">ngx-colors — MIT licensed</span>
+      <span class="gx-muted">
+        Migrating from v3?
+        <a
+          class="gx-link"
+          href="https://github.com/KroneCorylus/ngx-colors/blob/master/MIGRATION.md"
+          target="_blank"
+          rel="noopener"
+          >Read the migration guide</a
+        >
+      </span>
+    </div>
+  </footer>
+</div>

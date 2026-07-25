@@ -1,0 +1,63 @@
+<div class="_palette">
+  <div
+    *ngIf="this.paletteStack.size > 1"
+    aria-label="back"
+    tabindex="0"
+    (click)="this.onClickBack()"
+    (keydown.enter)="this.onClickBack()"
+    class="circle _color-option overflow-h flex justify-center align-center pointer _mirror-rtl"
+  >
+    <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
+  </div>
+  <ng-container *ngIf="this.loading">
+    <ng-container [ngTemplateOutlet]="skeleton"></ng-container>
+  </ng-container>
+  @for (color of this.paletteStack.peek; track color; let index = $index) {
+    <div
+      (mouseenter)="this.onMouseEnter(color)"
+      class="circle _color-option bg-transparent pointer"
+      [ngClass]="this.stateService.configuration.animation"
+      [style.animation-delay.ms]="index * 10"
+      tabindex="0"
+      [attr.aria-label]="index"
+      (keydown.enter)="this.onClickColor(color)"
+      (click)="this.onClickColor(color)"
+    >
+      <div
+        class="w-100 circle h-100 _tooltip-trigger"
+        [style.background]="color.preview"
+        [class.null]="!color.preview"
+      >
+        <div class="_tooltip" *ngIf="color.name?.length">{{ color.name }}</div>
+        @if (indexSelected === index) {
+          <div class="circle _selected"></div>
+        }
+      </div>
+    </div>
+  }
+  <ng-container *ngIf="this.paletteStack.size <= 1">
+    <ng-content></ng-content>
+  </ng-container>
+</div>
+<ng-template #backIcon>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 -960 960 960"
+    width="24px"
+    fill="currentColor"
+  >
+    <path
+      d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+    />
+  </svg>
+</ng-template>
+
+<ng-template #skeleton>
+  <div
+    *ngFor="let color of [].constructor(14)"
+    class="circle _color-option overflow-h"
+  >
+    <div class="w-100 circle h-100 skeleton"></div>
+  </div>
+</ng-template>

@@ -1,0 +1,178 @@
+<div class="gx-container gx-section gx-layout-sidebar">
+  <aside class="gx-sidenav" appScrollSpy>
+    <span class="gx-sidenav__title">Theming</span>
+    @for (section of sections; track section.id) {
+      <a
+        href="#{{ section.id }}"
+        (click)="scrollTo(section.id); $event.preventDefault()"
+        >{{ section.label }}</a
+      >
+    }
+  </aside>
+
+  <div class="gx-layout-content">
+    <span class="gx-kicker">Theming</span>
+    <h1 class="gx-h2">Theme the picker</h1>
+    <p class="gx-lead">
+      ngx-colors ships a light and a dark theme out of the box, and every
+      surface is driven by a CSS custom property so you can repaint it to match
+      your product without overriding a single component style.
+    </p>
+
+    <section id="how-it-works" class="theme-section">
+      <h2 class="gx-h3">How it works</h2>
+      <p class="gx-muted">
+        Every color in the panel reads from a
+        <span class="gx-inline-code">--ngx-colors-*</span> custom property with
+        the light value baked in as the fallback:
+      </p>
+      <app-code-block
+        [code]="'background: var(--ngx-colors-surface, #ffffff);'"
+        language="css"
+      />
+      <p class="gx-muted">
+        Set the token anywhere up the cascade and the panel picks it up; leave
+        it unset and the light default applies. There is nothing to import — no
+        theme file, no mixin, no build step.
+      </p>
+      <p class="gx-muted theme-note">
+        <strong>The one thing to know:</strong> the panel overlay is appended to
+        <span class="gx-inline-code">&lt;body&gt;</span>, outside your
+        component's DOM. So component-scoped styles and wrapper classes around
+        the trigger <em>never reach it</em>. Tokens have to come from a
+        <em>global</em> stylesheet — either on
+        <span class="gx-inline-code">:root</span> (all pickers) or via
+        <span class="gx-inline-code">overlayClass</span> (one picker). Both are
+        shown below.
+      </p>
+    </section>
+
+    <section id="built-in" class="theme-section">
+      <h2 class="gx-h3">Built-in themes</h2>
+      <p class="gx-muted">
+        The <span class="gx-inline-code">theme</span> input takes
+        <span class="gx-inline-code">"light"</span> (default),
+        <span class="gx-inline-code">"dark"</span>, or
+        <span class="gx-inline-code">"auto"</span> — which follows the
+        operating system's
+        <span class="gx-inline-code">prefers-color-scheme</span>. Open each
+        swatch to compare:
+      </p>
+      <div class="theme-demos gx-card">
+        <div class="theme-demo">
+          <ngx-colors ngxColorsTrigger [(ngModel)]="lightColor"></ngx-colors>
+          <span class="gx-muted">light (default)</span>
+        </div>
+        <div class="theme-demo">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="darkColor"
+            theme="dark"
+          ></ngx-colors>
+          <span class="gx-muted">dark</span>
+        </div>
+        <div class="theme-demo">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="autoColor"
+            theme="auto"
+          ></ngx-colors>
+          <span class="gx-muted">auto (OS)</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippetThemeInput" language="html" />
+      <p class="gx-muted">
+        Prefer to set it once for the whole app? Provide it through
+        <span class="gx-inline-code">NGX_COLORS_CONFIG</span> and every picker
+        inherits it (a per-picker <span class="gx-inline-code">theme</span>
+        binding still wins):
+      </p>
+      <app-code-block [code]="snippetGlobalTheme" language="typescript" />
+    </section>
+
+    <section id="tokens" class="theme-section">
+      <h2 class="gx-h3">Token reference</h2>
+      <p class="gx-muted">
+        All 17 custom properties, the surface each one paints, and the values
+        the built-in light and dark themes assign. Most are colors; the last
+        two take full CSS values (a length and a
+        <span class="gx-inline-code">box-shadow</span>).
+      </p>
+      <div class="gx-table-wrapper">
+        <table class="gx-table theme-table">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Applies to</th>
+              <th>Light</th>
+              <th>Dark</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of tokens; track row.name) {
+              <tr>
+                <td><code>{{ row.name }}</code></td>
+                <td>{{ row.appliesTo }}</td>
+                <td>
+                  <span class="theme-swatch-cell">
+                    <span
+                      class="theme-swatch"
+                      [style.background]="row.light"
+                    ></span>
+                    <code>{{ row.light }}</code>
+                  </span>
+                </td>
+                <td>
+                  <span class="theme-swatch-cell">
+                    <span
+                      class="theme-swatch"
+                      [style.background]="row.dark"
+                    ></span>
+                    <code>{{ row.dark }}</code>
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="scoping" class="theme-section">
+      <h2 class="gx-h3">Global vs per-picker</h2>
+      <p class="gx-muted">
+        <strong>Every picker:</strong> set the tokens on
+        <span class="gx-inline-code">:root</span> in a global stylesheet.
+      </p>
+      <app-code-block [code]="snippetGlobalTokens" language="css" />
+      <p class="gx-muted">
+        <strong>One picker:</strong> put the tokens in a class and pass its name
+        to <span class="gx-inline-code">overlayClass</span>. The class is
+        stamped on the body-attached overlay, so — unlike a wrapper element —
+        the tokens actually reach it.
+      </p>
+      <app-code-block [code]="snippetScopedUsage" language="html" />
+    </section>
+
+    <section id="custom" class="theme-section">
+      <h2 class="gx-h3">Custom theme</h2>
+      <p class="gx-muted">
+        This picker uses <span class="gx-inline-code">overlayClass="brand-theme"</span>,
+        a purple theme defined in this site's global stylesheet. Open it — the
+        surface, text, borders, selection ring, corner radius, and shadow all
+        follow the tokens.
+      </p>
+      <div class="theme-demos gx-card">
+        <div class="theme-demo">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="brandColor"
+            [overlayClass]="'brand-theme'"
+          ></ngx-colors>
+          <span class="gx-muted">brand-theme</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippetScopedTokens" language="css" />
+    </section>
+  </div>
+</div>

@@ -1,1 +1,0 @@
-export const formats = ['hex','rgba','hsla', 'cmyk']

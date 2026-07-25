@@ -1,0 +1,32 @@
+._format {
+  padding: 18px 16px;
+  width: 67px;
+  box-sizing: border-box;
+  letter-spacing: 1.5px;
+  font-size: 10px;
+  color: var(--ngx-colors-text, #595b65);
+}
+._value {
+  flex-grow: 1;
+  border: 1px solid var(--ngx-colors-border, #f3f3f3);
+  border-radius: var(--ngx-colors-radius, 4px);
+
+  input {
+    font-size: 10px;
+    background: none;
+    height: 100%;
+    width: 100%;
+    border: none;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--ngx-colors-text, #595b65);
+    outline: none;
+    border-radius: var(--ngx-colors-radius, 4px);
+    box-sizing: border-box;
+    &.error {
+      border-bottom: 2px solid var(--ngx-colors-error, #f44336);
+      color: var(--ngx-colors-error, #f44336);
+      background: #f4433605;
+    }
+  }
+}

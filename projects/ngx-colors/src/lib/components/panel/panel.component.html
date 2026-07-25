@@ -1,140 +1,126 @@
-<div class="opened" [style]="positionString" #dialog>
-  <ng-container *ngIf="menu == 1">
-    <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-      <ng-container *ngFor="let color of palette; let i = index">
-        <div class="circle wrapper color">
-          <div
-            (click)="onColorClick(color)"
-            class="circle color circle-border"
-            [class.colornull]="!color"
-            [ngStyle]="getBackgroundColor(color)"
-          >
-            <div *ngIf="i == this.indexSeleccionado" class="selected"></div>
-          </div>
-        </div>
-      </ng-container>
-      <div
-        style="background: rgb(245 245 245); position: relative"
-        (click)="addColor()"
-        *ngIf="!hideColorPicker && this.colorPickerControls != 'only-alpha'"
-        class="circle button"
-      >
+<div class="elevation-z2 bg-white main flex flex-col">
+  @if (
+    this.stateService.configuration.layout === "pages" &&
+    this.stateService.configuration.display.sliders &&
+    this.stateService.configuration.confirmationRequired?.sliders &&
+    this.currentPage === "sliders"
+  ) {
+    <div class="_palette-controls px-3">
+      <div class="_navigation">
         <div
-          *ngIf="this.indexSeleccionado === undefined"
-          style="
-            position: absolute;
-            height: 7px;
-            width: 7px;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            border-radius: 100%;
-            top: 0;
-            right: 0;
-          "
-          [ngStyle]="getBackgroundColor(color)"
-        ></div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 0 24 24"
-          width="24px"
-          fill="#222222"
+          *ngIf="this.stateService.configuration.display.palette"
+          aria-label="back"
+          tabindex="0"
+          (click)="onClickBack()"
+          (keydown.enter)="onClickBack()"
+          class="icon-button circle overflow-h flex justify-center align-center pointer hover-effect _mirror-rtl"
         >
-          <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
-          <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
-        </svg>
-        <!-- <div class="add">
-          <icons icon="add"></icons>
-        </div> -->
-      </div>
-      <color-picker
-        *ngIf="!hideColorPicker && this.colorPickerControls == 'only-alpha'"
-        [controls]="colorPickerControls"
-        [color]="hsva"
-        (colorChange)="onChangeColorPicker($event)"
-        (onAlphaChange)="onAlphaChange($event)"
-      ></color-picker>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="menu == 2">
-    <div class="colors" [@colorsAnimation]="colorsAnimationEffect">
-      <div class="circle wrapper">
-        <div (click)="onClickBack()" class="add">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path
-              d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-            />
-          </svg>
+          <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
         </div>
       </div>
-
-      <ng-container *ngFor="let variant of variants">
-        <div class="circle wrapper color">
+      <ng-container [ngTemplateOutlet]="confirmation"></ng-container>
+    </div>
+  }
+  <div
+    class="flex gap-3"
+    [class.flex-col]="
+      this.stateService.configuration.layout === 'full-vertical'
+    "
+  >
+    @if (
+      (this.stateService.configuration.layout !== "pages" ||
+        this.currentPage === "sliders") &&
+      this.stateService.configuration.display.sliders
+    ) {
+      <div style="width: 220px">
+        <ngx-colors-color-picker [formControl]="this.slidersCtrl">
+        </ngx-colors-color-picker>
+      </div>
+    }
+    @if (
+      (this.stateService.configuration.layout !== "pages" ||
+        this.currentPage === "palette") &&
+      this.stateService.configuration.display.palette
+    ) {
+      <div style="width: 220px">
+        <ngx-colors-palette
+          (colorHover)="this.onPaletteColorHover($event)"
+          [palette$]="this.stateService.palette$"
+          [formControl]="this.paletteCtrl"
+        >
           <div
-            [class.colornull]="!variant"
-            (click)="changeColor(variant)"
-            class="circle circle-border"
-            [ngStyle]="{ background: variant }"
+            class="icon-button circle overflow-h flex justify-center align-center pointer hover-effect"
+            aria-label="sliders"
+            [ngClass]="this.stateService.configuration.animation"
+            *ngIf="
+              this.stateService.configuration.layout === 'pages' &&
+              this.stateService.configuration.display.sliders
+            "
+            tabindex="0"
+            (click)="onClickShowSliders()"
+            (keydown.enter)="onClickShowSliders()"
           >
-            <div *ngIf="isSelected(variant)" class="selected"></div>
+            <ng-container [ngTemplateOutlet]="sliderIcon"> </ng-container>
           </div>
-        </div>
-      </ng-container>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="menu == 3">
-    <div class="nav-wrapper">
-      <div
-        (click)="onClickBack()"
-        class="round-button button"
-        style="float: left"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path
-            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-          />
-        </svg>
+        </ngx-colors-palette>
       </div>
-      <button (click)="emitClose('cancel')" style="float: right">
-        {{ cancelLabel }}
-      </button>
-      <button (click)="emitClose('accept')" style="float: right">
-        {{ acceptLabel }}
-      </button>
-    </div>
-    <div class="color-picker-wrapper">
-      <!-- <span [(colorPicker)]="color"></span> -->
-      <color-picker
-        [controls]="colorPickerControls"
-        [color]="hsva"
-        (sliderChange)="onChangeColorPicker($event)"
-      ></color-picker>
-    </div>
-  </ng-container>
-  <div class="manual-input-wrapper" *ngIf="!hideTextInput">
-    <p (click)="nextFormat()" style="cursor: pointer;">{{ colorFormats[format] }}</p>
-    <div class="g-input">
-      <input
-        [placeholder]="placeholder"
-        type="text"
-        [value]="color"
-        [style.font-size.px]="color && color.length > 23 ? 9 : 10"
-        [style.letter-spacing.px]="color && color.length > 16 ? 0 : 1.5"
-        (keyup)="changeColorManual(paintInput.value)"
-        (keydown.enter)="emitClose('accept')"
-        #paintInput
-      />
-    </div>
+    }
   </div>
+  @if (this.stateService.configuration.display.text) {
+    <ngx-colors-text-input
+      [formControl]="this.textInputCtrl"
+      (commit)="this.onTextInputCommit()"
+    ></ngx-colors-text-input>
+  }
+  @if (
+    (this.stateService.configuration.layout !== "pages" &&
+      this.stateService.configuration.display.sliders &&
+      this.stateService.configuration.confirmationRequired?.sliders) ||
+    (this.stateService.configuration.display.palette &&
+      this.stateService.configuration.confirmationRequired?.palette) ||
+    (this.stateService.configuration.display.text &&
+      this.stateService.configuration.confirmationRequired?.text)
+  ) {
+    <div class="_palette-controls">
+      <ng-container [ngTemplateOutlet]="confirmation"></ng-container>
+    </div>
+  }
 </div>
+
+<ng-template #sliderIcon>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 0 24 24"
+    width="24px"
+    fill="currentColor"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path
+      d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"
+    />
+  </svg>
+</ng-template>
+<ng-template #backIcon>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 -960 960 960"
+    width="24px"
+    fill="currentColor"
+  >
+    <path
+      d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+    />
+  </svg>
+</ng-template>
+<ng-template #confirmation>
+  <div class="_buttons">
+    <button (click)="this.accept()" class="pointer hover-effect">
+      {{ this.stateService.configuration.labels.accept }}
+    </button>
+    <button (click)="this.cancel()" class="pointer hover-effect">
+      {{ this.stateService.configuration.labels.cancel }}
+    </button>
+  </div>
+</ng-template>

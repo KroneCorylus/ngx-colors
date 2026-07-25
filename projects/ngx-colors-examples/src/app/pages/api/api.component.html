@@ -1,0 +1,190 @@
+<div class="gx-container gx-section gx-layout-sidebar">
+  <aside class="gx-sidenav" appScrollSpy>
+    <span class="gx-sidenav__title">API</span>
+    @for (section of sections; track section.id) {
+      <a
+        href="#{{ section.id }}"
+        (click)="scrollTo(section.id); $event.preventDefault()"
+        >{{ section.label }}</a
+      >
+    }
+  </aside>
+  <div class="gx-layout-content">
+  <span class="gx-kicker">API reference</span>
+  <h1 class="gx-h2">
+    <span class="gx-inline-code">ngxColorsTrigger</span> directive
+  </h1>
+  <p class="gx-lead">
+    All configuration lives on the directive. Attach it to any element
+    (usually the <span class="gx-inline-code">&lt;ngx-colors&gt;</span> swatch
+    button) and bind the inputs below.
+  </p>
+
+  <section id="inputs" class="api-section">
+    <h2 class="gx-h3">Inputs</h2>
+    <div class="gx-table-wrapper">
+      <table class="gx-table">
+        <thead>
+          <tr>
+            <th>Input</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of inputs; track row.name) {
+            <tr>
+              <td>
+                <code>{{ row.name }}</code>
+              </td>
+              <td>
+                <code>{{ row.type }}</code>
+              </td>
+              <td>{{ row.default }}</td>
+              <td>{{ row.description }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="outputs" class="api-section">
+    <h2 class="gx-h3">Outputs</h2>
+    <div class="gx-table-wrapper">
+      <table class="gx-table">
+        <thead>
+          <tr>
+            <th>Output</th>
+            <th>Payload</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of outputs; track row.name) {
+            <tr>
+              <td>
+                <code>{{ row.name }}</code>
+              </td>
+              <td>
+                <code>{{ row.type }}</code>
+              </td>
+              <td>{{ row.description }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="methods" class="api-section">
+    <h2 class="gx-h3">Methods</h2>
+    <p class="gx-muted api-section__note">
+      Grab the directive with
+      <span class="gx-inline-code"
+        >&#64;ViewChild(NgxColorsTriggerDirective)</span
+      >
+      to control the panel programmatically.
+    </p>
+    <div class="gx-table-wrapper">
+      <table class="gx-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Signature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of methods; track row.name) {
+            <tr>
+              <td>
+                <code>{{ row.name }}</code>
+              </td>
+              <td>
+                <code>{{ row.type }}</code>
+              </td>
+              <td>{{ row.description }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="global-configuration" class="api-section">
+    <h2 class="gx-h3">Global configuration</h2>
+    <p class="gx-muted api-section__note">
+      Provide <span class="gx-inline-code">NGX_COLORS_CONFIG</span> once and
+      every picker in the app inherits it; individual bindings override it.
+    </p>
+    <app-code-block [code]="snippetGlobalConfig" language="typescript" />
+  </section>
+
+  <section id="exports" class="api-section">
+    <h2 class="gx-h3">Exports</h2>
+    <div class="gx-table-wrapper">
+      <table class="gx-table">
+        <thead>
+          <tr>
+            <th>Export</th>
+            <th>Kind</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of exports; track row.name) {
+            <tr>
+              <td>
+                <code>{{ row.name }}</code>
+              </td>
+              <td>{{ row.type }}</td>
+              <td>{{ row.description }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="deprecated" class="api-section">
+    <h2 class="gx-h3">Deprecated v3 API (compatibility layer)</h2>
+    <p class="gx-muted api-section__note">
+      The whole v3 surface still works in 4.x, marked deprecated, and will be
+      removed in the next major version. Full details in the
+      <a
+        class="gx-link"
+        href="https://github.com/KroneCorylus/ngx-colors/blob/master/MIGRATION.md"
+        target="_blank"
+        rel="noopener"
+        >migration guide</a
+      >.
+    </p>
+    <div class="gx-table-wrapper">
+      <table class="gx-table">
+        <thead>
+          <tr>
+            <th>v3 (deprecated)</th>
+            <th>v4 replacement</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of deprecated; track row.name) {
+            <tr>
+              <td>
+                <code>{{ row.name }}</code>
+              </td>
+              <td>
+                <code>{{ row.type }}</code>
+              </td>
+              <td>{{ row.description }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+  </div>
+</div>

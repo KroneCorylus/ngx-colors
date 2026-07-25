@@ -1,0 +1,36 @@
+:host {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+}
+
+@mixin ngx-colors-dark {
+  --ngx-colors-surface: #26272b;
+  --ngx-colors-text: #c8cbd3;
+  --ngx-colors-text-strong: #e8eaf0;
+  --ngx-colors-border: #3a3b40;
+  --ngx-colors-hover: rgba(255, 255, 255, 0.08);
+  --ngx-colors-error: #ff6b5e;
+  --ngx-colors-tooltip-bg: #0c0d10;
+  --ngx-colors-tooltip-text: #e8eaf0;
+  --ngx-colors-skeleton: #34353a;
+  --ngx-colors-selected-ring: rgba(255, 255, 255, 0.7);
+  --ngx-colors-checkerboard: #55565c;
+  --ngx-colors-checkerboard-alt: #3a3b40;
+  --ngx-colors-swatch-ring: #26272b;
+  --ngx-colors-elevation: 0 2px 6px rgba(0, 0, 0, 0.5),
+    0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+:host([data-ngx-colors-theme='dark']) {
+  @include ngx-colors-dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host([data-ngx-colors-theme='auto']) {
+    @include ngx-colors-dark;
+  }
+}

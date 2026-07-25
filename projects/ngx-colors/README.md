@@ -1,74 +1,24 @@
-![size](https://img.shields.io/bundlephobia/min/ngx-colors?style=for-the-badge)
-![download](https://img.shields.io/npm/dm/ngx-colors?style=for-the-badge)
+# NgxColors
 
-<p align="center">
-  <h1 align="center">ngx-colors</h1>
-  <p align="center">ngx-colors is a colorpicker component of angular with a material design style, allows users to select a color via text input (hexadecimal, rgba, hsla), choosing a preset color from the palette, or a color picker using the Hue, Lightness, and Alpha sliders.
-  </p>
-</p>
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
 
-## Demo and documentation
+## Code scaffolding
 
-https://ngx-colors.web.app/
+Run `ng generate component component-name --project ngx-colors` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-colors`.
+> Note: Don't forget to add `--project ngx-colors` or else it will be added to the default project in your `angular.json` file. 
 
-## Preview
+## Build
 
-![example gif](https://raw.githubusercontent.com/KroneCorylus/ngx-colors/master/projects/ngx-color-examples/src/assets/img/example-gif.gif)
+Run `ng build ngx-colors` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Installation
+## Publishing
 
-#### Compatibility
+After building your library with `ng build ngx-colors`, go to the dist folder `cd dist/ngx-colors` and run `npm publish`.
 
-| Angular | Latest ngx-colors compatible |
-| ------- | ---------------------------- |
-| 15      | Latest                       |
-| 14      | 3.1.4                        |
-| 13      | 3.1.4                        |
-| 12      | 3.0.5                        |
-| 11      | 3.0.5                        |
-| 10      | 3.0.5                        |
+## Running unit tests
 
-#### Npm
+Run `ng test ngx-colors` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-```shell
-npm install ngx-colors
-```
+## Further help
 
-##### Load the ngx-colors module in your app module:
-
-```javascript
-import { NgxColorsModule } from 'ngx-colors';
-
-@NgModule({
-  ...
-  imports: [
-    ...
-    NgxColorsModule
-  ]
-})
-```
-
-## Overview and usage
-
-This library is composed of two parts:
-
-1. ngx-colors-trigger: This directive can be applied to any html element turning it into a trigger that when clicked will open the color picker
-2. ngx-colors: This component is a premade button that will display the selected color.
-
-##### Use it in your HTML template with ngModel:
-
-```html
-<ngx-colors ngx-colors-trigger [(ngModel)]="color"></ngx-colors>
-```
-
-##### Or with Reactive Forms:
-
-```html
-<form class="example-form">
-  <ngx-colors
-    ngx-colors-trigger
-    style="display: inline-block; margin:5px;"
-    [formControl]="colorFormControl"
-  ></ngx-colors>
-</form>
-```
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

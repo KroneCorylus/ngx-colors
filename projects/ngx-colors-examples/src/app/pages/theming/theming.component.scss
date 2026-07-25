@@ -1,0 +1,65 @@
+.theme-section {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  h2 {
+    margin-bottom: 2px;
+  }
+}
+
+.theme-note {
+  padding: 14px 16px;
+  border: 1px solid var(--gx-border-strong);
+  border-left: 3px solid var(--gx-accent);
+  border-radius: 12px;
+  background: var(--gx-panel);
+}
+
+.theme-demos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding: 22px;
+}
+
+.theme-demo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-table {
+  td:first-child code {
+    white-space: nowrap;
+  }
+
+  td:nth-child(2) {
+    min-width: 180px;
+  }
+
+  td:nth-child(3),
+  td:nth-child(4) {
+    width: 210px;
+
+    code {
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+}
+
+.theme-swatch-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--gx-border-strong);
+  flex: none;
+}

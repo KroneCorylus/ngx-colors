@@ -1,0 +1,433 @@
+<div class="gx-container gx-section gx-layout-sidebar">
+  <aside class="gx-sidenav" appScrollSpy>
+    <span class="gx-sidenav__title">Examples</span>
+    @for (section of sections; track section.id) {
+      <a
+        href="#{{ section.id }}"
+        (click)="scrollTo(section.id); $event.preventDefault()"
+        >{{ section.label }}</a
+      >
+    }
+  </aside>
+  <div class="gx-layout-content">
+    <span class="gx-kicker">Examples</span>
+    <h1 class="gx-h2">Examples</h1>
+    <p class="gx-lead">
+      All examples run against the library — the swatches are interactive. The
+      playground exposes every option in one place.
+    </p>
+
+    <div class="examples">
+    <section
+      id="basic"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.basic)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Basic usage</h2>
+        <p class="gx-muted">
+          The premade <span class="gx-inline-code">&lt;ngx-colors&gt;</span>
+          button bound with <span class="gx-inline-code">[(ngModel)]</span>.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors ngxColorsTrigger [(ngModel)]="basicColor"></ngx-colors>
+          <span class="gx-value">{{ basicColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.basic" language="html" />
+    </section>
+
+    <section
+      id="custom-trigger"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.customTrigger)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Custom trigger</h2>
+        <p class="gx-muted">
+          <span class="gx-inline-code">ngxColorsTrigger</span> works on any
+          element — here, a button painting itself with the selected color.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <button
+            ngxColorsTrigger
+            [(ngModel)]="triggerColor"
+            [style.background]="triggerColor"
+            class="example__custom-trigger"
+            aria-label="pick a color"
+          ></button>
+          <span class="gx-value">{{ triggerColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.customTrigger" language="html" />
+    </section>
+
+    <section
+      id="reactive"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.reactiveHtml, snippets.reactiveTs)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Reactive Forms + validation</h2>
+        <p class="gx-muted">
+          Picker and text input sharing one
+          <span class="gx-inline-code">FormControl</span>, validated with
+          <span class="gx-inline-code">colorValidator()</span>. Typing an
+          invalid value shows the error.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [formControl]="reactiveControl"
+          ></ngx-colors>
+          <input class="example__input" [formControl]="reactiveControl" />
+          @if (reactiveControl.hasError('invalidColor')) {
+            <span class="example__error">Not a valid color</span>
+          }
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.reactiveHtml" language="html" />
+        <app-code-block [code]="snippets.reactiveTs" language="typescript" />
+      </div>
+    </section>
+
+    <section
+      id="forms-free"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.formsFree)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Without a Forms module</h2>
+        <p class="gx-muted">
+          <span class="gx-inline-code">[(color)]</span> two-way binding without
+          FormsModule. <span class="gx-inline-code">(userChange)</span> fires
+          only for picks the user actually made.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(color)]="formsFreeColor"
+            (userChange)="onUserPick()"
+          ></ngx-colors>
+          <span class="gx-value">{{ formsFreeColor }}</span>
+          <span class="gx-chip">{{ userPicks }} user pick(s)</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.formsFree" language="html" />
+    </section>
+
+    <section
+      id="custom-palette"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.customPaletteHtml, snippets.customPaletteTs)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Custom palette</h2>
+        <p class="gx-muted">
+          Mix plain strings with named colors and nested groups —
+          <span class="gx-inline-code">childs</span> nest as deep as you like,
+          <span class="gx-inline-code">name</span> shows as a tooltip.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="paletteColor"
+            [palette]="customPalette"
+          ></ngx-colors>
+          <span class="gx-value">{{ paletteColor }}</span>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.customPaletteHtml" language="html" />
+        <app-code-block
+          [code]="snippets.customPaletteTs"
+          language="typescript"
+        />
+      </div>
+    </section>
+
+    <section
+      id="async-palette"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.asyncPaletteHtml, snippets.asyncPaletteTs)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Async palette</h2>
+        <p class="gx-muted">
+          An <span class="gx-inline-code">Observable</span> palette shows a
+          loading skeleton until it emits. This one is delayed by 1.2s —
+          reload and open the picker to see it.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="asyncColor"
+            [palette]="asyncPalette$"
+          ></ngx-colors>
+          <span class="gx-value">{{ asyncColor || 'nothing yet' }}</span>
+          <button
+            type="button"
+            class="gx-btn gx-btn--ghost example__small-btn"
+            (click)="reloadAsyncPalette()"
+          >
+            Reload palette
+          </button>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.asyncPaletteHtml" language="html" />
+        <app-code-block
+          [code]="snippets.asyncPaletteTs"
+          language="typescript"
+        />
+      </div>
+    </section>
+
+    <section
+      id="most-used"
+      class="gx-card example"
+      [class.example--stacked]="
+        wide(snippets.mostUsedService, snippets.mostUsedTs)
+      "
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Most-used colors as the palette</h2>
+        <p class="gx-muted">
+          A small service counts how often each color is picked (per key,
+          persisted in localStorage) and exposes the top 10 as an
+          <span class="gx-inline-code">Observable&lt;ColorOption[]&gt;</span>
+          palette. It starts seeded with this site's colors; every pick you
+          make replaces them, ordered by usage, live.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="mostUsedColor"
+            [palette]="mostUsedPalette$"
+            (userChange)="onMostUsedPick($event)"
+          ></ngx-colors>
+          <span class="gx-value">{{ mostUsedColor || 'pick a color' }}</span>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.mostUsedHtml" language="html" />
+        <app-code-block [code]="snippets.mostUsedTs" language="typescript" />
+        <app-code-block
+          [code]="snippets.mostUsedService"
+          language="typescript"
+        />
+      </div>
+    </section>
+
+    <section
+      id="output-format"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.outputModel)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Output format</h2>
+        <p class="gx-muted">
+          <span class="gx-inline-code">outputModel</span> fixes the emitted
+          format; <span class="gx-inline-code">allowedModels</span> limits what
+          the text input can cycle through. The default,
+          <span class="gx-inline-code">AUTO</span>, emits in the format the
+          value was set in.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="modelColor"
+            outputModel="HEXA"
+            [allowedModels]="['HEXA', 'RGBA']"
+          ></ngx-colors>
+          <span class="gx-value">{{ modelColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.outputModel" language="html" />
+    </section>
+
+    <section
+      id="confirmation"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.confirmation)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Confirmation workflow</h2>
+        <p class="gx-muted">
+          With <span class="gx-inline-code">confirmationRequired</span> set,
+          changes only commit on Apply. Labels are configurable.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="confirmationColor"
+            [confirmationRequired]="{
+              palette: true,
+              text: true,
+              sliders: true,
+            }"
+            [labels]="{ accept: 'Apply', cancel: 'Discard' }"
+          ></ngx-colors>
+          <span class="gx-value">{{ confirmationColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.confirmation" language="html" />
+    </section>
+
+    <section
+      id="locked-channels"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.lockValues)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Locked channels</h2>
+        <p class="gx-muted">
+          Locking hue, saturation and brightness leaves only the alpha slider
+          — a single-channel picker over a fixed color.
+          <span class="gx-inline-code">clamp: true</span> also forces any
+          incoming or picked color onto the locked channels.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="lockedColor"
+            [display]="{ palette: false, text: false, sliders: true }"
+            [lockValues]="{
+              hue: 210,
+              saturation: 0.8,
+              brightness: 0.9,
+              clamp: true,
+            }"
+            layout="full-horizontal"
+          ></ngx-colors>
+          <span class="gx-value">{{ lockedColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.lockValues" language="html" />
+    </section>
+
+    <section
+      id="grayscale"
+      class="gx-card example"
+      [class.example--stacked]="
+        wide(snippets.grayscaleHtml, snippets.grayscaleTs)
+      "
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Grayscale</h2>
+        <p class="gx-muted">
+          A grayscale palette plus
+          <span class="gx-inline-code"
+            >lockValues: &#123; hue: 0, saturation: 0 &#125;</span
+          >
+          hides the hue and saturation controls (leaving only brightness), and
+          <span class="gx-inline-code">clamp: true</span> desaturates anything
+          picked with the sliders — so every result is a shade of gray.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="grayColor"
+            [palette]="grayscale"
+            [lockValues]="{ hue: 0, saturation: 0, clamp: true }"
+          ></ngx-colors>
+          <span class="gx-value">{{ grayColor }}</span>
+        </div>
+      </div>
+      <div class="example__snippets">
+        <app-code-block [code]="snippets.grayscaleHtml" language="html" />
+        <app-code-block [code]="snippets.grayscaleTs" language="typescript" />
+      </div>
+    </section>
+
+
+    <section
+      id="palette-only"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.paletteOnly)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Palette-only quick picker</h2>
+        <p class="gx-muted">
+          <span class="gx-inline-code">display</span> hides the sliders and
+          text input, leaving a swatch menu. This one uses the
+          <span class="gx-inline-code">slide</span> animation.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="paletteOnlyColor"
+            [display]="{ palette: true, sliders: false, text: false }"
+            animation="slide"
+          ></ngx-colors>
+          <span class="gx-value">{{ paletteOnlyColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.paletteOnly" language="html" />
+    </section>
+
+    <section
+      id="eyedropper"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.eyedropper)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Eyedropper</h2>
+        <p class="gx-muted">
+          Picks a color from anywhere on the screen. The button only renders
+          in browsers that support the EyeDropper API.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="eyedropperColor"
+            [eyedropper]="true"
+          ></ngx-colors>
+          <span class="gx-value">{{ eyedropperColor }}</span>
+        </div>
+      </div>
+      <app-code-block [code]="snippets.eyedropper" language="html" />
+    </section>
+
+    <section
+      id="events"
+      class="gx-card example"
+      [class.example--stacked]="wide(snippets.events)"
+    >
+      <div class="example__info">
+        <h2 class="gx-h3">Events</h2>
+        <p class="gx-muted">
+          All outputs, logged as they fire: hover palette colors, drag
+          sliders, type, confirm.
+        </p>
+        <div class="example__demo gx-swatch-row">
+          <ngx-colors
+            ngxColorsTrigger
+            [(ngModel)]="eventsColor"
+            (colorChange)="log('colorChange', $event)"
+            (userChange)="log('userChange', $event)"
+            (sliderChange)="log('sliderChange', $event)"
+            (colorHover)="log('colorHover', $event)"
+            (open)="log('open')"
+            (close)="log('close')"
+          ></ngx-colors>
+          <span class="gx-value">{{ eventsColor }}</span>
+        </div>
+        <ul class="example__events">
+          @for (event of events; track $index) {
+            <li>
+              <span class="example__event-name">{{ event.name }}</span>
+              <span class="gx-muted">{{ event.value }}</span>
+            </li>
+          }
+          @if (events.length === 0) {
+            <li class="gx-muted">No events yet.</li>
+          }
+        </ul>
+      </div>
+      <app-code-block [code]="snippets.events" language="html" />
+    </section>
+  </div>
+  </div>
+</div>

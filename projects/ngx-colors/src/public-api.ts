@@ -15,6 +15,7 @@ export * from './lib/models/cmyk';
 export * from './lib/interfaces/color-format';
 export * from './lib/interfaces/configuration';
 export * from './lib/interfaces/labels';
+export * from './lib/interfaces/slider-change';
 export * from './lib/types/color-model';
 export * from './lib/types/color-option';
 export * from './lib/types/configuration';

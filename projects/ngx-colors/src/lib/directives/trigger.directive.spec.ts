@@ -9,6 +9,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGX_COLORS_CONFIG } from '../interfaces/configuration';
 import { StateService } from '../services/state.service';
 import { Rgba } from '../models/rgba';
+import { SliderChange } from '../interfaces/slider-change';
 
 @Component({
   template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
@@ -1218,6 +1219,71 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
       expect(colors).toEqual(['#123456']);
       done();
     });
+  });
+});
+
+describe('NgxColorsTriggerDirective sliderChange payload', () => {
+  let fixture: ComponentFixture<HostComponent>;
+  let directive: NgxColorsTriggerDirective;
+  let stateService: StateService;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [HostComponent],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const element = fixture.debugElement.query(
+      By.directive(NgxColorsTriggerDirective),
+    );
+    directive = element.injector.get(NgxColorsTriggerDirective);
+    stateService = element.injector.get(StateService);
+  });
+
+  it('emits the formatted string and the HSLA color', () => {
+    const emissions: Array<SliderChange | null> = [];
+    directive.sliderChange.subscribe((value) => emissions.push(value));
+
+    stateService.sliderChange$.emit(new Rgba(255, 0, 0, 1));
+
+    expect(emissions.length).toBe(1);
+    expect(emissions[0]?.value).toBe('#ff0000');
+    expect(emissions[0]?.hsla.toString()).toBe('hsl(0, 100%, 50%)');
+  });
+
+  it('follows the color model of the bound value when outputModel is AUTO', () => {
+    stateService.colorModel = 'RGBA';
+    const emissions: Array<SliderChange | null> = [];
+    directive.sliderChange.subscribe((value) => emissions.push(value));
+
+    stateService.sliderChange$.emit(new Rgba(255, 0, 0, 1));
+
+    expect(emissions[0]?.value).toBe('rgb(255, 0, 0)');
+  });
+
+  it('formats the string according to outputModel', () => {
+    directive.outputModel = 'HEXA';
+    directive.ngOnChanges({
+      outputModel: new SimpleChange(undefined, 'HEXA', false),
+    });
+    const emissions: Array<SliderChange | null> = [];
+    directive.sliderChange.subscribe((value) => emissions.push(value));
+
+    stateService.sliderChange$.emit(new Rgba(0, 0, 255, 1));
+
+    expect(emissions[0]?.value).toBe('#0000ff');
+    expect(emissions[0]?.hsla.toString()).toBe('hsl(240, 100%, 50%)');
+  });
+
+  it('emits null when the slider value is cleared', () => {
+    const emissions: Array<SliderChange | null> = [];
+    directive.sliderChange.subscribe((value) => emissions.push(value));
+
+    stateService.sliderChange$.emit(null);
+
+    expect(emissions).toEqual([null]);
   });
 });
 

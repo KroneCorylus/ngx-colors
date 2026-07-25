@@ -50,7 +50,7 @@ token → deprecated v3 inputs → new v4 inputs.
 | `colorPickerControls="no-alpha"` | `[lockValues]="{ alpha: 1 }"` | |
 | `(change)` | `(colorChange)` | same payload |
 | `(input)` | `(userChange)` | same payload; fires only for user-driven changes |
-| `(slider)` | `(sliderChange)` | **payload differs**: the deprecated `(slider)` still emits a formatted `string`; `(sliderChange)` emits an `Rgba` object |
+| `(slider)` | `(sliderChange)` | **payload differs**: the deprecated `(slider)` still emits a formatted `string`; `(sliderChange)` emits `{ value: string; hsla: Hsla }`, where `value` is that same formatted string |
 | palette items `{ preview, variants }` (`NgxColorsColor`) | `ColorOption`: `{ color, childs?, name? }` | legacy items are auto-translated (`preview`→`color`, `variants`→`childs`, `color`→`name`); `childs` can nest arbitrarily deep and `name` shows as a tooltip |
 | `validColorValidator` | `colorValidator` | alias of the same function; same `{ invalidColor: true }` error key |
 

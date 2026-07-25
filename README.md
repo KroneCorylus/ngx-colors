@@ -150,7 +150,7 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 | ------------- | ---------------- | ---------------------------------------------------------------------------------------- |
 | `colorChange` | `string \| null` | Emits whenever the value changes (enables `[(color)]`)                                    |
 | `userChange`  | `string \| null` | Emits only for user-driven changes (palette click, text edit, confirmed slider change)    |
-| `sliderChange`| `Rgba \| null`   | Emits continuously while the user drags a slider                                          |
+| `sliderChange`| `SliderChange \| null` | Emits continuously while the user drags a slider (and on an eyedropper pick). `SliderChange` is `{ value: string; hsla: Hsla }` — `value` is formatted per `outputModel` |
 | `colorHover`  | `Rgba \| null`   | Emits when the user hovers a palette swatch                                               |
 | `open`        | `string \| null` | Emits when the panel opens, with the current color                                        |
 | `close`       | `string \| null` | Emits when the panel closes, with the current color                                       |

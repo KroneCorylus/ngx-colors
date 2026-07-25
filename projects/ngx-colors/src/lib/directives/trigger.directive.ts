@@ -39,6 +39,7 @@ import {
 import { ColorModel } from '../types/color-model';
 import { IColorModel } from '../interfaces/color-format';
 import { Labels, NGX_COLORS_LABELS } from '../interfaces/labels';
+import { SliderChange } from '../interfaces/slider-change';
 import { isInputOrigin } from '../types/changes';
 import {
   NgxColorsColor,
@@ -102,8 +103,9 @@ export class NgxColorsTriggerDirective
     new EventEmitter<string | undefined | null>();
 
   @Output()
-  public sliderChange: EventEmitter<Rgba | null> =
-    this.stateService.sliderChange$;
+  public sliderChange: EventEmitter<SliderChange | null> = new EventEmitter<
+    SliderChange | null
+  >();
   @Output()
   public colorHover: EventEmitter<Rgba | null> =
     this.stateService.paletteColorHover$;
@@ -207,6 +209,19 @@ export class NgxColorsTriggerDirective
   public ngOnInit(): void {
     this.applyConfig();
     this.setPalette(this.stateService.configuration.palette);
+
+    this.stateService.sliderChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.sliderChange.emit(
+          value
+            ? {
+                value: this.rgbaToOutputString(value),
+                hsla: ColorHelper.rgba2Hsla(value),
+              }
+            : null,
+        );
+      });
 
     this.overlayService.opened
       .pipe(takeUntil(this.destroy$))

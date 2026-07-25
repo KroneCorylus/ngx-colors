@@ -137,8 +137,9 @@ export const OUTPUTS: ApiRow[] = [
   },
   {
     name: 'sliderChange',
-    type: 'Rgba | null',
-    description: 'Emits continuously while the user drags a slider.',
+    type: 'SliderChange | null',
+    description:
+      'Emits continuously while the user drags a slider (and on an eyedropper pick). SliderChange is { value: string; hsla: Hsla } — value is formatted per outputModel.',
   },
   {
     name: 'colorHover',
@@ -236,6 +237,12 @@ export const EXPORTS: ApiRow[] = [
     description: "'RGBA' | 'HSVA' | 'HSLA' | 'CMYK' | 'HEXA'.",
   },
   {
+    name: 'SliderChange',
+    type: 'interface',
+    description:
+      '(sliderChange) payload: { value: string; hsla: Hsla } — the formatted color plus its HSLA form.',
+  },
+  {
     name: 'DisplayOptions / LayoutOptions / LockValuesOptions / ConfirmationRequiredOptions / AnimationOptions / PositionOptions',
     type: 'types',
     description: 'The option types behind the inputs above.',
@@ -289,7 +296,7 @@ export const DEPRECATED: ApiRow[] = [
     name: '(change) / (input) / (slider)',
     type: '(colorChange) / (userChange) / (sliderChange)',
     description:
-      'Aliases still emit; note (slider) emits a formatted string while (sliderChange) emits an Rgba.',
+      'Aliases still emit; note (slider) emits a formatted string while (sliderChange) emits { value, hsla }.',
   },
   {
     name: 'NgxColorsColor',

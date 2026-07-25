@@ -8,6 +8,7 @@ import {
   NgxColorsComponent,
   NgxColorsTriggerDirective,
   Rgba,
+  SliderChange,
   colorValidator,
 } from '../../../../../ngx-colors/src/public-api';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
@@ -137,9 +138,14 @@ export class ExamplesPageComponent {
     this.asyncPalette$ = this.buildAsyncPalette();
   }
 
-  log(name: string, value?: string | Rgba | null): void {
-    const printed =
-      value === undefined || value === null ? '' : value.toString();
+  log(name: string, value?: string | Rgba | SliderChange | null): void {
+    let printed = '';
+    if (value !== undefined && value !== null) {
+      printed =
+        typeof value === 'object' && 'hsla' in value
+          ? `${value.value} · ${value.hsla.toString()}`
+          : value.toString();
+    }
     this.events.unshift({ name, value: printed });
     if (this.events.length > 8) {
       this.events.length = 8;

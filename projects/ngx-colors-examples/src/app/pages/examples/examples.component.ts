@@ -11,6 +11,8 @@ import {
   colorValidator,
 } from '../../../../../ngx-colors/src/public-api';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
+import { SectionHeadingComponent } from '../../components/section-heading/section-heading.component';
+import { ProviderConfigDemoComponent } from '../../components/provider-config-demo/provider-config-demo.component';
 import { ScrollSpyDirective } from '../../directives/scroll-spy.directive';
 import { SNIPPETS } from './snippets';
 
@@ -26,6 +28,8 @@ type EventEntry = { name: string; value: string };
     NgxColorsComponent,
     NgxColorsTriggerDirective,
     CodeBlockComponent,
+    SectionHeadingComponent,
+    ProviderConfigDemoComponent,
     ScrollSpyDirective,
   ],
   templateUrl: './examples.component.html',
@@ -46,10 +50,12 @@ export class ExamplesPageComponent {
     { id: 'most-used', label: 'Most-used palette' },
     { id: 'output-format', label: 'Output format' },
     { id: 'confirmation', label: 'Confirmation' },
+    { id: 'layouts', label: 'Layouts' },
     { id: 'locked-channels', label: 'Locked channels' },
     { id: 'grayscale', label: 'Grayscale' },
     { id: 'palette-only', label: 'Palette only' },
     { id: 'eyedropper', label: 'Eyedropper' },
+    { id: 'provider-config', label: 'Global config' },
     { id: 'events', label: 'Events' },
   ];
 
@@ -71,6 +77,9 @@ export class ExamplesPageComponent {
   asyncColor: string | null = null;
   modelColor: string | null = '#7ae582';
   confirmationColor: string | null = '#ffb74d';
+  layoutPagesColor: string | null = '#4dd0e1';
+  layoutVerticalColor: string | null = '#ff8a65';
+  layoutHorizontalColor: string | null = '#9575cd';
   lockedColor: string | null = 'rgba(46, 125, 224, 0.9)';
   grayColor: string | null = '#9e9e9e';
   readonly grayscale: ColorOption[] = [

@@ -102,6 +102,10 @@ onPick(color: string | null | undefined): void {
   [labels]="{ accept: 'Apply', cancel: 'Discard' }"
 ></ngx-colors>`,
 
+  layouts: `<ngx-colors ngxColorsTrigger [(ngModel)]="a" layout="pages"></ngx-colors>
+<ngx-colors ngxColorsTrigger [(ngModel)]="b" layout="full-vertical"></ngx-colors>
+<ngx-colors ngxColorsTrigger [(ngModel)]="c" layout="full-horizontal"></ngx-colors>`,
+
   lockValues: `<ngx-colors
   ngxColorsTrigger
   [(ngModel)]="color"
@@ -134,6 +138,32 @@ onPick(color: string | null | undefined): void {
   [(ngModel)]="color"
   [eyedropper]="true"
 ></ngx-colors>`,
+
+  providerConfigApp: `import { NGX_COLORS_CONFIG, NgxColorsConfiguration } from 'ngx-colors';
+
+const config: NgxColorsConfiguration = {
+  layout: 'full-vertical',
+  animation: 'slide',
+  eyedropper: true,
+  labels: { accept: 'OK', cancel: 'Dismiss' },
+  palette: ['#FF5E5B', '#FFB74D', '#FFED8A', '#7AE582', '#68C5DB', '#B388FF'],
+};
+
+bootstrapApplication(AppComponent, {
+  providers: [{ provide: NGX_COLORS_CONFIG, useValue: config }],
+});`,
+
+  providerConfigScoped: `@Component({
+  selector: 'app-editor',
+  standalone: true,
+  imports: [FormsModule, NgxColorsComponent, NgxColorsTriggerDirective],
+  providers: [{ provide: NGX_COLORS_CONFIG, useValue: config }],
+  template: \`
+    <ngx-colors ngxColorsTrigger [(ngModel)]="a"></ngx-colors>
+    <ngx-colors ngxColorsTrigger [(ngModel)]="b" layout="pages"></ngx-colors>
+  \`,
+})
+export class EditorComponent {}`,
 
   events: `<ngx-colors
   ngxColorsTrigger

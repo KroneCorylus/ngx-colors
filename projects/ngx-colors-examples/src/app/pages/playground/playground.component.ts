@@ -378,7 +378,7 @@ export class PlaygroundPageComponent implements OnDestroy {
     lockBrightness: this.fb.control(1, { nonNullable: true }),
     confirmationPalette: this.fb.control(false, { nonNullable: true }),
     confirmationText: this.fb.control(false, { nonNullable: true }),
-    confirmationSliders: this.fb.control(false, { nonNullable: true }),
+    confirmationSliders: this.fb.control(true, { nonNullable: true }),
     acceptLabel: this.fb.control('OK', { nonNullable: true }),
     cancelLabel: this.fb.control('Cancel', { nonNullable: true }),
   });
@@ -450,19 +450,11 @@ export class PlaygroundPageComponent implements OnDestroy {
     if (formValue.lockAlphaEnabled)
       lockValues.alpha = Number(formValue.lockAlpha);
 
-    const confirmationActive =
-      formValue.confirmationPalette ||
-      formValue.confirmationText ||
-      formValue.confirmationSliders;
-
-    const confirmation: ConfirmationRequiredOptions | undefined =
-      confirmationActive
-        ? {
-            palette: formValue.confirmationPalette,
-            text: formValue.confirmationText,
-            sliders: formValue.confirmationSliders,
-          }
-        : undefined;
+    const confirmation: ConfirmationRequiredOptions = {
+      palette: formValue.confirmationPalette,
+      text: formValue.confirmationText,
+      sliders: formValue.confirmationSliders,
+    };
 
     const allowedModels =
       formValue.allowedModels.length === this.colorModels.length

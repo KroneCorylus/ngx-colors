@@ -28,9 +28,9 @@
   );
   --gx-radius: 18px;
   --gx-radius-sm: 12px;
-  --gx-font: 'Inter', system-ui, sans-serif;
-  --gx-font-display: 'Inter', system-ui, sans-serif;
-  --gx-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --gx-font: "Inter", system-ui, sans-serif;
+  --gx-font-display: "Inter", system-ui, sans-serif;
+  --gx-mono: "JetBrains Mono", ui-monospace, monospace;
   --gx-heading-weight: 800;
   --gx-heading-transform: none;
   --gx-h1-shadow: none;
@@ -307,6 +307,49 @@ table.gx-table {
   }
 }
 
+.gx-section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+
+  &:hover .gx-section-heading__link {
+    opacity: 1;
+  }
+}
+
+.gx-section-heading__link {
+  font-family: var(--gx-mono);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gx-text-soft);
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+    color: var(--gx-accent);
+  }
+
+  &.copied {
+    opacity: 1;
+    color: var(--gx-green);
+  }
+}
+
+.gx-section-heading__toast {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gx-green);
+}
+
 .gx-code {
   border: var(--gx-border-w) solid var(--gx-border);
   border-radius: var(--gx-radius-sm);
@@ -474,7 +517,7 @@ table.gx-table {
     font-weight: 600;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 4px;
       bottom: 4px;

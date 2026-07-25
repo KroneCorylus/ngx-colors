@@ -10,6 +10,7 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 26px;
   align-items: start;
+  scroll-margin-top: 86px;
 
   @media (max-width: 900px) {
     grid-template-columns: minmax(0, 1fr);
@@ -44,6 +45,19 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.example__layouts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.example__layout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
 }
 
 .example__custom-trigger {

@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "build:lib": "ng build ngx-colors",
+    "publish:lib": "npm run build:lib && npm publish ./dist/ngx-colors",
+    "publish:lib:beta": "npm run build:lib && npm publish ./dist/ngx-colors --tag beta"
   },
   "private": true,
   "dependencies": {

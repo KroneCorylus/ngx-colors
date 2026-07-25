@@ -26,12 +26,12 @@ to migrate each API. The archived v3 documentation lives in
 
 #### Compatibility
 
-| Angular  | Latest ngx-colors compatible |
-| -------- | ---------------------------- |
-| >= 17.3  | 4.x                          |
-| 15 to 17 | 3.6.0                        |
-| 13, 14   | 3.1.4                        |
-| 10 to 12 | 3.0.5                        |
+| Angular    | Latest ngx-colors compatible |
+| ---------- | ---------------------------- |
+| 17.3 to 22 | 4.x                          |
+| 15 to 17   | 3.6.0                        |
+| 13, 14     | 3.1.4                        |
+| 10 to 12   | 3.0.5                        |
 
 #### Npm
 

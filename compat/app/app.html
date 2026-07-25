@@ -1,0 +1,142 @@
+<header>
+  <h1>ngx-colors compatibility demo</h1>
+  <div class="meta">
+    <span class="badge">Angular {{ angularVersion }}</span>
+    <span class="badge alt">Click any swatch to open the picker</span>
+  </div>
+</header>
+
+<div class="grid">
+  <div class="card">
+    <h2>Basic + ngModel</h2>
+    <div class="row">
+      <ngx-colors ngxColorsTrigger [(ngModel)]="basic"></ngx-colors>
+      <span class="value">{{ basic }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>HSLA output</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="hsla"
+        [outputModel]="'HSLA'"
+      ></ngx-colors>
+      <span class="value">{{ hsla }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Alpha locked</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="opaque"
+        [lockValues]="{ alpha: 1 }"
+      ></ngx-colors>
+      <span class="value">{{ opaque }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Custom palette only</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="fromPalette"
+        [palette]="palette"
+        [display]="{ sliders: false, text: false }"
+      ></ngx-colors>
+      <span class="value">{{ fromPalette }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Paged layout</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="paged"
+        [layout]="'pages'"
+      ></ngx-colors>
+      <span class="value">{{ paged }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Dark theme</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="dark"
+        [theme]="'dark'"
+      ></ngx-colors>
+      <span class="value">{{ dark }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Confirmation required</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="confirmed"
+        [confirmationRequired]="{ palette: true, text: true, sliders: true }"
+      ></ngx-colors>
+      <span class="value">{{ confirmed }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Disabled</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [color]="disabledColor"
+        [disabled]="true"
+      ></ngx-colors>
+      <span class="value">{{ disabledColor }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Custom trigger element</h2>
+    <div class="row">
+      <button ngxColorsTrigger [(ngModel)]="basic" type="button">
+        Open picker
+      </button>
+      <span class="value">{{ basic }}</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Outputs</h2>
+    <div class="row">
+      <ngx-colors
+        ngxColorsTrigger
+        [(ngModel)]="basic"
+        (colorChange)="log('colorChange', $event)"
+        (userChange)="log('userChange', $event)"
+        (sliderChange)="log('sliderChange', $event)"
+        (open)="log('open', $event)"
+        (close)="log('close', $event)"
+      ></ngx-colors>
+      <span class="value">watch the event log below</span>
+    </div>
+  </div>
+</div>
+
+<div class="events">
+  <div class="card">
+    <h2>Event log</h2>
+    <ul>
+      @if (events.length === 0) {
+        <li class="empty">No events yet.</li>
+      }
+      @for (event of events; track $index) {
+        <li>{{ event }}</li>
+      }
+    </ul>
+  </div>
+</div>

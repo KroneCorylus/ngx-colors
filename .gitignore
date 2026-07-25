@@ -47,3 +47,6 @@ Thumbs.db
 
 #nx
 .nx
+
+#compat harness
+/compat/.artifacts

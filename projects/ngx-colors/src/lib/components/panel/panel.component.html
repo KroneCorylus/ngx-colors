@@ -2,8 +2,9 @@
   @if (
     this.stateService.configuration.layout === "pages" &&
     this.stateService.configuration.display.sliders &&
-    this.stateService.configuration.confirmationRequired?.sliders &&
-    this.currentPage === "sliders"
+    this.currentPage === "sliders" &&
+    (this.stateService.configuration.display.palette ||
+      this.stateService.configuration.confirmationRequired?.sliders)
   ) {
     <div class="_palette-controls px-3">
       <div class="_navigation">
@@ -18,7 +19,9 @@
           <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
         </div>
       </div>
-      <ng-container [ngTemplateOutlet]="confirmation"></ng-container>
+      @if (this.stateService.configuration.confirmationRequired?.sliders) {
+        <ng-container [ngTemplateOutlet]="confirmation"></ng-container>
+      }
     </div>
   }
   <div

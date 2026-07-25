@@ -85,6 +85,40 @@ describe('PanelComponent', () => {
     });
   });
 
+  describe('sliders without confirmation', () => {
+    beforeEach(() => {
+      stateService.configuration = new Configuration({
+        layout: 'pages',
+        confirmationRequired: { palette: false, text: false, sliders: false },
+      });
+      fixture = TestBed.createComponent(PanelComponent);
+      component = fixture.componentInstance;
+      component.onClickShowSliders();
+      fixture.detectChanges();
+    });
+
+    it('a sliders change commits immediately', () => {
+      const color = new Rgba(40, 50, 60, 1);
+      let lastState: { value: unknown; origin: string } | undefined;
+      stateService.state.subscribe((state) => (lastState = state));
+
+      component.slidersCtrl.setValue(color);
+
+      expect(lastState?.origin).toBe('sliders');
+      expect(lastState?.value).toEqual(color);
+    });
+
+    it('renders no accept/cancel buttons', () => {
+      expect(fixture.nativeElement.querySelectorAll('._buttons').length).toBe(0);
+    });
+
+    it('still renders the back button on the sliders page', () => {
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="back"]'),
+      ).toBeTruthy();
+    });
+  });
+
   describe('palette hover', () => {
     it('re-emits hovered colors through the state service', () => {
       const spy = jasmine.createSpy('hover');

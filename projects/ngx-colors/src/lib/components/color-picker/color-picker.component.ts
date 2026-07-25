@@ -72,8 +72,9 @@ export class ColorPickerComponent
 
   public disabled: boolean = false;
 
-  //@ts-expect-error eyedroper is a experimental feature.
-  public eyeDropperSupport: boolean = !!window.EyeDropper;
+  public eyeDropperSupport: boolean =
+    typeof window !== 'undefined' &&
+    !!(window as { EyeDropper?: unknown }).EyeDropper;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['value']) {

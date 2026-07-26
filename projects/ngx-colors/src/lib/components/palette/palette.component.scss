@@ -9,6 +9,10 @@
   width: 34px;
   height: 34px;
   box-sizing: border-box;
+  position: relative;
+  &:hover {
+    z-index: 2;
+  }
   > div {
     border: 1px solid rgba(0, 0, 0, 0.03);
     box-sizing: border-box;
@@ -99,7 +103,7 @@
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: none;
   }
 }
 
@@ -114,6 +118,6 @@
   }
   100% {
     opacity: 1;
-    transform: translatex(0) scale(1);
+    transform: none;
   }
 }

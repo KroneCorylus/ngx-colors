@@ -12,6 +12,6 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "@angular-eslint/schematics": "^17.4.0"
+    "@angular-eslint/schematics": "^22.1.0"
   }
 }

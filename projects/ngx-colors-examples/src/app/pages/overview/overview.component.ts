@@ -106,7 +106,7 @@ export class OverviewPageComponent {
     { angular: '10 to 12', version: '3.0.5' },
   ];
 
-  readonly snippetInstall = 'npm install ngx-colors@beta';
+  readonly snippetInstall = 'npm install ngx-colors';
 
   readonly snippetStandalone = [
     "import { NgxColorsComponent, NgxColorsTriggerDirective } from 'ngx-colors';",

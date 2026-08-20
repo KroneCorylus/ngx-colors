@@ -75,6 +75,11 @@ export class TextInputComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((changes) => {
         if (typeof changes === 'string') {
+          if (changes.trim() === '') {
+            this.value = undefined;
+            this.onChange(this.value);
+            return;
+          }
           const model = ColorHelper.getColorModelByString(changes);
           if (model === 'INVALID' || this.inputControl.invalid) {
             return;

@@ -96,6 +96,42 @@ describe('TextInputComponent', () => {
     });
   });
 
+  describe('clearing the input', () => {
+    it('propagates undefined when the field is emptied', () => {
+      component.writeValue(new Rgba(255, 0, 0, 1));
+      const spy = jasmine.createSpy('onChange');
+      component.registerOnChange(spy);
+
+      component.inputControl.setValue('');
+
+      expect(spy).toHaveBeenCalledWith(undefined);
+      expect(component.value).toBeUndefined();
+    });
+
+    it('treats a whitespace-only value as cleared without flagging an error', () => {
+      component.writeValue(new Rgba(255, 0, 0, 1));
+      const spy = jasmine.createSpy('onChange');
+      component.registerOnChange(spy);
+
+      component.inputControl.setValue('   ');
+
+      expect(spy).toHaveBeenCalledWith(undefined);
+      expect(component.value).toBeUndefined();
+      expect(component.inputControl.hasError('invalidColor')).toBeFalse();
+    });
+
+    it('leaves the field empty on blur after clearing', () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector('input');
+      component.writeValue(new Rgba(255, 0, 0, 1));
+      input.dispatchEvent(new Event('focus'));
+      component.inputControl.setValue('');
+      input.dispatchEvent(new Event('blur'));
+
+      expect(component.inputControl.value).toBe('');
+    });
+  });
+
   describe('commit', () => {
     it('emits when Enter is pressed on the input', () => {
       let emitted = false;

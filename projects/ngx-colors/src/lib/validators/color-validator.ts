@@ -8,7 +8,7 @@ import { Cmyk } from '../models/cmyk';
 
 export function colorValidator(): ValidatorFn {
   return (control: AbstractControl<string>): ValidationErrors | null => {
-    if (!control.value) {
+    if (!control.value?.trim()) {
       return null;
     }
     if (ColorHelper.getColorModelByString(control.value) === 'INVALID') {

@@ -16,7 +16,6 @@ import { Rgba } from '../../models/rgba';
 import { Subject, map, merge, take, takeUntil, tap } from 'rxjs';
 import { Changes, isInputOrigin } from '../../types/changes';
 import { StateService } from '../../services/state.service';
-import { OverlayService } from '../../services/overlay.service';
 import { CommonModule } from '@angular/common';
 import { ColorPickerComponent } from '../color-picker/color-picker.component';
 import { TextInputComponent } from '../text-input/text-input.component';
@@ -45,10 +44,7 @@ import { PaletteComponent } from '../palette/palette.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelComponent implements OnInit, OnDestroy {
-  constructor(
-    public stateService: StateService,
-    private overlayService: OverlayService,
-  ) {}
+  constructor(public stateService: StateService) {}
   @HostListener('pointerdown', ['$event'])
   public onClick(event: PointerEvent): void {
     event.stopPropagation();
@@ -155,7 +151,7 @@ export class PanelComponent implements OnInit, OnDestroy {
     if (this.stateService.configuration.confirmationRequired?.text) {
       this.accept();
     } else {
-      this.overlayService.removePanel();
+      this.stateService.removePanel$.emit();
     }
   }
 

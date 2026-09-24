@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PanelComponent } from './panel.component';
 import { StateService } from '../../services/state.service';
-import { OverlayService } from '../../services/overlay.service';
 import { Rgba } from '../../models/rgba';
 import { Configuration } from '../../models/configuration';
 
@@ -14,7 +13,7 @@ describe('PanelComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PanelComponent],
-      providers: [StateService, OverlayService],
+      providers: [StateService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PanelComponent);
@@ -171,8 +170,7 @@ describe('PanelComponent', () => {
 
   describe('onTextInputCommit', () => {
     it('closes the panel without re-committing when text confirmation is off (default)', () => {
-      const overlayService = TestBed.inject(OverlayService);
-      const removePanelSpy = spyOn(overlayService, 'removePanel');
+      const removePanelSpy = spyOn(stateService.removePanel$, 'emit');
       stateService.set({ value: new Rgba(255, 0, 0, 1), origin: 'text' });
 
       component.onTextInputCommit();

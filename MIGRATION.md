@@ -1,3 +1,14 @@
+# Migrating to v5
+
+Version 5 requires Angular 22 and RxJS 7.4 or newer. Applications on Angular
+17–21 should stay on `ngx-colors@4` until they upgrade Angular. The public picker
+API is unchanged, including the deprecated v3 compatibility layer.
+
+The development workspace now uses Angular CLI 22, TypeScript 6, and Node.js
+24.18.0 (`nvm use`).
+
+---
+
 # Migrating from ngx-colors 3.x to 4.x
 
 v4 is a full rewrite. Most v3 templates keep working as-is thanks to a built-in

@@ -1,6 +1,11 @@
 import { SliderDirective } from './slider.directive';
 
-import { Component, DebugElement, NgZone } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  NgZone,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -20,6 +25,8 @@ import { ThumbComponent } from '../components/thumb/thumb.component';
       <ngx-colors-thumb></ngx-colors-thumb>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class HostComponent {
   onChange(_: [number, number]) {}
@@ -48,7 +55,7 @@ describe('SliderDirective', () => {
     sliderEl = fixture.debugElement.query(By.directive(SliderDirective));
     sliderDirective = sliderEl.injector.get(SliderDirective);
     thumbComponent = sliderEl.query(
-      By.directive(ThumbComponent)
+      By.directive(ThumbComponent),
     ).componentInstance;
     zone = TestBed.inject(NgZone);
     fixture.detectChanges();

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,6 +5,7 @@ import {
   OnInit,
   Output,
   forwardRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -23,8 +23,7 @@ import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'ngx-colors-text-input',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -33,6 +32,7 @@ import { StateService } from '../../services/state.service';
     },
   ],
   templateUrl: './text-input.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./text-input.component.scss', '../../shared/shared.scss'],
 })
 export class TextInputComponent

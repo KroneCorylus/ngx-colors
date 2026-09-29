@@ -1,24 +1,16 @@
-# NgxColors
+# ngx-colors
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
+Angular color picker with palette, sliders, text input, and form integration.
 
-## Code scaffolding
+See the [demo and API documentation](https://ngx-colors.web.app/) and the
+[project README](https://github.com/KroneCorylus/ngx-colors#readme) for installation,
+configuration, and examples.
 
-Run `ng generate component component-name --project ngx-colors` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-colors`.
-> Note: Don't forget to add `--project ngx-colors` or else it will be added to the default project in your `angular.json` file. 
+## Development
 
-## Build
+This library is built with Angular CLI 22 and TypeScript 6. From the repository
+root, run `nvm use`, `npm ci`, and `npm run build:lib`. The package is written to
+`dist/ngx-colors` in partial compilation mode.
 
-Run `ng build ngx-colors` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build ngx-colors`, go to the dist folder `cd dist/ngx-colors` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test ngx-colors` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `npm test -- --watch=false --browsers=ChromeHeadless` for the library tests
+and `npm run lint` for the workspace lint checks.

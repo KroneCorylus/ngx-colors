@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -13,6 +13,8 @@ import { NGX_COLORS_CONFIG } from '../../interfaces/configuration';
 
 @Component({
   template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class HostComponent {
   value: string | null = '#ff00ff';

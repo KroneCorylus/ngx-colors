@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
 import { ScrollSpyDirective } from '../../directives/scroll-spy.directive';
 import {
@@ -13,9 +12,9 @@ import {
 
 @Component({
   selector: 'app-api-page',
-  standalone: true,
-  imports: [CommonModule, CodeBlockComponent, ScrollSpyDirective],
+  imports: [CodeBlockComponent, ScrollSpyDirective],
   templateUrl: './api.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './api.component.scss',
 })
 export class ApiPageComponent {

@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-section-heading',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="gx-section-heading">
       <h2 class="gx-h3">{{ label }}</h2>

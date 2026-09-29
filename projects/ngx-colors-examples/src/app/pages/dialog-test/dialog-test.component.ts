@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -14,9 +14,9 @@ import {
 
 @Component({
   selector: 'app-dialog-test',
-  standalone: true,
-  imports: [CommonModule, FormsModule, NgxColorsComponent, NgxColorsTriggerDirective],
+  imports: [FormsModule, NgxColorsComponent, NgxColorsTriggerDirective],
   templateUrl: './dialog-test.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dialog-test.component.scss',
 })
 export class DialogTestComponent implements AfterViewInit, OnDestroy {

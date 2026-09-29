@@ -7,6 +7,7 @@ import {
   HostListener,
   OnDestroy,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PanelComponent } from '../panel/panel.component';
@@ -19,9 +20,9 @@ const FOCUSABLE_SELECTOR =
 
 @Component({
   selector: 'ngx-colors-overlay',
-  standalone: true,
   imports: [PanelComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './overlay.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './overlay.component.scss',
 })
 export class OverlayComponent implements AfterViewInit, OnDestroy {
@@ -59,7 +60,7 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
   onResize() {
     this.updatePosition();
   }
-  @HostListener('pointerdown', ['$event'])
+  @HostListener('pointerdown')
   public onClick(): void {
     this.removePanel();
   }
@@ -67,9 +68,9 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
   public onEscape(): void {
     this.removePanel();
   }
-  @HostListener('keydown.tab', ['$event'])
-  @HostListener('keydown.shift.tab', ['$event'])
+  @HostListener('keydown', ['$event'])
   public onTab(event: KeyboardEvent): void {
+    if (event.key !== 'Tab') return;
     const focusable = Array.from(
       this.elementRef.nativeElement.querySelectorAll<HTMLElement>(
         FOCUSABLE_SELECTOR,
@@ -122,7 +123,8 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
   public updatePosition(): void {
     if (!this.triggerNativeElement) return;
     const triggerRect = this.triggerNativeElement.getBoundingClientRect();
-    const panelRect = this.panelElementRef.nativeElement.getBoundingClientRect();
+    const panelRect =
+      this.panelElementRef.nativeElement.getBoundingClientRect();
     const direction =
       getComputedStyle(this.triggerNativeElement).direction === 'rtl'
         ? 'rtl'

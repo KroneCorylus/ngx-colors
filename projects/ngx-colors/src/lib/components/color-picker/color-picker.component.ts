@@ -22,7 +22,6 @@ import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'ngx-colors-color-picker',
-  standalone: true,
   imports: [CommonModule, SliderDirective, ThumbComponent],
   providers: [
     {

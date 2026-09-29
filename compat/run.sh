@@ -8,7 +8,7 @@ ARTIFACTS="${HERE}/.artifacts"
 IMAGE="ngx-colors-compat"
 CONTAINER="ngx-colors-compat"
 PORT="8080"
-PEERS="^17.3.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0"
+PEERS="keep"
 SERVE=1
 BUILD_ARGS=()
 
@@ -19,7 +19,7 @@ Usage: compat/run.sh [options]
   --peers <range>   peer range to stamp into the packed library before testing.
                     Use "keep" to test the range currently in
                     projects/ngx-colors/package.json unchanged.
-                    (default: ^17.3.0 || ^18.0.0 || ... || ^22.0.0)
+                    (default: keep)
   --port <n>        host port for the served matrix (default: 8080)
   --no-cache        force a full rebuild of every Angular version
   --no-serve        build the image and print the matrix, but do not run it

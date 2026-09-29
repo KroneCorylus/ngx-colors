@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   forwardRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
@@ -20,7 +21,6 @@ import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'ngx-colors-palette',
-  standalone: true,
   imports: [CommonModule],
   providers: [
     {
@@ -30,6 +30,7 @@ import { StateService } from '../../services/state.service';
     },
   ],
   templateUrl: './palette.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./palette.component.scss', '../../shared/shared.scss'],
 })
 export class PaletteComponent

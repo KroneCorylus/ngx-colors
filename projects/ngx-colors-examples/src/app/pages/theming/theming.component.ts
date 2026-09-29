@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NgxColorsComponent,
@@ -17,9 +16,7 @@ type TokenRow = {
 
 @Component({
   selector: 'app-theming-page',
-  standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     NgxColorsComponent,
     NgxColorsTriggerDirective,
@@ -27,6 +24,7 @@ type TokenRow = {
     ScrollSpyDirective,
   ],
   templateUrl: './theming.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './theming.component.scss',
 })
 export class ThemingPageComponent {

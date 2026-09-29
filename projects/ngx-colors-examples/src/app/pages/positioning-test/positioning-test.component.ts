@@ -1,10 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  FormControl,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NGX_COLORS_CONFIG,
   NgxColorsComponent,
@@ -20,9 +15,7 @@ type PositionKey =
 
 @Component({
   selector: 'app-positioning-test',
-  standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     NgxColorsComponent,

@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NgxColorsModule } from './ngx-colors.module';
 
 @Component({
   template: '<ngx-colors ngxColorsTrigger></ngx-colors>',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class NgModuleHostComponent {}
 

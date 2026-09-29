@@ -1,27 +1,24 @@
 name: Test
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   build:
-
-    # Machine environment:
-    # https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions#ubuntu-1804-lts
-    # We specify the Node.js version manually below, and use versioned Chrome from Puppeteer.
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js v22.22.3
-      uses: actions/setup-node@v1
-      with:
-        node-version: 22.22.3
-    - name: Intall Angular
-      run: npm install -g @angular/cli
-    - name: Install dependencies
-      run: npm install
-    - name: Test
-      run: ng test ngx-colors --browsers ChromeHeadless --no-watch
-    - name: Lint
-      run: ng lint
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build library
+        run: npm run build:lib
+      - name: Build demo
+        run: npm run build:examples
+      - name: Test
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+      - name: Lint
+        run: npm run lint

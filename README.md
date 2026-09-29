@@ -15,6 +15,11 @@ https://ngx-colors.web.app/
 
 ![example gif](https://raw.githubusercontent.com/KroneCorylus/ngx-colors/master/projects/ngx-color-examples/src/assets/img/example-gif.gif)
 
+## Migrating from v4?
+
+Version 5 requires Angular 22. Upgrade your application to Angular 22 before
+installing `ngx-colors@5`. The public color picker API is unchanged.
+
 ## Migrating from v3?
 
 Most v3 code keeps working thanks to a built-in (deprecated) compatibility layer. See
@@ -28,6 +33,7 @@ to migrate each API. The archived v3 documentation lives in
 
 | Angular    | Latest ngx-colors compatible |
 | ---------- | ---------------------------- |
+| 22         | 5.x                          |
 | 17.3 to 22 | 4.x                          |
 | 15 to 17   | 3.6.0                        |
 | 13, 14     | 3.1.4                        |
@@ -260,3 +266,20 @@ anywhere above it (e.g. `:root`), so you can theme all pickers globally or scope
 
 RTL is supported automatically: the panel position, layout and directional icons follow the
 trigger's computed `direction`, with no configuration needed.
+
+## Development
+
+The library and demo workspace use Angular 22 and TypeScript 6. Use Node.js
+24.18.0 (`nvm use`), then install the locked dependencies:
+
+```sh
+npm ci
+npm run build:lib
+npm run build:examples
+npm test -- --watch=false --browsers=ChromeHeadless
+npm run lint
+```
+
+`npm start` serves the demo. The library is built in partial compilation mode
+for publication; `npm run compat -- --peers keep --no-serve` checks the packed
+library against the Angular versions in the compatibility harness (requires Docker).

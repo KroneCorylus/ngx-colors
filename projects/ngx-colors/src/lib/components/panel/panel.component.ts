@@ -23,7 +23,6 @@ import { PaletteComponent } from '../palette/palette.component';
 
 @Component({
   selector: 'ngx-colors-panel',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

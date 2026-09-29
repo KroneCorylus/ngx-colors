@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   NGX_COLORS_CONFIG,
@@ -17,9 +17,9 @@ const SCOPED_CONFIG: NgxColorsConfiguration = {
 
 @Component({
   selector: 'app-provider-config-demo',
-  standalone: true,
   imports: [FormsModule, NgxColorsComponent, NgxColorsTriggerDirective],
   providers: [{ provide: NGX_COLORS_CONFIG, useValue: SCOPED_CONFIG }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="gx-swatch-row">
       <ngx-colors ngxColorsTrigger [(ngModel)]="inheritedColor"></ngx-colors>

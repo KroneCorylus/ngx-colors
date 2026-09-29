@@ -1,17 +1,18 @@
 <div class="_palette">
-  <div
-    *ngIf="this.paletteStack.size > 1"
-    aria-label="back"
-    tabindex="0"
-    (click)="this.onClickBack()"
-    (keydown.enter)="this.onClickBack()"
-    class="circle _color-option overflow-h flex justify-center align-center pointer _mirror-rtl"
-  >
-    <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
-  </div>
-  <ng-container *ngIf="this.loading">
+  @if (this.paletteStack.size > 1) {
+    <div
+      aria-label="back"
+      tabindex="0"
+      (click)="this.onClickBack()"
+      (keydown.enter)="this.onClickBack()"
+      class="circle _color-option overflow-h flex justify-center align-center pointer _mirror-rtl"
+    >
+      <ng-container [ngTemplateOutlet]="backIcon"> </ng-container>
+    </div>
+  }
+  @if (this.loading) {
     <ng-container [ngTemplateOutlet]="skeleton"></ng-container>
-  </ng-container>
+  }
   @for (color of this.paletteStack.peek; track color; let index = $index) {
     <div
       (mouseenter)="this.onMouseEnter(color)"
@@ -28,16 +29,18 @@
         [style.background]="color.preview"
         [class.null]="!color.preview"
       >
-        <div class="_tooltip" *ngIf="color.name?.length">{{ color.name }}</div>
+        @if (color.name?.length) {
+          <div class="_tooltip">{{ color.name }}</div>
+        }
         @if (indexSelected === index) {
           <div class="circle _selected"></div>
         }
       </div>
     </div>
   }
-  <ng-container *ngIf="this.paletteStack.size <= 1">
+  @if (this.paletteStack.size <= 1) {
     <ng-content></ng-content>
-  </ng-container>
+  }
 </div>
 <ng-template #backIcon>
   <svg
@@ -54,10 +57,9 @@
 </ng-template>
 
 <ng-template #skeleton>
-  <div
-    *ngFor="let color of [].constructor(14)"
-    class="circle _color-option overflow-h"
-  >
-    <div class="w-100 circle h-100 skeleton"></div>
-  </div>
+  @for (color of [].constructor(14); track $index) {
+    <div class="circle _color-option overflow-h">
+      <div class="w-100 circle h-100 skeleton"></div>
+    </div>
+  }
 </ng-template>

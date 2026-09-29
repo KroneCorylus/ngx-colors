@@ -1,4 +1,9 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 function escapeHtml(value: string): string {
   return value
@@ -49,6 +54,7 @@ function highlight(code: string, language: string): string {
 @Component({
   selector: 'app-code-block',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="gx-code">
       <div class="gx-code__bar">

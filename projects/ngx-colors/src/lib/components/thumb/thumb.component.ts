@@ -1,10 +1,15 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 @Component({
   selector: 'ngx-colors-thumb',
-  standalone: true,
   imports: [],
   templateUrl: './thumb.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './thumb.component.scss',
 })
 export class ThumbComponent {

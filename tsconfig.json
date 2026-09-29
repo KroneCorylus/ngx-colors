@@ -1,4 +1,4 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* https://angular.dev/reference/configs/angular-compiler-options */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -10,28 +10,28 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "ngx-colors": [
-        "./dist/ngx-colors"
-      ]
+      "ngx-colors": ["./dist/ngx-colors"]
     },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
   }
 }

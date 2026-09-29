@@ -3,8 +3,9 @@
     <h1>NGX Colors Playground</h1>
     <p>
       Experiment with every input, output, and layout supported by the
-      <code>ngx-colors</code> component and the <code>ngxColorsTrigger</code> directive. Use the live
-      playground to tweak configuration and watch events stream in.
+      <code>ngx-colors</code> component and the
+      <code>ngxColorsTrigger</code> directive. Use the live playground to tweak
+      configuration and watch events stream in.
     </p>
   </header>
 
@@ -14,8 +15,8 @@
         <div class="card__header">
           <h2>Live Playground</h2>
           <p>
-            Configure the picker, then trigger it to see how each option behaves. All interactions
-            are logged in real time.
+            Configure the picker, then trigger it to see how each option
+            behaves. All interactions are logged in real time.
           </p>
         </div>
 
@@ -37,9 +38,13 @@
             [labels]="playgroundConfig.labels"
             [confirmationRequired]="playgroundConfig.confirmationRequired"
             [disabled]="playgroundDisabled"
-            (colorChange)="logEvent('Playground control', 'colorChange', $event)"
+            (colorChange)="
+              logEvent('Playground control', 'colorChange', $event)
+            "
             (userChange)="logEvent('Playground control', 'userChange', $event)"
-            (sliderChange)="logEvent('Playground control', 'sliderChange', $event)"
+            (sliderChange)="
+              logEvent('Playground control', 'sliderChange', $event)
+            "
             (colorHover)="logEvent('Playground control', 'colorHover', $event)"
             (open)="logEvent('Playground control', 'open', $event)"
             (close)="logEvent('Playground control', 'close', $event)"
@@ -53,21 +58,27 @@
             <div class="playground__details">
               <div>
                 <span class="label">Current value</span>
-                <code>{{ playgroundControl.value || 'null' }}</code>
+                <code>{{ playgroundControl.value || "null" }}</code>
               </div>
               <div>
                 <span class="label">Output model</span>
-                <code>{{ playgroundConfig.outputModel || 'AUTO' }}</code>
+                <code>{{ playgroundConfig.outputModel || "AUTO" }}</code>
               </div>
               <div>
                 <span class="label">Trigger state</span>
-                <code>{{ playgroundDisabled ? 'disabled' : 'enabled' }}</code>
+                <code>{{ playgroundDisabled ? "disabled" : "enabled" }}</code>
               </div>
             </div>
             <div class="playground__actions">
-              <button type="button" (click)="setQuickColor('#FF5E5B')">Warm</button>
-              <button type="button" (click)="setQuickColor('#68C5DB')">Cool</button>
-              <button type="button" (click)="setQuickColor('rgba(0,0,0,0.2)')">Transparent</button>
+              <button type="button" (click)="setQuickColor('#FF5E5B')">
+                Warm
+              </button>
+              <button type="button" (click)="setQuickColor('#68C5DB')">
+                Cool
+              </button>
+              <button type="button" (click)="setQuickColor('rgba(0,0,0,0.2)')">
+                Transparent
+              </button>
               <button type="button" (click)="setQuickColor(null)">Clear</button>
             </div>
           </div>
@@ -79,15 +90,19 @@
             <label>
               <span>Layout</span>
               <select formControlName="layout">
-                <option *ngFor="let layout of layoutOptions" [value]="layout">{{ layout }}</option>
+                @for (layout of layoutOptions; track layout) {
+                  <option [value]="layout">{{ layout }}</option>
+                }
               </select>
             </label>
             <label>
               <span>Animation</span>
               <select formControlName="animation">
-                <option *ngFor="let animation of animationOptions" [value]="animation">
-                  {{ animation }}
-                </option>
+                @for (animation of animationOptions; track animation) {
+                  <option [value]="animation">
+                    {{ animation }}
+                  </option>
+                }
               </select>
             </label>
             <label class="checkbox">
@@ -122,18 +137,22 @@
               <span>Output model</span>
               <select formControlName="outputModel">
                 <option value="AUTO">AUTO</option>
-                <option *ngFor="let model of colorModels" [value]="model">{{ model }}</option>
+                @for (model of colorModels; track model) {
+                  <option [value]="model">{{ model }}</option>
+                }
               </select>
             </label>
             <div class="option-list" role="group" aria-label="Allowed models">
-              <label *ngFor="let model of colorModels">
-                <input
-                  type="checkbox"
-                  [checked]="allowedModelsControl.value.includes(model)"
-                  (change)="onAllowedModelChange(model, $event)"
-                />
-                <span>{{ model }}</span>
-              </label>
+              @for (model of colorModels; track model) {
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="allowedModelsControl.value.includes(model)"
+                    (change)="onAllowedModelChange(model, $event)"
+                  />
+                  <span>{{ model }}</span>
+                </label>
+              }
             </div>
           </fieldset>
 
@@ -142,22 +161,30 @@
             <label>
               <span>Palette source</span>
               <select formControlName="paletteSource">
-                <option *ngFor="let palette of paletteChoices" [value]="palette.id">
-                  {{ palette.label }}
-                </option>
+                @for (palette of paletteChoices; track palette) {
+                  <option [value]="palette.id">
+                    {{ palette.label }}
+                  </option>
+                }
               </select>
             </label>
             <p class="hint">{{ selectedPaletteDescription }}</p>
             <label>
               <span>Overlay class</span>
-              <input type="text" formControlName="overlayClass" placeholder="e.g. my-overlay" />
+              <input
+                type="text"
+                formControlName="overlayClass"
+                placeholder="e.g. my-overlay"
+              />
             </label>
             <label>
               <span>Attach overlay to</span>
               <select formControlName="overlayAttachTo">
-                <option *ngFor="let target of overlayTargets" [value]="target.id">
-                  {{ target.label }}
-                </option>
+                @for (target of overlayTargets; track target) {
+                  <option [value]="target.id">
+                    {{ target.label }}
+                  </option>
+                }
               </select>
             </label>
           </fieldset>
@@ -180,7 +207,10 @@
             </div>
             <div class="lock">
               <label class="checkbox">
-                <input type="checkbox" formControlName="lockSaturationEnabled" />
+                <input
+                  type="checkbox"
+                  formControlName="lockSaturationEnabled"
+                />
                 <span>Saturation</span>
               </label>
               <input
@@ -189,12 +219,17 @@
                 min="0"
                 max="1"
                 formControlName="lockSaturation"
-                [disabled]="!playgroundForm.controls.lockSaturationEnabled.value"
+                [disabled]="
+                  !playgroundForm.controls.lockSaturationEnabled.value
+                "
               />
             </div>
             <div class="lock">
               <label class="checkbox">
-                <input type="checkbox" formControlName="lockBrightnessEnabled" />
+                <input
+                  type="checkbox"
+                  formControlName="lockBrightnessEnabled"
+                />
                 <span>Brightness</span>
               </label>
               <input
@@ -203,7 +238,9 @@
                 min="0"
                 max="1"
                 formControlName="lockBrightness"
-                [disabled]="!playgroundForm.controls.lockBrightnessEnabled.value"
+                [disabled]="
+                  !playgroundForm.controls.lockBrightnessEnabled.value
+                "
               />
             </div>
             <div class="lock">
@@ -253,7 +290,10 @@
       <section class="card snippet-card">
         <div class="card__header">
           <h2>Generated Snippets</h2>
-          <p>Review the configuration object or copy the Angular markup that matches the current setup.</p>
+          <p>
+            Review the configuration object or copy the Angular markup that
+            matches the current setup.
+          </p>
         </div>
         <div class="snippet-tabs">
           <button
@@ -273,19 +313,27 @@
         </div>
         <div class="snippet-body">
           <pre><code [innerText]="activeSnippet === 'config' ? configJson : htmlSnippet"></code></pre>
-          <p class="hint" *ngIf="paletteSummary">{{ paletteSummary }}</p>
+          @if (paletteSummary) {
+            <p class="hint">{{ paletteSummary }}</p>
+          }
         </div>
       </section>
 
       <section class="card">
         <div class="card__header">
           <h2>Binding Examples</h2>
-          <p>Ready-to-use recipes that highlight different ways to integrate the picker.</p>
+          <p>
+            Ready-to-use recipes that highlight different ways to integrate the
+            picker.
+          </p>
         </div>
         <div class="examples-grid">
           <article class="example">
             <h3>Reactive FormControl</h3>
-            <p>Attach the trigger to a <code>FormControl</code> and listen for slider updates.</p>
+            <p>
+              Attach the trigger to a <code>FormControl</code> and listen for
+              slider updates.
+            </p>
             <ngx-colors
               ngxColorsTrigger
               [formControl]="reactiveDemoControl"
@@ -293,33 +341,51 @@
               [outputModel]="'HSVA'"
               [allowedModels]="['HSVA', 'HEXA']"
               [display]="{ palette: true, sliders: true, text: true }"
-              (colorChange)="logEvent('Reactive form example', 'colorChange', $event)"
-              (userChange)="logEvent('Reactive form example', 'userChange', $event)"
-              (sliderChange)="logEvent('Reactive form example', 'sliderChange', $event)"
-              (colorHover)="logEvent('Reactive form example', 'colorHover', $event)"
+              (colorChange)="
+                logEvent('Reactive form example', 'colorChange', $event)
+              "
+              (userChange)="
+                logEvent('Reactive form example', 'userChange', $event)
+              "
+              (sliderChange)="
+                logEvent('Reactive form example', 'sliderChange', $event)
+              "
+              (colorHover)="
+                logEvent('Reactive form example', 'colorHover', $event)
+              "
             ></ngx-colors>
             <div class="example__meta">
               <span>Value:</span>
-              <code>{{ reactiveDemoControl.value || 'null' }}</code>
+              <code>{{ reactiveDemoControl.value || "null" }}</code>
             </div>
           </article>
 
           <article class="example">
             <h3>Two-way binding with confirmation</h3>
-            <p>Full confirmation workflow over <code>[(ngModel)]</code> binding.</p>
+            <p>
+              Full confirmation workflow over <code>[(ngModel)]</code> binding.
+            </p>
             <ngx-colors
               ngxColorsTrigger
               [(ngModel)]="twoWayBindingColor"
               layout="full-horizontal"
               [display]="{ palette: false, sliders: true, text: true }"
-              [confirmationRequired]="{ palette: true, text: true, sliders: true }"
+              [confirmationRequired]="{
+                palette: true,
+                text: true,
+                sliders: true,
+              }"
               [animation]="'slide'"
-              (ngModelChange)="logEvent('NgModel example', 'ngModelChange', $event)"
-              (sliderChange)="logEvent('NgModel example', 'sliderChange', $event)"
+              (ngModelChange)="
+                logEvent('NgModel example', 'ngModelChange', $event)
+              "
+              (sliderChange)="
+                logEvent('NgModel example', 'sliderChange', $event)
+              "
             ></ngx-colors>
             <div class="example__meta">
               <span>Value:</span>
-              <code>{{ twoWayBindingColor || 'null' }}</code>
+              <code>{{ twoWayBindingColor || "null" }}</code>
             </div>
           </article>
 
@@ -327,26 +393,32 @@
             <h3>Forms-free binding</h3>
             <p>
               <code>[(color)]</code> / <code>(userChange)</code> - no
-              <code>FormsModule</code>/<code>ReactiveFormsModule</code> involved.
-              <code>userChange</code> only fires for user-driven picks, not for the initial or
-              externally-set value.
+              <code>FormsModule</code>/<code>ReactiveFormsModule</code>
+              involved. <code>userChange</code> only fires for user-driven
+              picks, not for the initial or externally-set value.
             </p>
             <ngx-colors
               ngxColorsTrigger
               [(color)]="formsFreeColor"
               layout="pages"
-              (colorChange)="logEvent('Forms-free example', 'colorChange', $event)"
-              (userChange)="logEvent('Forms-free example', 'userChange', $event)"
+              (colorChange)="
+                logEvent('Forms-free example', 'colorChange', $event)
+              "
+              (userChange)="
+                logEvent('Forms-free example', 'userChange', $event)
+              "
             ></ngx-colors>
             <div class="example__meta">
               <span>Value:</span>
-              <code>{{ formsFreeColor || 'null' }}</code>
+              <code>{{ formsFreeColor || "null" }}</code>
             </div>
           </article>
 
           <article class="example">
             <h3>Disabled trigger</h3>
-            <p>Preview the disabled state and observe that no events are fired.</p>
+            <p>
+              Preview the disabled state and observe that no events are fired.
+            </p>
             <ngx-colors
               ngxColorsTrigger
               [(ngModel)]="disabledDemoValue"
@@ -356,7 +428,7 @@
             ></ngx-colors>
             <div class="example__meta">
               <span>Value:</span>
-              <code>{{ disabledDemoValue || 'null' }}</code>
+              <code>{{ disabledDemoValue || "null" }}</code>
             </div>
           </article>
         </div>
@@ -365,43 +437,54 @@
       <section class="card">
         <div class="card__header">
           <h2>Configuration Presets</h2>
-          <p>Apply a preset to quickly explore a configuration, or interact with it in place.</p>
+          <p>
+            Apply a preset to quickly explore a configuration, or interact with
+            it in place.
+          </p>
         </div>
 
         <div class="presets-grid">
-          <article class="preset" *ngFor="let preset of presets; trackBy: trackByTitle">
-            <header>
-              <h3>{{ preset.title }}</h3>
-              <p>{{ preset.description }}</p>
-            </header>
-            <div class="preset__actions">
-              <button type="button" (click)="applyPreset(preset)">Apply to playground</button>
-            </div>
-            <ng-container *ngIf="presetConfig(preset) as config">
-              <ngx-colors
-                ngxColorsTrigger
-                [(ngModel)]="preset.color"
-                [display]="config.display"
-                [layout]="config.layout"
-                [allowedModels]="config.allowedModels"
-                [animation]="config.animation"
-                [eyedropper]="config.eyedropper"
-                [outputModel]="config.outputModel"
-                [palette]="config.palette"
-                [lockValues]="config.lockValues"
-                [overlayClass]="config.overlayClass"
-                [overlayAttachTo]="config.overlayAttachTo"
-                [labels]="config.labels"
-                [confirmationRequired]="config.confirmationRequired"
-                (ngModelChange)="logEvent(preset.title, 'ngModelChange', $event)"
-                (sliderChange)="logEvent(preset.title, 'sliderChange', $event)"
-              ></ngx-colors>
-              <div class="preset__value">
-                <span>Value:</span>
-                <code>{{ preset.color || 'null' }}</code>
+          @for (preset of presets; track trackByTitle($index, preset)) {
+            <article class="preset">
+              <header>
+                <h3>{{ preset.title }}</h3>
+                <p>{{ preset.description }}</p>
+              </header>
+              <div class="preset__actions">
+                <button type="button" (click)="applyPreset(preset)">
+                  Apply to playground
+                </button>
               </div>
-            </ng-container>
-          </article>
+              @if (presetConfig(preset); as config) {
+                <ngx-colors
+                  ngxColorsTrigger
+                  [(ngModel)]="preset.color"
+                  [display]="config.display"
+                  [layout]="config.layout"
+                  [allowedModels]="config.allowedModels"
+                  [animation]="config.animation"
+                  [eyedropper]="config.eyedropper"
+                  [outputModel]="config.outputModel"
+                  [palette]="config.palette"
+                  [lockValues]="config.lockValues"
+                  [overlayClass]="config.overlayClass"
+                  [overlayAttachTo]="config.overlayAttachTo"
+                  [labels]="config.labels"
+                  [confirmationRequired]="config.confirmationRequired"
+                  (ngModelChange)="
+                    logEvent(preset.title, 'ngModelChange', $event)
+                  "
+                  (sliderChange)="
+                    logEvent(preset.title, 'sliderChange', $event)
+                  "
+                ></ngx-colors>
+                <div class="preset__value">
+                  <span>Value:</span>
+                  <code>{{ preset.color || "null" }}</code>
+                </div>
+              }
+            </article>
+          }
         </div>
       </section>
     </div>
@@ -409,26 +492,34 @@
     <aside class="card events" id="event-log">
       <div class="card__header">
         <h2>Event Feed</h2>
-        <p>Every output emitted by the playground and examples is captured here.</p>
+        <p>
+          Every output emitted by the playground and examples is captured here.
+        </p>
       </div>
       <div class="events__toolbar">
-        <button type="button" (click)="clearLog()" [disabled]="events.length === 0">
+        <button
+          type="button"
+          (click)="clearLog()"
+          [disabled]="events.length === 0"
+        >
           Clear log
         </button>
         <span class="events__count">{{ events.length }} event(s)</span>
       </div>
       <div class="events__body" [@logIn]="events.length">
-        <p class="hint" *ngIf="events.length === 0">
-          Trigger any picker to start collecting events.
-        </p>
-        <div class="event" *ngFor="let event of events; trackBy: trackByEvent">
-          <div class="event__meta">
-            <span class="event__source">{{ event.source }}</span>
-            <span class="event__time">{{ formatTimestamp(event) }}</span>
+        @if (events.length === 0) {
+          <p class="hint">Trigger any picker to start collecting events.</p>
+        }
+        @for (event of events; track trackByEvent($index, event)) {
+          <div class="event">
+            <div class="event__meta">
+              <span class="event__source">{{ event.source }}</span>
+              <span class="event__time">{{ formatTimestamp(event) }}</span>
+            </div>
+            <div class="event__type">{{ event.event }}</div>
+            <div class="event__value">{{ event.value }}</div>
           </div>
-          <div class="event__type">{{ event.event }}</div>
-          <div class="event__value">{{ event.value }}</div>
-        </div>
+        }
       </div>
     </aside>
   </div>

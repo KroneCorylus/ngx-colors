@@ -111,7 +111,6 @@ export class NgxColorsTriggerDirective
     this.stateService.paletteColorHover$;
   //Keep naming and payload (the current color) for parity with old version
   @Output()
-  // eslint-disable-next-line @angular-eslint/no-output-native
   public open: EventEmitter<string | undefined | null> = new EventEmitter<
     string | undefined | null
   >();

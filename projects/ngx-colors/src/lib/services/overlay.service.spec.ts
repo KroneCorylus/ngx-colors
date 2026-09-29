@@ -11,15 +11,12 @@ describe('OverlayService', () => {
   let injector: Injector;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        OverlayService,
-        ApplicationRef,
-        StateService,
-      ],
+      providers: [OverlayService, ApplicationRef, StateService],
     });
 
     service = TestBed.inject(OverlayService);
     stateService = TestBed.inject(StateService);
+    injector = TestBed.inject(Injector);
   });
 
   it('should be created', () => {
@@ -116,9 +113,7 @@ describe('OverlayService', () => {
 
       try {
         service.createOverlay(undefined, injector);
-        expect(
-          parent.querySelector('ngx-colors-overlay'),
-        ).not.toBeNull();
+        expect(parent.querySelector('ngx-colors-overlay')).not.toBeNull();
       } finally {
         service.removePanel();
         parent.remove();
@@ -144,9 +139,7 @@ describe('OverlayService', () => {
 
       try {
         service.createOverlay(undefined, injector);
-        expect(
-          parent.querySelector('ngx-colors-overlay'),
-        ).not.toBeNull();
+        expect(parent.querySelector('ngx-colors-overlay')).not.toBeNull();
       } finally {
         service.removePanel();
         parent.remove();

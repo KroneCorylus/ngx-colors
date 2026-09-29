@@ -1,5 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MostUsedColorsService } from '../../services/most-used-colors.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, delay, of } from 'rxjs';
@@ -21,9 +25,7 @@ type EventEntry = { name: string; value: string };
 
 @Component({
   selector: 'app-examples-page',
-  standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     NgxColorsComponent,
@@ -34,6 +36,7 @@ type EventEntry = { name: string; value: string };
     ScrollSpyDirective,
   ],
   templateUrl: './examples.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './examples.component.scss',
 })
 export class ExamplesPageComponent {

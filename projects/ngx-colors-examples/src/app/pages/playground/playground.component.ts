@@ -6,8 +6,13 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -96,13 +101,11 @@ type ConfigPreview = {
 
 @Component({
   selector: 'app-playground-page',
-  standalone: true,
   imports: [
     NgxColorsComponent,
     NgxColorsTriggerDirective,
     ReactiveFormsModule,
     FormsModule,
-    CommonModule,
   ],
   providers: [
     {
@@ -123,6 +126,7 @@ type ConfigPreview = {
   ],
   templateUrl: './playground.component.html',
   styleUrl: './playground.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('logIn', [
       transition('* <=> *', [
@@ -754,9 +758,7 @@ export class PlaygroundPageComponent implements OnDestroy {
     return `[\n${lines.join(',\n')}\n]`;
   }
 
-  private isColorOptionObject(
-    option: ColorOption | undefined,
-  ): option is {
+  private isColorOptionObject(option: ColorOption | undefined): option is {
     color: string | undefined;
     childs?: ColorOption[];
     name?: string;

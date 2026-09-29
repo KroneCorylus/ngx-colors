@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -34,6 +34,8 @@ import {
       (slider)="sliders.push($event)"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class LegacyHostComponent {
   value: string | null = '#ff00ff';
@@ -50,11 +52,7 @@ describe('v3 compat: legacy selector, inputs and outputs', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LegacyHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
     }).compileComponents();
     fixture = TestBed.createComponent(LegacyHostComponent);
     fixture.detectChanges();
@@ -133,6 +131,8 @@ describe('v3 compat: legacy selector, inputs and outputs', () => {
       [display]="{ text: true, sliders: false }"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class PrecedenceHostComponent {
   value: string | null = '#ff00ff';
@@ -144,11 +144,7 @@ describe('v3 compat: new API wins over legacy inputs', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PrecedenceHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
     }).compileComponents();
     const fixture = TestBed.createComponent(PrecedenceHostComponent);
     fixture.detectChanges();
@@ -171,6 +167,8 @@ describe('v3 compat: new API wins over legacy inputs', () => {
       [palette]="palette"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class LegacyPaletteHostComponent {
   value: string | null = null;
@@ -189,11 +187,7 @@ describe('v3 compat: legacy palette shape', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LegacyPaletteHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
     }).compileComponents();
     const fixture = TestBed.createComponent(LegacyPaletteHostComponent);
     fixture.detectChanges();

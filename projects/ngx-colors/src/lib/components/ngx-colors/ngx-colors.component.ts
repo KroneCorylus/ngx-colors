@@ -1,13 +1,19 @@
-import { Component, Host, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Host,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { NgxColorsTriggerDirective } from '../../directives/trigger.directive';
 import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'ngx-colors',
-  standalone: true,
   imports: [],
   templateUrl: './ngx-colors.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./ngx-colors.component.scss', '../../shared/shared.scss'],
 })
 export class NgxColorsComponent implements OnInit, OnDestroy {

@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -10,9 +9,7 @@ import { CodeBlockComponent } from '../../components/code-block/code-block.compo
 
 @Component({
   selector: 'app-overview-page',
-  standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     RouterLink,
     NgxColorsComponent,
@@ -20,6 +17,7 @@ import { CodeBlockComponent } from '../../components/code-block/code-block.compo
     CodeBlockComponent,
   ],
   templateUrl: './overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './overview.component.scss',
 })
 export class OverviewPageComponent {
@@ -100,7 +98,8 @@ export class OverviewPageComponent {
   ];
 
   readonly compatibility = [
-    { angular: '>= 17.3', version: '4.x' },
+    { angular: '22', version: '5.x' },
+    { angular: '17.3–22', version: '4.x' },
     { angular: '15 to 17', version: '3.6.0' },
     { angular: '13, 14', version: '3.1.4' },
     { angular: '10 to 12', version: '3.0.5' },

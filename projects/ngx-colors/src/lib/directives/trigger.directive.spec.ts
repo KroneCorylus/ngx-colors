@@ -1,4 +1,10 @@
-import { Component, DebugElement, SimpleChange, Type } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  SimpleChange,
+  Type,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxColorsTriggerDirective } from './trigger.directive';
@@ -13,6 +19,8 @@ import { SliderChange } from '../interfaces/slider-change';
 
 @Component({
   template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class HostComponent {
   value: string = '#ff00ff';
@@ -27,23 +35,19 @@ describe('NgxColorsTriggerDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
     elementsWithDirective = fixture.debugElement.queryAll(
-      By.directive(NgxColorsTriggerDirective)
+      By.directive(NgxColorsTriggerDirective),
     );
     directives = elementsWithDirective.map((de: DebugElement) =>
-      de.injector.get(NgxColorsTriggerDirective)
+      de.injector.get(NgxColorsTriggerDirective),
     );
     ngxColors = elementsWithDirective.map((de: DebugElement) =>
-      de.injector.get(NgxColorsComponent)
+      de.injector.get(NgxColorsComponent),
     );
   });
 
@@ -150,12 +154,12 @@ describe('NgxColorsTriggerDirective', () => {
 
 @Component({
   template: `
-    <ngx-colors
-      *ngIf="show"
-      ngxColorsTrigger
-      [(ngModel)]="value"
-    ></ngx-colors>
+    @if (show) {
+      <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors>
+    }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class ToggleableHostComponent {
   show = true;
@@ -223,6 +227,8 @@ describe('NgxColorsTriggerDirective overlay cleanup', () => {
       (close)="onClose($event)"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class OpenCloseHostComponent {
   value = '#ff00ff';
@@ -246,11 +252,7 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OpenCloseHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(OpenCloseHostComponent);
@@ -374,6 +376,8 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
       (userChange)="onUserChange($event)"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class ColorInputHostComponent {
   value: string | null | undefined = '#ff00ff';
@@ -395,10 +399,7 @@ describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ColorInputHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(ColorInputHostComponent);
@@ -473,6 +474,8 @@ describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange
       (userChange)="onUserChange($event)"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class FlatPaletteHostComponent {
   value: string | null = null;
@@ -493,10 +496,7 @@ describe('NgxColorsTriggerDirective forms-free end-to-end palette selection', ()
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FlatPaletteHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(FlatPaletteHostComponent);
@@ -533,6 +533,8 @@ describe('NgxColorsTriggerDirective forms-free end-to-end palette selection', ()
       [disabled]="isDisabled"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class DisabledHostComponent {
   value: string | null = '#ff00ff';
@@ -545,11 +547,7 @@ describe('NgxColorsTriggerDirective disabled state', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DisabledHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(DisabledHostComponent);
@@ -625,7 +623,11 @@ describe('NgxColorsTriggerDirective disabled state', () => {
 });
 
 @Component({
-  template: ` <ngx-colors ngxColorsTrigger [formControl]="control"></ngx-colors> `,
+  template: `
+    <ngx-colors ngxColorsTrigger [formControl]="control"></ngx-colors>
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class ReactiveDisabledHostComponent {
   control = new FormControl<string | null>('#ff00ff');
@@ -690,6 +692,8 @@ describe('NgxColorsTriggerDirective disabled state via FormControl.disable()', (
       (userChange)="onUserChange($event)"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class CancelHostComponent {
   value: string | null = '#ff00ff';
@@ -711,11 +715,7 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CancelHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(CancelHostComponent);
@@ -815,6 +815,8 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
       [palette]="palette"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class CvaDirtyHostComponent {
   control = new FormControl<string | null>('#ff00ff');
@@ -880,6 +882,8 @@ describe('NgxColorsTriggerDirective ControlValueAccessor dirty/pristine behavior
       [palette]="palette"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class AutoOutputModelHostComponent {
   value: string | null = '#ff00ff';
@@ -892,11 +896,7 @@ describe('NgxColorsTriggerDirective outputModel: "AUTO" literal binding', () => 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AutoOutputModelHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(AutoOutputModelHostComponent);
@@ -942,6 +942,8 @@ describe('NgxColorsTriggerDirective outputModel: "AUTO" literal binding', () => 
       style="position: fixed; width: 20px; height: 20px"
     ></div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class BottomEdgeHostComponent {
   value: string | null = '#ff00ff';
@@ -953,11 +955,7 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BottomEdgeHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(BottomEdgeHostComponent);
@@ -1030,6 +1028,8 @@ describe('NgxColorsTriggerDirective first-open smart positioning', () => {
       ></div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class RtlHostComponent {
   value: string | null = '#ff00ff';
@@ -1041,11 +1041,7 @@ describe('NgxColorsTriggerDirective RTL positioning', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RtlHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(RtlHostComponent);
@@ -1126,6 +1122,8 @@ describe('NgxColorsTriggerDirective RTL positioning', () => {
       (colorChange)="onColorChange($event)"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class NoInitialValueHostComponent {
   colorChanges: Array<string | null | undefined> = [];
@@ -1142,10 +1140,7 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NoInitialValueHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(NoInitialValueHostComponent);
@@ -1289,6 +1284,8 @@ describe('NgxColorsTriggerDirective sliderChange payload', () => {
 
 @Component({
   template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class TokenPaletteHostComponent {
   value: string | null = '#ff00ff';
@@ -1302,6 +1299,8 @@ class TokenPaletteHostComponent {
       [palette]="palette"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class TokenPlusInputPaletteHostComponent {
   value: string | null = '#ff00ff';
@@ -1312,11 +1311,7 @@ describe('NgxColorsTriggerDirective palette via NGX_COLORS_CONFIG', () => {
   function setup<T>(host: Type<T>): StateService {
     TestBed.configureTestingModule({
       declarations: [host],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [
         {
           provide: NGX_COLORS_CONFIG,
@@ -1357,6 +1352,8 @@ describe('NgxColorsTriggerDirective palette via NGX_COLORS_CONFIG', () => {
     <ngx-colors ngxColorsTrigger #picker="ngxColorsTrigger"></ngx-colors>
     <button (click)="picker.openPanel()">open</button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class ExportAsHostComponent {}
 
@@ -1373,7 +1370,9 @@ describe('NgxColorsTriggerDirective exportAs', () => {
     const fixture = TestBed.createComponent(ExportAsHostComponent);
     fixture.detectChanges();
 
-    fixture.nativeElement.querySelector('button').dispatchEvent(new Event('click'));
+    fixture.nativeElement
+      .querySelector('button')
+      .dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
     expect(
@@ -1390,6 +1389,8 @@ describe('NgxColorsTriggerDirective exportAs', () => {
       [closeOnHidden]="closeOnHidden"
     ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class CloseOnHiddenHostComponent {
   value: string | null = '#ff00ff';
@@ -1402,11 +1403,7 @@ describe('NgxColorsTriggerDirective closeOnHidden (GH #116)', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CloseOnHiddenHostComponent],
-      imports: [
-        NgxColorsTriggerDirective,
-        NgxColorsComponent,
-        FormsModule,
-      ],
+      imports: [NgxColorsTriggerDirective, NgxColorsComponent, FormsModule],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
     fixture = TestBed.createComponent(CloseOnHiddenHostComponent);
@@ -1457,8 +1454,14 @@ describe('NgxColorsTriggerDirective closeOnHidden (GH #116)', () => {
 
 @Component({
   template: `
-    <ngx-colors ngxColorsTrigger [(ngModel)]="value" [theme]="'dark'"></ngx-colors>
+    <ngx-colors
+      ngxColorsTrigger
+      [(ngModel)]="value"
+      [theme]="'dark'"
+    ></ngx-colors>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class ThemeHostComponent {
   value: string | null = '#ff00ff';
@@ -1490,9 +1493,9 @@ describe('NgxColorsTriggerDirective theme', () => {
 });
 
 @Component({
-  template: `
-    <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors>
-  `,
+  template: ` <ngx-colors ngxColorsTrigger [(ngModel)]="value"></ngx-colors> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class InvalidPaletteHostComponent {
   value: string | null = '#ff00ff';

@@ -76,48 +76,94 @@ describe('Picker Forms update timing', () => {
     expect(control.touched).toBeTrue();
   });
 
-  it('flushes updateOn blur after edits when the panel closes', () => {
-    const control = setup('blur');
-    directive.openPanel();
-    fixture.detectChanges();
-    edit();
-    expect(control.value).toBe('#ff0000');
-    expect(control.pristine).toBeTrue();
-    expect(fixture.componentInstance.users).toEqual(['#00ff00']);
-    directive.closePanel();
-    expect(control.value).toBe('#00ff00');
-    expect(control.touched).toBeTrue();
-    expect(control.dirty).toBeTrue();
-  });
+  for (const updateOn of ['blur', 'submit'] as const) {
+    it(`rejects reactive updateOn ${updateOn} with an actionable error`, () => {
+      expect(() => setup(updateOn)).toThrowError(
+        /updateOn:.*not supported.*FormValueControl/,
+      );
+    });
 
-  it('leaves updateOn submit pending until form submission', () => {
-    const control = setup('submit');
-    directive.openPanel();
-    fixture.detectChanges();
-    edit();
-    directive.closePanel();
-    expect(control.value).toBe('#ff0000');
-    fixture.nativeElement
-      .querySelector('form')
-      .dispatchEvent(new Event('submit', { cancelable: true }));
-    expect(control.value).toBe('#00ff00');
-    expect(control.touched).toBeTrue();
-    expect(control.dirty).toBeTrue();
-  });
+    it(`rejects inherited updateOn ${updateOn}`, () => {
+      fixture = TestBed.createComponent(FormsHost);
+      fixture.componentInstance.form = new FormGroup(
+        {
+          color: new FormControl('#ff0000'),
+        },
+        { updateOn },
+      );
+      expect(() => fixture.detectChanges()).toThrowError(
+        /updateOn:.*not supported/,
+      );
+    });
+
+    it(`rejects ngModel updateOn ${updateOn}`, () => {
+      TestBed.overrideTemplate(
+        FormsHost,
+        `
+        <button ngxColorsTrigger [(ngModel)]="value"
+          [ngModelOptions]="{ updateOn: '${updateOn}' }"></button>
+      `,
+      );
+      fixture = TestBed.createComponent(FormsHost);
+      expect(() => fixture.detectChanges()).toThrowError(
+        /updateOn:.*not supported/,
+      );
+    });
+  }
 
   it('marks an unopened trigger touched when focus leaves it', () => {
-    const control = setup('blur');
+    const control = setup('change');
     directive.triggerRef.nativeElement.dispatchEvent(new Event('blur'));
     expect(control.touched).toBeTrue();
   });
 
-  it('does not flush pending changes when the picker is destroyed', () => {
-    const control = setup('blur');
+  it('rejects unsupported timing when the bound control is replaced', () => {
+    setup('change');
+    fixture.componentInstance.form.setControl(
+      'color',
+      new FormControl('#ff0000', { updateOn: 'submit' }),
+    );
+    expect(() => fixture.detectChanges()).toThrowError(
+      /updateOn: 'submit'.*not supported/,
+    );
+  });
+
+  it('rejects timing inherited from ngForm after control registration', async () => {
+    TestBed.overrideTemplate(
+      FormsHost,
+      `
+      <form [ngFormOptions]="{ updateOn: 'blur' }">
+        <button ngxColorsTrigger [(ngModel)]="value" name="color"></button>
+      </form>
+    `,
+    );
+    fixture = TestBed.createComponent(FormsHost);
+    fixture.detectChanges();
+    await Promise.resolve();
+    expect(() => fixture.detectChanges()).toThrowError(
+      /updateOn: 'blur'.*not supported/,
+    );
+  });
+
+  it('resets the classic Forms model without marking touched', () => {
+    const control = setup('change');
+    directive.openPanel();
+    fixture.detectChanges();
+    edit();
+    control.reset('#0000ff');
+    fixture.detectChanges();
+    expect(directive.value()).toBe('#0000ff');
+    expect(control.pristine).toBeTrue();
+    expect(control.untouched).toBeTrue();
+  });
+
+  it('does not mark touched when the picker is destroyed', () => {
+    const control = setup('change');
     directive.openPanel();
     fixture.detectChanges();
     edit();
     fixture.destroy();
-    expect(control.value).toBe('#ff0000');
+    expect(control.value).toBe('#00ff00');
     expect(control.untouched).toBeTrue();
   });
 
@@ -127,6 +173,7 @@ describe('Picker Forms update timing', () => {
     control.valueChanges.subscribe(valueChanges);
     fixture.componentInstance.colors = [];
     control.setValue('#00ff00', { emitEvent: false });
+    fixture.detectChanges();
     expect(valueChanges).not.toHaveBeenCalled();
     expect(fixture.componentInstance.colors).toEqual(['#00ff00']);
     expect(fixture.componentInstance.users).toEqual([]);
@@ -134,25 +181,25 @@ describe('Picker Forms update timing', () => {
     expect(control.untouched).toBeTrue();
   });
 
-  it('supports ngModel updateOn blur as well as reactive forms', async () => {
+  it('supports the default ngModel update timing', async () => {
     TestBed.overrideTemplate(
       FormsHost,
       `
-      <button ngxColorsTrigger [(ngModel)]="value" [ngModelOptions]="{ updateOn: 'blur' }"
+      <button ngxColorsTrigger [(ngModel)]="value"
         outputModel="HEXA" [display]="{ palette: false, sliders: false }"></button>
     `,
     );
     fixture = TestBed.createComponent(FormsHost);
     fixture.detectChanges();
     await fixture.whenStable();
+    fixture.detectChanges();
     directive = fixture.debugElement
       .query(By.directive(NgxColorsTriggerDirective))
       .injector.get(NgxColorsTriggerDirective);
+    expect(directive.value()).toBe('#ff0000');
     directive.openPanel();
     fixture.detectChanges();
     edit();
-    expect(fixture.componentInstance.value).toBe('#ff0000');
-    directive.closePanel();
     expect(fixture.componentInstance.value).toBe('#00ff00');
   });
 });

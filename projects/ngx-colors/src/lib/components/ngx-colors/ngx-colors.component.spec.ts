@@ -39,6 +39,8 @@ describe('NgxColorsComponent', () => {
 
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('shows the initial bound value as its preview, with no prior change needed', () => {
@@ -49,6 +51,7 @@ describe('NgxColorsComponent', () => {
     fixture.componentInstance.value = '#0000ff';
     fixture.detectChanges();
     tick();
+    fixture.detectChanges();
     expect(getNgxColors(fixture).previewColor).toBe('rgb(0, 0, 255)');
   }));
 
@@ -56,6 +59,7 @@ describe('NgxColorsComponent', () => {
     fixture.componentInstance.value = null;
     fixture.detectChanges();
     tick();
+    fixture.detectChanges();
     expect(getNgxColors(fixture).previewColor).toBeFalsy();
   }));
 });
@@ -73,6 +77,8 @@ describe('NgxColorsComponent with outputModel: CMYK', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
     fixture.detectChanges();
   });
 
@@ -96,6 +102,8 @@ describe('NgxColorsComponent with outputModel: HSVA', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
     fixture.detectChanges();
   });
 

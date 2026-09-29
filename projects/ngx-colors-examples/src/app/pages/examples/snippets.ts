@@ -22,6 +22,23 @@ control = new FormControl('#7ae582', [colorValidator()]);`,
   (userChange)="onUserPick($event)"
 ></ngx-colors>`,
 
+  signalFormsHtml: `<ngx-colors ngxColorsTrigger [formField]="colorForm.color" />
+@if (colorForm.color().touched() && colorForm.color().invalid()) {
+  <span>Enter a valid color</span>
+}`,
+
+  signalFormsTs: `import { signal } from '@angular/core';
+import { FormField, form, required, validate } from '@angular/forms/signals';
+import { isValidColor, NgxColorsComponent, NgxColorsTriggerDirective } from 'ngx-colors';
+
+// Add FormField, NgxColorsComponent and NgxColorsTriggerDirective to imports.
+model = signal<{ color: string | null }>({ color: '#b388ff' });
+colorForm = form(this.model, (path) => {
+  required(path.color);
+  validate(path.color, ({ value }) =>
+    isValidColor(value()) ? null : { kind: 'invalidColor' });
+});`,
+
   customPaletteHtml: `<ngx-colors ngxColorsTrigger [(ngModel)]="color" [palette]="palette"></ngx-colors>`,
 
   customPaletteTs: `import { ColorOption } from 'ngx-colors';

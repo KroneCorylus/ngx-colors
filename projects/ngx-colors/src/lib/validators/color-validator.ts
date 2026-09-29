@@ -8,15 +8,15 @@ import { Cmyk } from '../models/cmyk';
 
 export function colorValidator(): ValidatorFn {
   return (control: AbstractControl<string>): ValidationErrors | null => {
-    if (!control.value?.trim()) {
-      return null;
-    }
-    if (ColorHelper.getColorModelByString(control.value) === 'INVALID') {
-      return { invalidColor: true };
-    }
-    const color = ColorHelper.stringToColor(control.value);
-    return isColorInRange(color) ? null : { invalidColor: true };
+    return isValidColor(control.value) ? null : { invalidColor: true };
   };
+}
+
+/** Validates the original channel ranges; empty values are valid. */
+export function isValidColor(value: string | null | undefined): boolean {
+  if (!value?.trim()) return true;
+  if (ColorHelper.getColorModelByString(value) === 'INVALID') return false;
+  return isColorInRange(ColorHelper.stringToColor(value));
 }
 
 function inRange(value: number, max: number): boolean {

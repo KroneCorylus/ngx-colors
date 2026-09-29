@@ -75,7 +75,7 @@ attributes on elements where the trigger directive has not been imported.
 
 ## Value bindings and events
 
-Use one value owner per picker: `[(color)]`, `[(ngModel)]`, `[formControl]`, or
+Use one value owner per picker: `[(color)]`, `[formField]`, `[(ngModel)]`, `[formControl]`, or
 `formControlName`. Combining a `color` input with Angular Forms now throws an
 error. Listening to outputs alongside either binding style is supported.
 
@@ -90,12 +90,49 @@ error. Listening to outputs alongside either binding style is supported.
 - An unbound picker does not emit an initial null value. `open` and `close`
   continue to carry the current committed value.
 - Angular Forms' `{ emitEvent: false }` suppresses Forms events, not library
-  outputs: that option is not passed to the value accessor.
+  outputs: that option does not suppress library outputs.
 
-Forms now mark the picker touched when the panel closes, or when an unopened
-trigger loses focus, instead of when the panel opens. `updateOn: 'blur'` flushes
-pending changes on closing; `updateOn: 'submit'` waits for form submission.
-Destroying the picker does not flush pending edits.
+## Native Angular Forms
+
+The trigger now implements `FormValueControl` with a `value` model signal instead
+of `ControlValueAccessor`. `[formField]` works directly, including schema
+validation, disabled/read-only state, focus, reset, and blur debouncing. There is
+no extra adapter or module to import; add Angular's `FormField` to your component
+imports alongside the picker. See the [Signal Forms example](README.md#with-signal-forms).
+Use `null` or `''` for empty fields, since Signal Forms treats `undefined` as an
+absent field. The picker clears to `null`.
+
+`[(ngModel)]`, `[formControl]`, and `formControlName` continue working through
+Angular's native bridge with the default `updateOn: 'change'`. **Classic
+`updateOn: 'blur'` and `'submit'` now throw**, including options inherited from
+parents. Angular 22's native bridge ignores these settings, so the picker rejects
+them instead of silently changing update timing. Use default timing, or Signal
+Forms `debounce(path.color, 'blur')` to delay model updates until closing.
+`confirmationRequired` holds edits until Accept; it does not provide form-submit
+timing. See [Angular's migration guide](https://angular.dev/guide/forms/signals/migration).
+
+Forms mark the picker touched when the panel closes or an unopened trigger loses
+focus, rather than on opening. Disabling, making it read-only, resetting through
+Signal Forms, and destroying the picker discard pending UI edits without marking
+touched. Native models deduplicate identical values: selecting the same value still emits
+`colorChange` and `userChange`, but does not make a pristine form dirty.
+
+External form writes are reflected during Angular change detection. They retain
+the original string in the form model; only user commits write `outputModel`'s
+formatted value back. In tests, wait for `ngModel` to settle and run change
+detection before asserting the preview.
+
+For direct directive access, read `picker.value()` and `picker.disabled()` instead
+of the old plain properties. Bind values through the template or form model;
+`writeValue`, `registerOnChange`, `registerOnTouched`, and `setDisabledState` are
+removed. `reset()` resets pending picker UI; use the form's reset API to also reset
+its model and interaction state. Signal Forms invokes this hook automatically;
+classic Forms resets the model and flags but does not invoke the picker UI reset
+hook. Call `picker.reset()` as well to dismiss an open classic Forms picker.
+
+`colorValidator()` remains available for classic Forms. `isValidColor(value)`
+exposes the same syntax and raw-range validation for Signal Forms `validate()`
+schemas. Empty values pass; apply `required` separately.
 
 ## Output and editor formats
 

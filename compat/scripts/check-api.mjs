@@ -54,6 +54,24 @@ const fixtures = new Map(
     @NgModule({ imports: [FormsModule, NgxColorsModule], declarations: [ModuleHost] })
     export class HostModule {}
   `,
+    signals: String.raw`
+    import { Component, signal } from '@angular/core';
+    import { FormField, FormValueControl, form, validate } from '@angular/forms/signals';
+    import { NgxColorsComponent, NgxColorsTriggerDirective, isValidColor } from 'ngx-colors';
+    declare const picker: NgxColorsTriggerDirective;
+    const native: FormValueControl<string | null | undefined> = picker;
+    picker.value(); picker.disabled(); picker.readonly(); picker.focus(); picker.reset();
+    @Component({
+      imports: [FormField, NgxColorsComponent, NgxColorsTriggerDirective],
+      template: '<ngx-colors ngxColorsTrigger [formField]="fields.color" /><button ngxColorsTrigger [formField]="fields.color">Pick</button>'
+    })
+    export class SignalHost {
+      data = signal<{color: string | null}>({color: null});
+      fields = form(this.data, path => {
+        validate(path.color, ({value}) => isValidColor(value()) ? null : {kind: 'invalidColor'});
+      });
+    }
+  `,
     inputs: `
     import { Component } from '@angular/core';
     import { NgxColorsTriggerDirective } from 'ngx-colors';
@@ -106,6 +124,7 @@ const diagnostics = [
 
 const expected = {
   modern: [0, []],
+  signals: [0, []],
   inputs: [removedInputs.length, [-998002]],
   exports: [removedExports.length, [2305, 2724]],
   outputs: [3, [2339, 2551]],
@@ -136,5 +155,5 @@ assert.equal(
   Object.values(expected).reduce((sum, [count]) => sum + count, 0),
 );
 console.log(
-  "Public API checks passed: standalone and NgModule consumers compile; removed inputs, exports, outputs, and palette types fail compilation.",
+  "Public API checks passed: Signal Forms, standalone and NgModule consumers compile; removed inputs, exports, outputs, and palette types fail compilation.",
 );

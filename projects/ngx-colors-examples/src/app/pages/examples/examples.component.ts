@@ -3,9 +3,18 @@ import {
   Component,
   inject,
   ChangeDetectionStrategy,
+  signal,
 } from '@angular/core';
 import { MostUsedColorsService } from '../../services/most-used-colors.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormField,
+  disabled,
+  form,
+  readonly,
+  required,
+  validate,
+} from '@angular/forms/signals';
 import { Observable, delay, of } from 'rxjs';
 import {
   ColorOption,
@@ -14,6 +23,7 @@ import {
   Rgba,
   SliderChange,
   colorValidator,
+  isValidColor,
 } from '../../../../../ngx-colors/src/public-api';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
 import { SectionHeadingComponent } from '../../components/section-heading/section-heading.component';
@@ -28,6 +38,7 @@ type EventEntry = { name: string; value: string };
   imports: [
     FormsModule,
     ReactiveFormsModule,
+    FormField,
     NgxColorsComponent,
     NgxColorsTriggerDirective,
     CodeBlockComponent,
@@ -48,6 +59,7 @@ export class ExamplesPageComponent {
     { id: 'basic', label: 'Basic usage' },
     { id: 'custom-trigger', label: 'Custom trigger' },
     { id: 'reactive', label: 'Reactive Forms' },
+    { id: 'signal-forms', label: 'Signal Forms' },
     { id: 'forms-free', label: 'Without forms' },
     { id: 'custom-palette', label: 'Custom palette' },
     { id: 'async-palette', label: 'Async palette' },
@@ -104,6 +116,20 @@ export class ExamplesPageComponent {
   readonly reactiveControl = new FormControl<string | null>('#7ae582', [
     colorValidator(),
   ]);
+
+  readonly signalModel = signal<{ color: string | null }>({ color: '#b388ff' });
+  readonly signalDisabled = signal(false);
+  readonly signalReadonly = signal(false);
+  readonly signalForm = form(this.signalModel, (path) => {
+    required(path.color);
+    disabled(path.color, () => this.signalDisabled());
+    readonly(path.color, () => this.signalReadonly());
+    validate(path.color, ({ value }) =>
+      isValidColor(value())
+        ? null
+        : { kind: 'invalidColor', message: 'Not a valid color' },
+    );
+  });
 
   readonly customPalette: ColorOption[] = [
     '#FF5E5B',

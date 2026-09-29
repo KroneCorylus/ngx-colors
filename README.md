@@ -94,16 +94,52 @@ This library is composed of two parts:
 <ngx-colors ngxColorsTrigger [formControl]="colorFormControl"></ngx-colors>
 ```
 
+##### With Signal Forms:
+
+```ts
+import { Component, signal } from '@angular/core';
+import { FormField, form, required, validate } from '@angular/forms/signals';
+import { NgxColorsComponent, NgxColorsTriggerDirective, isValidColor } from 'ngx-colors';
+
+@Component({
+  imports: [FormField, NgxColorsComponent, NgxColorsTriggerDirective],
+  template: '<ngx-colors ngxColorsTrigger [formField]="colorForm.color" />',
+})
+export class ColorEditor {
+  model = signal<{ color: string | null }>({ color: '#ff0000' });
+  colorForm = form(this.model, (path) => {
+    required(path.color);
+    validate(path.color, ({ value }) =>
+      isValidColor(value()) ? null : { kind: 'invalidColor' });
+  });
+}
+```
+
+The trigger implements native `FormValueControl`. Signal Forms supplies disabled,
+read-only and invalid state, and supports field-directed focus and reset. Use
+`null` or `''` for an empty field; Signal Forms treats `undefined` as an absent
+field. Clearing the picker emits `null`.
+
 ##### Or without any Forms module, using two-way binding:
 
 ```html
 <ngx-colors ngxColorsTrigger [(color)]="color"></ngx-colors>
 ```
 
-Use one value binding per picker: `[(color)]`, `[(ngModel)]`, or a reactive Forms
-binding. Combining `color` with Forms throws an error. Output listeners work with
-either. Forms report touched when the panel closes or an unopened trigger loses
-focus; `updateOn: 'blur'` commits on closing and `updateOn: 'submit'` waits for submission.
+Use one value binding per picker: `[(color)]`, `[formField]`, `[(ngModel)]`, or a
+reactive Forms binding. Combining `color` with Forms throws an error. Output
+listeners work with either. Forms report touched when the panel closes or an
+unopened trigger loses focus, not when the panel opens. Disabling, making the
+field read-only, resetting through Signal Forms, and destroying the picker discard
+pending UI edits without marking it touched.
+
+**Classic Forms timing:** Angular 22's native control bridge updates immediately
+and does not honor `updateOn: 'blur'` or `'submit'`. ngx-colors throws an actionable
+error for those settings, including inherited form options. Use the default
+`updateOn: 'change'`. With Signal Forms, `debounce(path.color, 'blur')` delays model
+updates until the picker closes. `confirmationRequired` delays picker edits until
+Accept; it does not delay them until form submission. See
+[Angular's native control migration guide](https://angular.dev/guide/forms/signals/migration).
 
 ##### Custom trigger:
 
@@ -146,6 +182,9 @@ choices while the panel is open.
 | Input                  | Type                                          | Default                            | Description                                                                                                          |
 | ---------------------- | --------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `color`                | `string`                                      | `undefined`                        | Two-way bindable color value (`[(color)]`), for use without Forms                                                     |
+| `value` | `string \| null \| undefined` | `undefined` | Native model input managed by Angular Forms; read the directive instance with `value()` |
+| `readonly` | `boolean` | `false` | Prevents editing; supplied by Signal Forms or an explicit binding |
+| `invalid` | `boolean` | `false` | Sets `aria-invalid`; supplied by Angular Forms validation |
 | `disabled`             | `boolean`                                     | `false`                            | Disables the trigger (also settable via `FormControl.disable()`)                                                      |
 | `palette`              | `ColorOption[] \| Observable<ColorOption[]>`  | Material palette                   | Colors shown in the palette; groups can nest via `childs` and show tooltips via `name`; Observables show a skeleton   |
 | `animation`            | `'popup' \| 'slide'`                          | `'popup'`                          | Animation of the palette swatches                                                                                     |
@@ -167,6 +206,8 @@ choices while the panel is open.
 
 | Output        | Payload          | Description                                                                              |
 | ------------- | ---------------- | ---------------------------------------------------------------------------------------- |
+| `valueChange` | `string \| null \| undefined` | Native model output for Forms; equal values are deduplicated |
+| `touch` | `void` | Native Forms notification when the interaction ends |
 | `colorChange` | `string \| null` | Emits changed serialized values, including external writes, and every committed user selection (enables `[(color)]`)                                    |
 | `userChange`  | `string \| null` | Emits only for user-driven changes (palette click, text edit, confirmed slider change)    |
 | `sliderChange`| `SliderChange \| null` | Emits continuously while the user drags a slider (and on an eyedropper pick). `SliderChange` is `{ value: string; hsla: Hsla }` — `value` is formatted per `outputModel` |
@@ -181,7 +222,11 @@ edits awaiting confirmation and canceled edits emit neither; slider previews
 still emit `sliderChange`. An unbound picker emits no initial null value.
 
 Forms' `{ emitEvent: false }` suppresses Forms events, not the picker's
-`colorChange`: Angular does not pass that option to the value accessor.
+`colorChange`. External writes update the picker during Angular change detection
+and never emit `userChange` or mark the form dirty. Incoming values remain in
+their original format in the form model; user commits use `outputModel`. Repeating
+an identical model value does not mark a pristine form dirty, although
+`colorChange` and `userChange` still emit.
 
 ### Methods
 
@@ -190,13 +235,15 @@ programmatically:
 
 | Member         | Signature       | Description                                                        |
 | -------------- | --------------- | ------------------------------------------------------------------ |
-| `openPanel()`  | `(): void`      | Opens the panel. No-op if disabled or already open                 |
+| `openPanel()`  | `(): void`      | Opens the panel. No-op if disabled, read-only or already open                 |
 | `closePanel()` | `(): void`      | Closes the panel (keeps the committed value). No-op if not open    |
+| `focus(options?)` | `(options?: FocusOptions): void` | Focuses the trigger; used by Signal Forms `focusBoundControl()` |
+| `reset()` | `(): void` | Discards pending UI edits and closes without marking touched; Angular Forms owns resetting the model |
 | `isOpen`       | `boolean` (get) | Whether the panel is currently open                                |
 
 ### Global configuration
 
-Every input (except `color`/`disabled`) can be provided once for the whole app; individual
+Every configuration input (excluding `color`, `value`, `disabled`, `readonly` and `invalid`) can be provided once for the whole app; individual
 bindings override it:
 
 ```ts

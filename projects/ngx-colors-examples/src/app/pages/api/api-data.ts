@@ -8,7 +8,7 @@ export type ApiRow = {
 export const INPUTS: ApiRow[] = [
   {
     name: 'color',
-    type: 'string',
+    type: 'string | null | undefined',
     default: 'undefined',
     description:
       'Two-way bindable color value ([(color)]), for use without Forms.',
@@ -19,6 +19,27 @@ export const INPUTS: ApiRow[] = [
     default: 'false',
     description:
       'Disables the trigger. Also settable via FormControl.disable().',
+  },
+  {
+    name: 'value',
+    type: 'ModelSignal<string | null | undefined>',
+    default: 'undefined',
+    description:
+      'Native FormValueControl model managed by formField, ngModel or reactive Forms. Incoming values remain unchanged; user commits use outputModel.',
+  },
+  {
+    name: 'readonly',
+    type: 'boolean',
+    default: 'false',
+    description:
+      'Prevents editing and dismisses pending edits. Signal Forms sets this from the field schema.',
+  },
+  {
+    name: 'invalid',
+    type: 'boolean',
+    default: 'false',
+    description:
+      'Sets aria-invalid. Supplied automatically by Angular Forms validation.',
   },
   {
     name: 'palette',
@@ -125,6 +146,18 @@ export const INPUTS: ApiRow[] = [
 
 export const OUTPUTS: ApiRow[] = [
   {
+    name: 'valueChange',
+    type: 'string | null | undefined',
+    description:
+      'Native model output consumed by Angular Forms. Equal values are deduplicated; use userChange for every committed user selection.',
+  },
+  {
+    name: 'touch',
+    type: 'void',
+    description:
+      'Notifies Forms when the panel closes or an unopened trigger loses focus. Reset, disabling, readonly and destruction do not emit touch.',
+  },
+  {
     name: 'colorChange',
     type: 'string | null',
     description:
@@ -164,13 +197,25 @@ export const METHODS: ApiRow[] = [
     name: 'openPanel()',
     type: '(): void',
     description:
-      'Opens the panel. No-op if the trigger is disabled or already open.',
+      'Opens the panel. No-op if the trigger is disabled, readonly or already open.',
   },
   {
     name: 'closePanel()',
     type: '(): void',
     description:
       'Closes the panel, keeping the committed value. No-op if nothing is open.',
+  },
+  {
+    name: 'focus(options?)',
+    type: '(options?: FocusOptions): void',
+    description:
+      'Focuses the trigger; also used by Signal Forms focusBoundControl().',
+  },
+  {
+    name: 'reset()',
+    type: '(): void',
+    description:
+      'Discards pending UI edits and closes without marking touched. Angular Forms owns resetting the model value.',
   },
   {
     name: 'isOpen',
@@ -190,7 +235,7 @@ export const EXPORTS: ApiRow[] = [
     name: 'NgxColorsTriggerDirective',
     type: 'directive',
     description:
-      'ngxColorsTrigger — turns any element into a picker trigger. Implements ControlValueAccessor.',
+      'ngxColorsTrigger — turns any element into a picker trigger. Implements native FormValueControl for Signal Forms and classic Forms (updateOn: change only).',
   },
   {
     name: 'NgxColorsModule',
@@ -202,7 +247,7 @@ export const EXPORTS: ApiRow[] = [
     name: 'NGX_COLORS_CONFIG',
     type: 'InjectionToken<NgxColorsConfiguration>',
     description:
-      'Global configuration: every input above (except color/disabled) can be provided once app-wide. Individual bindings win.',
+      'Global configuration: every input above (except color/value/disabled/readonly/invalid) can be provided once app-wide. Individual bindings win.',
   },
   {
     name: 'NGX_COLORS_LABELS',
@@ -214,6 +259,12 @@ export const EXPORTS: ApiRow[] = [
     type: 'ValidatorFn',
     description:
       'Form validator. Returns { invalidColor: true } for unknown formats or out-of-range channels; empty values pass.',
+  },
+  {
+    name: 'isValidColor(value)',
+    type: '(value: string | null | undefined): boolean',
+    description:
+      'Validates color syntax and raw channel ranges, including in Signal Forms schemas. Empty values pass; use required separately.',
   },
   {
     name: 'ColorHelper',

@@ -1,5 +1,6 @@
 import {
   Directive,
+  AfterViewChecked,
   ElementRef,
   EventEmitter,
   HostBinding,
@@ -13,14 +14,15 @@ import {
   Optional,
   Output,
   SimpleChanges,
-  forwardRef,
   inject,
+  effect,
+  input,
+  model,
+  output,
+  untracked,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NgControl,
-} from '@angular/forms';
+import { NgControl } from '@angular/forms';
+import { FORM_FIELD, FormValueControl } from '@angular/forms/signals';
 import { Observable, Subject, map, of, shareReplay, takeUntil } from 'rxjs';
 import { OverlayService } from '../services/overlay.service';
 import { ColorHelper } from '../utility/color-helper';
@@ -56,26 +58,23 @@ import {
   selector: '[ngxColorsTrigger],[ngx-colors-trigger]',
   exportAs: 'ngxColorsTrigger',
   standalone: true,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => NgxColorsTriggerDirective),
-      multi: true,
-    },
-    OverlayService,
-    StateService,
-  ],
+  providers: [OverlayService, StateService],
 })
 export class NgxColorsTriggerDirective
   implements
-    ControlValueAccessor,
+    FormValueControl<string | null | undefined>,
     NgxColorsConfiguration,
     OnDestroy,
     OnInit,
+    AfterViewChecked,
     OnChanges
 {
   private injector = inject(Injector);
   private destroying = false;
+  private suppressTouch = false;
+  private lastModelValue: string | null | undefined;
+  private committedValue: string | null | undefined;
+  private originalTabIndex: string | null;
   private committedColorModel: ColorModel = 'RGBA';
 
   constructor(
@@ -90,25 +89,60 @@ export class NgxColorsTriggerDirective
     private _labels: Labels,
   ) {
     assertModernTrigger(this.triggerRef.nativeElement);
+    this.originalTabIndex =
+      this.triggerRef.nativeElement.getAttribute('tabindex');
+    effect(() => {
+      const value = this.value();
+      untracked(() => {
+        if (value !== this.lastModelValue) {
+          this.lastModelValue = value;
+          this.applyExternalValue(value);
+        }
+      });
+    });
   }
   @HostListener('click') onClick() {
     this.openPanel();
   }
-  @HostListener('blur') onBlur() {
-    if (!this.isOpen && !this.destroying) this.onTouch();
+  @HostListener('keydown', ['$event']) onKeydown(event: KeyboardEvent) {
+    const host = this.triggerRef.nativeElement;
+    if (
+      event.target === host &&
+      (event.key === 'Enter' || event.key === ' ') &&
+      !host.matches('button, input, select, textarea, a[href]')
+    ) {
+      event.preventDefault();
+      this.openPanel();
+    }
   }
-  @Input() disabled: boolean = false;
+  @HostListener('blur') onBlur() {
+    if (!this.isOpen && !this.destroying) this.touch.emit();
+  }
+  readonly disabled = input(false);
+  readonly readonly = input(false);
+  readonly invalid = input(false);
+  readonly touch = output<void>();
+  readonly value = model<string | null | undefined>(undefined);
+
+  @HostBinding('attr.tabindex') get tabIndex(): string {
+    return this.disabled() ? '-1' : (this.originalTabIndex ?? '0');
+  }
+  @HostBinding('attr.aria-readonly') get ariaReadonly(): boolean {
+    return this.readonly();
+  }
+  @HostBinding('attr.aria-invalid') get ariaInvalid(): boolean {
+    return this.invalid();
+  }
   @HostBinding('style.opacity') get disabledOpacity(): number {
-    return this.disabled ? 0.5 : 1;
+    return this.disabled() ? 0.5 : 1;
   }
   @HostBinding('style.pointer-events') get disabledPointerEvents(): string {
-    return this.disabled ? 'none' : 'auto';
+    return this.disabled() ? 'none' : 'auto';
   }
   @HostBinding('attr.aria-disabled') get disabledAriaAttribute(): boolean {
-    return this.disabled;
+    return this.disabled();
   }
   destroy$: Subject<void> = new Subject<void>();
-  value: string | undefined | null = undefined;
 
   @Input() color: string | undefined | null = undefined;
   @Output()
@@ -190,12 +224,12 @@ export class NgxColorsTriggerDirective
 
     this.overlayService.opened
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.open.emit(this.value));
+      .subscribe(() => this.open.emit(this.committedValue));
     this.overlayService.closed.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.disconnectTriggerObserver();
       this.stateService.colorModel = this.committedColorModel;
-      if (!this.destroying) this.onTouch();
-      this.close.emit(this.value);
+      if (!this.destroying && !this.suppressTouch) this.touch.emit();
+      this.close.emit(this.committedValue);
     });
 
     this.stateService.state
@@ -209,16 +243,17 @@ export class NgxColorsTriggerDirective
         const newValue: string | null = state?.value
           ? this.rgbaToOutputString(state.value)
           : null;
-        const changed = (newValue ?? null) !== (this.value ?? null);
+        const changed = (newValue ?? null) !== (this.committedValue ?? null);
         const userDriven =
           isInputOrigin(state.origin) || state.origin === 'confirm';
-        this.value = newValue;
+        this.committedValue = newValue;
         if (changed || userDriven) {
-          this.colorChange.emit(this.value);
+          this.colorChange.emit(newValue);
         }
         if (userDriven) {
-          this.onChange(this.value);
-          this.userChange.emit(this.value);
+          this.lastModelValue = newValue;
+          this.value.set(newValue);
+          this.userChange.emit(newValue);
         }
         if (state.origin === 'confirm' || state.origin === 'cancel') {
           this.overlayService.removePanel();
@@ -267,10 +302,11 @@ export class NgxColorsTriggerDirective
   public ngOnChanges(changes: SimpleChanges): void {
     if (
       changes['color'] &&
-      this.injector.get(NgControl, null, { self: true })
+      (this.injector.get(FORM_FIELD, null, { self: true }) ||
+        this.injector.get(NgControl, null, { self: true }))
     ) {
       throw new Error(
-        'ngx-colors: use either [color]/[(color)] or Angular Forms (ngModel, formControl, formControlName), not both on the same picker. Output listeners can be used with either.',
+        'ngx-colors: use either [color]/[(color)] or Angular Forms (formField, ngModel, formControl, formControlName), not both on the same picker. Output listeners can be used with either.',
       );
     }
     this.applyConfig();
@@ -278,7 +314,22 @@ export class NgxColorsTriggerDirective
       this.setPalette(this.stateService.configuration.palette);
     }
     if (changes['color']) {
-      this.applyExternalValue(changes['color'].currentValue);
+      this.value.set(changes['color'].currentValue);
+    }
+    if (this.disabled() || this.readonly()) this.dismissPanel();
+  }
+
+  public ngAfterViewChecked(): void {
+    this.assertSupportedUpdateTiming();
+  }
+
+  private assertSupportedUpdateTiming(): void {
+    if (this.injector.get(FORM_FIELD, null, { self: true })) return;
+    const control = this.injector.get(NgControl, null, { self: true })?.control;
+    if (control && control.updateOn !== 'change') {
+      throw new Error(
+        `ngx-colors: updateOn: '${control.updateOn}' is not supported by Angular's native FormValueControl bridge. Use updateOn: 'change' (the default), or Signal Forms with debounce(path, 'blur') for updates on closing. confirmationRequired delays edits until Accept, not form submission.`,
+      );
     }
   }
 
@@ -287,7 +338,8 @@ export class NgxColorsTriggerDirective
   }
 
   public openPanel() {
-    if (this.disabled || this.isOpen) {
+    this.assertSupportedUpdateTiming();
+    if (this.disabled() || this.readonly() || this.isOpen) {
       return;
     }
     const injector = Injector.create({
@@ -302,6 +354,23 @@ export class NgxColorsTriggerDirective
 
   public closePanel() {
     this.overlayService.removePanel();
+  }
+
+  public focus(options?: FocusOptions): void {
+    this.triggerRef.nativeElement.focus(options);
+  }
+
+  public reset(): void {
+    this.dismissPanel();
+  }
+
+  private dismissPanel(): void {
+    this.suppressTouch = true;
+    try {
+      this.closePanel();
+    } finally {
+      this.suppressTouch = false;
+    }
   }
 
   private observeTriggerVisibility(): void {
@@ -344,10 +413,6 @@ export class NgxColorsTriggerDirective
     }
   }
 
-  writeValue(value: string | undefined | null): void {
-    this.applyExternalValue(value);
-  }
-
   private applyExternalValue(value: string | undefined | null): void {
     if (value) {
       const model: ColorModel | 'INVALID' =
@@ -360,18 +425,5 @@ export class NgxColorsTriggerDirective
     } else {
       this.stateService.set({ value: null, origin: 'state' });
     }
-  }
-
-  onChange: (value: string | undefined | null) => void = () => {};
-  onTouch: () => void = () => {};
-
-  registerOnChange(fn: (value: string | undefined | null) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouch = fn;
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
   }
 }

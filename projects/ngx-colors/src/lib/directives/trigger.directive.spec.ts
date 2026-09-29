@@ -40,6 +40,8 @@ describe('NgxColorsTriggerDirective', () => {
 
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
     elementsWithDirective = fixture.debugElement.queryAll(
       By.directive(NgxColorsTriggerDirective),
     );
@@ -55,7 +57,7 @@ describe('NgxColorsTriggerDirective', () => {
     expect(directives.length).toBeTruthy();
   });
   it('directive should have the value of ngModel', () => {
-    expect(directives[0].value).toBe('#ff00ff');
+    expect(directives[0].value()).toBe('#ff00ff');
   });
   it('ngx-colors should show the initial ngModel value as its preview', () => {
     expect(ngxColors[0].previewColor).toBe('rgb(255, 0, 255)');
@@ -257,6 +259,8 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(OpenCloseHostComponent);
     fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   function getTriggerElement(): HTMLElement {
@@ -412,14 +416,14 @@ describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange
   });
 
   it('adopts the initial [color] value with no Forms directive present', () => {
-    expect(directive.value).toBe('#ff00ff');
+    expect(directive.value()).toBe('#ff00ff');
   });
 
   it('applies external [color] changes and emits colorChange but not userChange', () => {
     fixture.componentInstance.value = '#00ff00';
     fixture.detectChanges();
 
-    expect(directive.value).toBe('#00ff00');
+    expect(directive.value()).toBe('#00ff00');
     expect(fixture.componentInstance.colorChanges).toContain('#00ff00');
     expect(fixture.componentInstance.userChanges).toEqual([]);
   });
@@ -459,7 +463,7 @@ describe('NgxColorsTriggerDirective forms-free [color]/(colorChange)/(userChange
     stateService.set({ value: new Rgba(10, 20, 30, 1), origin: 'palette' });
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.value).toBe(directive.value);
+    expect(fixture.componentInstance.value).toBe(directive.value());
   });
 });
 
@@ -818,17 +822,17 @@ describe('NgxColorsTriggerDirective Cancel behavior', () => {
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
-class CvaDirtyHostComponent {
+class FormsDirtyHostComponent {
   control = new FormControl<string | null>('#ff00ff');
   palette: string[] = ['#00ff00', '#0000ff'];
 }
 
-describe('NgxColorsTriggerDirective ControlValueAccessor dirty/pristine behavior', () => {
-  let fixture: ComponentFixture<CvaDirtyHostComponent>;
+describe('NgxColorsTriggerDirective native Forms dirty/pristine behavior', () => {
+  let fixture: ComponentFixture<FormsDirtyHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CvaDirtyHostComponent],
+      declarations: [FormsDirtyHostComponent],
       imports: [
         NgxColorsTriggerDirective,
         NgxColorsComponent,
@@ -836,7 +840,7 @@ describe('NgxColorsTriggerDirective ControlValueAccessor dirty/pristine behavior
       ],
       providers: [{ provide: NGX_COLORS_CONFIG, useValue: {} }],
     }).compileComponents();
-    fixture = TestBed.createComponent(CvaDirtyHostComponent);
+    fixture = TestBed.createComponent(FormsDirtyHostComponent);
     fixture.detectChanges();
   });
 
@@ -1133,6 +1137,11 @@ class NoInitialValueHostComponent {
 }
 
 describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
+  function writeExternalValue(value: string | null | undefined): void {
+    directive.color = value;
+    directive.ngOnChanges({ color: new SimpleChange(undefined, value, false) });
+    fixture.detectChanges();
+  }
   let fixture: ComponentFixture<NoInitialValueHostComponent>;
   let directive: NgxColorsTriggerDirective;
   let stateService: StateService;
@@ -1162,22 +1171,19 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
       outputModel: new SimpleChange(undefined, 'HEXA', false),
     });
     const userChange = jasmine.createSpy('userChange');
-    const formsChange = jasmine.createSpy('formsChange');
     directive.userChange.subscribe(userChange);
-    directive.registerOnChange(formsChange);
-    directive.writeValue('rgb(255,0,0)');
-    directive.writeValue('rgb(255,0,0)');
-    directive.writeValue('#ff0000');
+    writeExternalValue('rgb(255,0,0)');
+    writeExternalValue('rgb(255,0,0)');
+    writeExternalValue('#ff0000');
     expect(fixture.componentInstance.colorChanges).toEqual(['#ff0000']);
-    expect(directive.value).toBe('#ff0000');
+    expect(directive.value()).toBe('#ff0000');
     expect(userChange).not.toHaveBeenCalled();
-    expect(formsChange).not.toHaveBeenCalled();
   });
 
   it('emits a representation change when AUTO follows a new external format', () => {
-    directive.writeValue('#ff0000');
-    directive.writeValue('rgb(255,0,0)');
-    directive.writeValue('rgb(255,0,0)');
+    writeExternalValue('#ff0000');
+    writeExternalValue('rgb(255,0,0)');
+    writeExternalValue('rgb(255,0,0)');
     expect(fixture.componentInstance.colorChanges).toEqual([
       '#ff0000',
       'rgb(255, 0, 0)',
@@ -1185,12 +1191,12 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
   });
 
   it('restores the committed AUTO format when pending text edits are canceled', () => {
-    directive.writeValue('#ff0000');
+    writeExternalValue('#ff0000');
     fixture.componentInstance.colorChanges = [];
     stateService.colorModel = 'CMYK';
     stateService.setTemp({ value: new Rgba(0, 255, 0, 1), origin: 'text' });
     stateService.set({ value: new Rgba(255, 0, 0, 1), origin: 'cancel' });
-    expect(directive.value).toBe('#ff0000');
+    expect(directive.value()).toBe('#ff0000');
     expect(stateService.colorModel).toBe('HEXA');
     expect(fixture.componentInstance.colorChanges).toEqual([]);
   });
@@ -1201,7 +1207,7 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
     directive.ngOnChanges({
       allowedModels: new SimpleChange(undefined, ['HEXA'], false),
     });
-    directive.writeValue('#ff0000');
+    writeExternalValue('#ff0000');
     directive.openPanel();
     fixture.detectChanges();
     const input = document.body.querySelector<HTMLInputElement>(
@@ -1216,7 +1222,7 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
     TestBed.tick();
     expect(input.value).toBe('hsl(0, 100%, 50%)');
     expect(fixture.componentInstance.colorChanges).toEqual([]);
-    expect(directive.value).toBe('#ff0000');
+    expect(directive.value()).toBe('#ff0000');
     directive.closePanel();
   });
 
@@ -1235,7 +1241,7 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
           false,
         ),
       });
-      directive.writeValue('#ff0000');
+      writeExternalValue('#ff0000');
       fixture.componentInstance.colorChanges = [];
       const userChange = jasmine.createSpy('userChange');
       directive.userChange.subscribe(userChange);
@@ -1271,7 +1277,7 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
         expect(fixture.componentInstance.colorChanges).toEqual([]);
         expect(userChange).not.toHaveBeenCalled();
         expect(stateService.colorModel).toBe('HEXA');
-        expect(directive.value).toBe('#ff0000');
+        expect(directive.value()).toBe('#ff0000');
       }
       expect(directive.isOpen).toBeFalse();
     });
@@ -1350,6 +1356,8 @@ describe('NgxColorsTriggerDirective sliderChange payload', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
     fixture.detectChanges();
     const element = fixture.debugElement.query(
       By.directive(NgxColorsTriggerDirective),

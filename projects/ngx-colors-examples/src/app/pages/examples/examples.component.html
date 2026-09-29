@@ -101,6 +101,68 @@
         </div>
       </section>
 
+      <section id="signal-forms" class="gx-card example example--stacked">
+        <div class="example__info">
+          <app-section-heading sectionId="signal-forms" label="Signal Forms" />
+          <p class="gx-muted">
+            Bind with <span class="gx-inline-code">[formField]</span>. The
+            picker uses a signal model and schema validation. Try clearing the
+            color, disabling the field, or resetting it.
+          </p>
+          <div class="example__demo gx-swatch-row">
+            <ngx-colors
+              ngxColorsTrigger
+              [formField]="signalForm.color"
+              aria-label="Pick a color"
+            />
+            <span class="gx-value">{{
+              signalModel().color || "No color"
+            }}</span>
+          </div>
+          <div class="example__demo gx-swatch-row">
+            <label
+              ><input
+                type="checkbox"
+                [checked]="signalDisabled()"
+                (change)="signalDisabled.set($any($event.target).checked)"
+              />
+              Disabled</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                [checked]="signalReadonly()"
+                (change)="signalReadonly.set($any($event.target).checked)"
+              />
+              Read only</label
+            >
+            <button
+              type="button"
+              class="gx-btn gx-btn--ghost"
+              (click)="signalForm().reset({ color: '#b388ff' })"
+            >
+              Reset
+            </button>
+            <span class="gx-chip">{{
+              signalForm.color().dirty() ? "Dirty" : "Pristine"
+            }}</span>
+            <span class="gx-chip">{{
+              signalForm.color().touched() ? "Touched" : "Untouched"
+            }}</span>
+          </div>
+          @if (signalForm.color().touched() && signalForm.color().invalid()) {
+            <p class="example__error">Enter a valid color</p>
+          }
+        </div>
+        <div class="example__snippets">
+          <app-code-block [code]="snippets.signalFormsHtml" language="html" />
+          <app-code-block
+            [code]="snippets.signalFormsTs"
+            language="typescript"
+          />
+        </div>
+      </section>
+
       <section
         id="forms-free"
         class="gx-card example"

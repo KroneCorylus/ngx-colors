@@ -8,8 +8,8 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PanelComponent } from '../panel/panel.component';
-import { OverlayService } from '../../services/overlay.service';
 import { StateService } from '../../services/state.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { computeOverlayPosition } from '../../utility/overlay-position';
@@ -26,15 +26,19 @@ const FOCUSABLE_SELECTOR =
 })
 export class OverlayComponent implements AfterViewInit, OnDestroy {
   constructor(
-    private overlayService: OverlayService,
     private stateService: StateService,
     private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+    this.stateService.removePanel$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.removePanel());
+  }
 
   x: number = 0;
   y: number = 0;
   triggerNativeElement: HTMLElement | undefined = undefined;
+  removePanel: () => void = () => {};
   private resizeObserver: ResizeObserver | undefined;
 
   @HostBinding('attr.role') role = 'dialog';
@@ -57,11 +61,11 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
   }
   @HostListener('pointerdown', ['$event'])
   public onClick(): void {
-    this.overlayService.removePanel();
+    this.removePanel();
   }
   @HostListener('keydown.escape')
   public onEscape(): void {
-    this.overlayService.removePanel();
+    this.removePanel();
   }
   @HostListener('keydown.tab', ['$event'])
   @HostListener('keydown.shift.tab', ['$event'])

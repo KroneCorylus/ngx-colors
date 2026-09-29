@@ -58,6 +58,7 @@ export class StateService {
     new EventEmitter<Rgba | null>();
   public paletteColorHover$: EventEmitter<Rgba | null> =
     new EventEmitter<Rgba | null>();
+  public removePanel$: EventEmitter<void> = new EventEmitter<void>();
   public configuration: Configuration = new Configuration();
   public colorModel: ColorModel = 'RGBA';
 }

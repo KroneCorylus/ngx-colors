@@ -150,8 +150,8 @@ describe('OverlayComponent', () => {
     });
 
     it('closes the panel on Escape', () => {
-      const overlayService = TestBed.inject(OverlayService);
-      const spy = spyOn(overlayService, 'removePanel');
+      const spy = jasmine.createSpy('removePanel');
+      component.removePanel = spy;
       fixture.nativeElement.dispatchEvent(
         new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
       );

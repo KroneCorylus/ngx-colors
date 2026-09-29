@@ -1,6 +1,8 @@
 import {
   Component,
   EventEmitter,
+  Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
@@ -36,7 +38,7 @@ import { StateService } from '../../services/state.service';
   styleUrls: ['./text-input.component.scss', '../../shared/shared.scss'],
 })
 export class TextInputComponent
-  implements ControlValueAccessor, OnInit, OnDestroy
+  implements ControlValueAccessor, OnInit, OnChanges, OnDestroy
 {
   constructor(private stateService: StateService) {}
   value: Rgba | undefined = undefined;
@@ -44,6 +46,7 @@ export class TextInputComponent
   private destroy$: Subject<void> = new Subject<void>();
 
   @Output() commit: EventEmitter<void> = new EventEmitter<void>();
+  @Input() allowedModels: ColorModel[] | undefined;
 
   public placeholder: string = '';
 
@@ -89,7 +92,17 @@ export class TextInputComponent
           this.onChange(this.value);
         }
       });
-    this.availableModels = this.stateService.configuration.allowedModels;
+    this.updateAvailableModels();
+  }
+
+  ngOnChanges(): void {
+    this.updateAvailableModels();
+    this.writeValue(this.value);
+  }
+
+  private updateAvailableModels(): void {
+    this.availableModels =
+      this.allowedModels ?? this.stateService.configuration.allowedModels;
     const currentModelIndex = this.availableModels.findIndex(
       (model) => model === this.stateService.colorModel,
     );
@@ -148,6 +161,11 @@ export class TextInputComponent
     if (this.focused) {
       return;
     }
+    const modelIndex = this.availableModels.indexOf(
+      this.stateService.colorModel,
+    );
+    if (modelIndex >= 0) this.colorModelIndex = modelIndex;
+    this.updatePlaceholder();
     if (this.value) {
       this.inputControl.setValue(
         ColorHelper.rgbaToColorModel(

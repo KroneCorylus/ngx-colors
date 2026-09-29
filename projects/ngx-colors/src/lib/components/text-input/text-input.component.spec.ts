@@ -11,10 +11,9 @@ describe('TextInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TextInputComponent],
-      providers: [StateService]
-    })
-    .compileComponents();
-    
+      providers: [StateService],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(TextInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -50,6 +49,42 @@ describe('TextInputComponent', () => {
   });
 
   describe('typing behavior', () => {
+    it('accepts a pasted format outside the editor choices without adopting it for AUTO', () => {
+      fixture.componentRef.setInput('allowedModels', ['HEXA']);
+      fixture.detectChanges();
+      const onChange = jasmine.createSpy('onChange');
+      component.registerOnChange(onChange);
+      component.onFocus();
+      component.inputControl.setValue('rgb(0,255,0)');
+      expect(onChange).toHaveBeenCalledWith(new Rgba(0, 255, 0, 1));
+      expect(component.availableModels[component.colorModelIndex]).toBe('HEXA');
+      expect(TestBed.inject(StateService).colorModel).toBe('RGBA');
+      component.onBlur();
+      expect(component.inputControl.value).toBe('#00ff00');
+    });
+
+    it('refreshes editor formats and the displayed value when choices change', () => {
+      component.writeValue(new Rgba(255, 0, 0, 1));
+      fixture.componentRef.setInput('allowedModels', ['HEXA']);
+      fixture.detectChanges();
+      expect(component.availableModels).toEqual(['HEXA']);
+      expect(component.inputControl.value).toBe('#ff0000');
+      expect(component.placeholder).toBe('#ffffff');
+      fixture.componentRef.setInput('allowedModels', ['HSLA']);
+      fixture.detectChanges();
+      expect(component.inputControl.value).toBe('hsl(0, 100%, 50%)');
+    });
+
+    it('preserves unfinished text while editor choices change and reformats on blur', () => {
+      component.writeValue(new Rgba(255, 0, 0, 1));
+      component.onFocus();
+      component.inputControl.setValue('rgb(');
+      fixture.componentRef.setInput('allowedModels', ['HEXA']);
+      fixture.detectChanges();
+      expect(component.inputControl.value).toBe('rgb(');
+      component.onBlur();
+      expect(component.inputControl.value).toBe('#ff0000');
+    });
     function getInput(): HTMLInputElement {
       return fixture.nativeElement.querySelector('input');
     }
@@ -67,9 +102,7 @@ describe('TextInputComponent', () => {
       getInput().dispatchEvent(new Event('focus'));
       component.inputControl.setValue('cmyk(0, 50, 100, 0)');
 
-      expect(component.availableModels[component.colorModelIndex]).toBe(
-        'CMYK',
-      );
+      expect(component.availableModels[component.colorModelIndex]).toBe('CMYK');
       expect(stateService.colorModel).toBe('CMYK');
     });
 

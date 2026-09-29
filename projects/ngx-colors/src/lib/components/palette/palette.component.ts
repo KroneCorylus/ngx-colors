@@ -8,6 +8,8 @@ import {
   Output,
   forwardRef,
   ChangeDetectionStrategy,
+  ErrorHandler,
+  inject,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
@@ -36,6 +38,7 @@ import { StateService } from '../../services/state.service';
 export class PaletteComponent
   implements OnInit, ControlValueAccessor, OnDestroy
 {
+  private errorHandler = inject(ErrorHandler);
   constructor(
     public stateService: StateService,
     private cd: ChangeDetectorRef,
@@ -92,7 +95,10 @@ export class PaletteComponent
           }
         },
         error: (err) => {
-          console.error(err);
+          this.loading = false;
+          this.paletteStack.clear();
+          this.cd.markForCheck();
+          this.errorHandler.handleError(err);
         },
         complete: () => {
           this.loading = false;

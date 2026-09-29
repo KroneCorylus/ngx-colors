@@ -1,14 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CodeBlockComponent } from '../../components/code-block/code-block.component';
 import { ScrollSpyDirective } from '../../directives/scroll-spy.directive';
-import {
-  ApiRow,
-  DEPRECATED,
-  EXPORTS,
-  INPUTS,
-  METHODS,
-  OUTPUTS,
-} from './api-data';
+import { ApiRow, REMOVED, EXPORTS, INPUTS, METHODS, OUTPUTS } from './api-data';
 
 @Component({
   selector: 'app-api-page',
@@ -24,7 +17,7 @@ export class ApiPageComponent {
     { id: 'methods', label: 'Methods' },
     { id: 'global-configuration', label: 'Global configuration' },
     { id: 'exports', label: 'Exports' },
-    { id: 'deprecated', label: 'Deprecated v3 API' },
+    { id: 'removed', label: 'Removed v3 API' },
   ];
 
   scrollTo(id: string): void {
@@ -35,7 +28,7 @@ export class ApiPageComponent {
   readonly outputs: ApiRow[] = OUTPUTS;
   readonly methods: ApiRow[] = METHODS;
   readonly exports: ApiRow[] = EXPORTS;
-  readonly deprecated: ApiRow[] = DEPRECATED;
+  readonly removed: ApiRow[] = REMOVED;
 
   readonly snippetGlobalConfig = [
     "import { NGX_COLORS_CONFIG } from 'ngx-colors';",

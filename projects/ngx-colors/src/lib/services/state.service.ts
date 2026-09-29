@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Rgba } from '../models/rgba';
 import { Hsva } from '../models/hsva';
@@ -59,6 +59,12 @@ export class StateService {
   public paletteColorHover$: EventEmitter<Rgba | null> =
     new EventEmitter<Rgba | null>();
   public removePanel$: EventEmitter<void> = new EventEmitter<void>();
-  public configuration: Configuration = new Configuration();
+  private readonly config = signal(new Configuration());
+  public get configuration(): Configuration {
+    return this.config();
+  }
+  public set configuration(configuration: Configuration) {
+    this.config.set(configuration);
+  }
   public colorModel: ColorModel = 'RGBA';
 }

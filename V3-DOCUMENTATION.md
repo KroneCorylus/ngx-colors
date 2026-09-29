@@ -1,9 +1,10 @@
 # ngx-colors 3.x — documentation (archived)
 
 > This is the archived documentation for **ngx-colors 3.x** (last release: 3.6.0), preserving
-> the content of the old documentation site. The 3.x API still works in 4.x through a
-> deprecated compatibility layer — see [MIGRATION.md](./MIGRATION.md) for the v3 → v4
-> migration guide, and the README for the current documentation.
+> the content of the old documentation site. The v3 compatibility layer was removed
+> in v5. These examples are historical; use [MIGRATION.md](./MIGRATION.md) to upgrade
+> and the README for the current API. Applications needing the compatibility layer
+> must stay on ngx-colors 4.x.
 
 ngx-colors is a colorpicker component for Angular with a material design style. It allows
 users to select a color via text input (hexadecimal, rgba, hsla), by choosing a preset color

@@ -148,11 +148,11 @@
     </div>
   </section>
 
-  <section id="deprecated" class="api-section">
-    <h2 class="gx-h3">Deprecated v3 API (compatibility layer)</h2>
+  <section id="removed" class="api-section">
+    <h2 class="gx-h3">Removed v3 API</h2>
     <p class="gx-muted api-section__note">
-      The whole v3 surface still works in 4.x, marked deprecated, and will be
-      removed in the next major version. Full details in the
+      Version 5 removes the compatibility layer. Replace these APIs before upgrading.
+      Old event names may still compile as DOM listeners, so check them manually. Full details in the
       <a
         class="gx-link"
         href="https://github.com/KroneCorylus/ngx-colors/blob/master/MIGRATION.md"
@@ -165,13 +165,13 @@
       <table class="gx-table">
         <thead>
           <tr>
-            <th>v3 (deprecated)</th>
-            <th>v4 replacement</th>
+            <th>Removed API</th>
+            <th>Replacement</th>
             <th>Notes</th>
           </tr>
         </thead>
         <tbody>
-          @for (row of deprecated; track row.name) {
+          @for (row of removed; track row.name) {
             <tr>
               <td>
                 <code>{{ row.name }}</code>

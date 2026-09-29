@@ -38,13 +38,14 @@ export const INPUTS: ApiRow[] = [
     type: "'HEXA' | 'RGBA' | 'HSLA' | 'HSVA' | 'CMYK' | 'AUTO'",
     default: "'AUTO'",
     description:
-      'Format of the emitted value. AUTO keeps the format of the last input.',
+      'Format of the emitted value. AUTO follows incoming values and committed editor format choices.',
   },
   {
     name: 'allowedModels',
     type: 'ColorModel[]',
     default: 'all five',
-    description: 'Formats the text input can cycle through.',
+    description:
+      'Non-empty list of selectable text editor formats. Other valid pasted formats are accepted without changing AUTO. Replace the array to update an open editor.',
   },
   {
     name: 'display',
@@ -127,7 +128,7 @@ export const OUTPUTS: ApiRow[] = [
     name: 'colorChange',
     type: 'string | null',
     description:
-      'Emits whenever the value changes. Enables [(color)] two-way binding.',
+      'Emits changed serialized values (including external writes) and every committed user selection. Equivalent external writes are deduplicated. Enables [(color)].',
   },
   {
     name: 'userChange',
@@ -162,7 +163,8 @@ export const METHODS: ApiRow[] = [
   {
     name: 'openPanel()',
     type: '(): void',
-    description: 'Opens the panel. No-op if the trigger is disabled or already open.',
+    description:
+      'Opens the panel. No-op if the trigger is disabled or already open.',
   },
   {
     name: 'closePanel()',
@@ -229,7 +231,7 @@ export const EXPORTS: ApiRow[] = [
     name: 'ColorOption',
     type: 'type',
     description:
-      "Palette item: a color string, or { color, childs?, name? } — childs nest arbitrarily deep.",
+      'Palette item: a color string, or { color, childs?, name? } — childs nest arbitrarily deep.',
   },
   {
     name: 'ColorModel',
@@ -249,22 +251,22 @@ export const EXPORTS: ApiRow[] = [
   },
 ];
 
-export const DEPRECATED: ApiRow[] = [
+export const REMOVED: ApiRow[] = [
   {
     name: 'ngx-colors-trigger',
     type: 'ngxColorsTrigger',
-    description: 'v3 attribute selector; both selectors work in v4.',
+    description: 'Removed in v5. The old selector throws a migration error.',
   },
   {
     name: 'colorsAnimation',
     type: 'animation',
-    description: "'slide-in' maps to 'slide'.",
+    description: "Replace 'slide-in' with 'slide'.",
   },
   {
     name: 'format',
     type: 'outputModel',
     description:
-      "Values are uppercase now ('hex' → 'HEXA'). Also locks allowedModels to that model, like v3 did.",
+      "Use uppercase values ('hex' → 'HEXA'). Also set allowedModels to ['HEXA'] to preserve the old format lock.",
   },
   {
     name: 'formats',
@@ -296,17 +298,18 @@ export const DEPRECATED: ApiRow[] = [
     name: '(change) / (input) / (slider)',
     type: '(colorChange) / (userChange) / (sliderChange)',
     description:
-      'Aliases still emit; note (slider) emits a formatted string while (sliderChange) emits { value, hsla }.',
+      'Removed in v5. sliderChange emits { value, hsla }; use $event?.value for the old string payload. Angular may accept old event names silently, so update listeners manually.',
   },
   {
     name: 'NgxColorsColor',
     type: 'ColorOption',
     description:
-      '{ preview, variants } palette items are auto-translated to { color, childs, name }.',
+      'Replace preview with color, variants with childs, and the old color label with name. Legacy objects now throw.',
   },
   {
     name: 'validColorValidator',
     type: 'colorValidator',
-    description: 'Alias of the same function.',
+    description:
+      'Removed alias; colorValidator preserves the validation behavior.',
   },
 ];

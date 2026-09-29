@@ -18,13 +18,13 @@ https://ngx-colors.web.app/
 ## Migrating from v4?
 
 Version 5 requires Angular 22. Upgrade your application to Angular 22 before
-installing `ngx-colors@5`. The public color picker API is unchanged.
+installing `ngx-colors@5`. The deprecated v3 API has been removed; replace any
+remaining aliases using **[MIGRATION.md](./MIGRATION.md)**.
 
 ## Migrating from v3?
 
-Most v3 code keeps working thanks to a built-in (deprecated) compatibility layer. See
-**[MIGRATION.md](./MIGRATION.md)** for the full list of changes, what is deprecated, and how
-to migrate each API. The archived v3 documentation lives in
+Version 5 no longer translates v3 selectors, inputs, outputs, or palette objects. See
+**[MIGRATION.md](./MIGRATION.md)** for replacements and migration errors. The archived v3 documentation lives in
 **[V3-DOCUMENTATION.md](./V3-DOCUMENTATION.md)**.
 
 ## Installation
@@ -100,6 +100,11 @@ This library is composed of two parts:
 <ngx-colors ngxColorsTrigger [(color)]="color"></ngx-colors>
 ```
 
+Use one value binding per picker: `[(color)]`, `[(ngModel)]`, or a reactive Forms
+binding. Combining `color` with Forms throws an error. Output listeners work with
+either. Forms report touched when the panel closes or an unopened trigger loses
+focus; `updateOn: 'blur'` commits on closing and `updateOn: 'submit'` waits for submission.
+
 ##### Custom trigger:
 
 Any element can be a trigger:
@@ -114,7 +119,9 @@ Any element can be a trigger:
 <ngx-colors ngxColorsTrigger [(ngModel)]="color" outputModel="HEXA"></ngx-colors>
 ```
 
-By default (`outputModel="AUTO"`) the output keeps the format the value was set in.
+By default (`outputModel="AUTO"`) the output follows the incoming value's format.
+Selecting an editor format or entering an available format changes AUTO for the
+next committed edit. Canceling pending edits restores the committed format.
 
 ##### Limit the formats available in the text input:
 
@@ -126,6 +133,12 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 ></ngx-colors>
 ```
 
+`allowedModels` must be non-empty. It controls the editor's selectable formats;
+valid colors pasted in other formats are still accepted and reformatted on blur.
+Pasting a format outside this list does not change AUTO's format.
+`outputModel` can be outside the editor list. Replace the array to update the
+choices while the panel is open.
+
 ## API
 
 ### Inputs
@@ -136,7 +149,7 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 | `disabled`             | `boolean`                                     | `false`                            | Disables the trigger (also settable via `FormControl.disable()`)                                                      |
 | `palette`              | `ColorOption[] \| Observable<ColorOption[]>`  | Material palette                   | Colors shown in the palette; groups can nest via `childs` and show tooltips via `name`; Observables show a skeleton   |
 | `animation`            | `'popup' \| 'slide'`                          | `'popup'`                          | Animation of the palette swatches                                                                                     |
-| `outputModel`          | `'HEXA' \| 'RGBA' \| 'HSLA' \| 'HSVA' \| 'CMYK' \| 'AUTO'` | `'AUTO'`              | Format of the emitted value; `AUTO` keeps the format of the last input                                                |
+| `outputModel`          | `'HEXA' \| 'RGBA' \| 'HSLA' \| 'HSVA' \| 'CMYK' \| 'AUTO'` | `'AUTO'`              | Format of the emitted value; `AUTO` follows incoming values and committed editor format choices                                                |
 | `allowedModels`        | `ColorModel[]`                                | all five                           | Formats the text input can cycle through                                                                              |
 | `display`              | `{ text?, sliders?, palette? }`               | all `true`                         | Shows/hides each section of the panel                                                                                 |
 | `layout`               | `'pages' \| 'full-vertical' \| 'full-horizontal'` | `'pages'`                      | Panel layout: paged (palette ⇄ sliders) or everything at once                                                          |
@@ -154,12 +167,21 @@ By default (`outputModel="AUTO"`) the output keeps the format the value was set 
 
 | Output        | Payload          | Description                                                                              |
 | ------------- | ---------------- | ---------------------------------------------------------------------------------------- |
-| `colorChange` | `string \| null` | Emits whenever the value changes (enables `[(color)]`)                                    |
+| `colorChange` | `string \| null` | Emits changed serialized values, including external writes, and every committed user selection (enables `[(color)]`)                                    |
 | `userChange`  | `string \| null` | Emits only for user-driven changes (palette click, text edit, confirmed slider change)    |
 | `sliderChange`| `SliderChange \| null` | Emits continuously while the user drags a slider (and on an eyedropper pick). `SliderChange` is `{ value: string; hsla: Hsla }` — `value` is formatted per `outputModel` |
 | `colorHover`  | `Rgba \| null`   | Emits when the user hovers a palette swatch                                               |
 | `open`        | `string \| null` | Emits when the panel opens, with the current color                                        |
 | `close`       | `string \| null` | Emits when the panel closes, with the current color                                       |
+
+Equivalent external writes do not re-emit, even if the incoming string uses a
+different format from `outputModel`. Repeated user selections emit both
+`colorChange` and `userChange`, including selections of the same color. Pending
+edits awaiting confirmation and canceled edits emit neither; slider previews
+still emit `sliderChange`. An unbound picker emits no initial null value.
+
+Forms' `{ emitEvent: false }` suppresses Forms events, not the picker's
+`colorChange`: Angular does not pass that option to the value accessor.
 
 ### Methods
 
@@ -275,6 +297,7 @@ The library and demo workspace use Angular 22 and TypeScript 6. Use Node.js
 ```sh
 npm ci
 npm run build:lib
+npm run test:api
 npm run build:examples
 npm test -- --watch=false --browsers=ChromeHeadless
 npm run lint

@@ -13,6 +13,8 @@ import {
 import { defaultColors } from '../utility/default-colors';
 import { ColorModel } from '../types/color-model';
 
+const COLOR_MODELS: ColorModel[] = ['HEXA', 'RGBA', 'HSLA', 'HSVA', 'CMYK'];
+
 export class Configuration implements NgxColorsConfiguration {
   public display: DisplayOptions = {
     text: true,
@@ -112,6 +114,23 @@ export class Configuration implements NgxColorsConfiguration {
       if (overwrite.theme !== undefined) {
         this.theme = overwrite.theme;
       }
+    }
+    if (
+      this.outputModel !== 'AUTO' &&
+      !COLOR_MODELS.includes(this.outputModel)
+    ) {
+      throw new Error(
+        'ngx-colors: outputModel must be AUTO, HEXA, RGBA, HSLA, HSVA, or CMYK.',
+      );
+    }
+    if (
+      !Array.isArray(this.allowedModels) ||
+      !this.allowedModels.length ||
+      this.allowedModels.some((model) => !COLOR_MODELS.includes(model))
+    ) {
+      throw new Error(
+        'ngx-colors: allowedModels must be a non-empty array of HEXA, RGBA, HSLA, HSVA, or CMYK.',
+      );
     }
   }
 }

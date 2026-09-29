@@ -16,6 +16,8 @@ jobs:
         run: npm ci
       - name: Build library
         run: npm run build:lib
+      - name: Check public API
+        run: npm run test:api
       - name: Build demo
         run: npm run build:examples
       - name: Test

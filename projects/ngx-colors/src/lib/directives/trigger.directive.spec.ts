@@ -290,7 +290,7 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
     expect(fixture.componentInstance.closeCount).toBe(1);
   });
 
-  it('emits the current color with (open) and (close), like v3', () => {
+  it('emits the current color with (open) and (close)', () => {
     getTriggerElement().dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
@@ -1155,6 +1155,127 @@ describe('NgxColorsTriggerDirective colorChange emission hygiene', () => {
   it('does not emit colorChange(null) on init when no value is bound', () => {
     expect(fixture.componentInstance.colorChanges).toEqual([]);
   });
+
+  it('deduplicates equivalent external writes after formatting without reporting user edits', () => {
+    directive.outputModel = 'HEXA';
+    directive.ngOnChanges({
+      outputModel: new SimpleChange(undefined, 'HEXA', false),
+    });
+    const userChange = jasmine.createSpy('userChange');
+    const formsChange = jasmine.createSpy('formsChange');
+    directive.userChange.subscribe(userChange);
+    directive.registerOnChange(formsChange);
+    directive.writeValue('rgb(255,0,0)');
+    directive.writeValue('rgb(255,0,0)');
+    directive.writeValue('#ff0000');
+    expect(fixture.componentInstance.colorChanges).toEqual(['#ff0000']);
+    expect(directive.value).toBe('#ff0000');
+    expect(userChange).not.toHaveBeenCalled();
+    expect(formsChange).not.toHaveBeenCalled();
+  });
+
+  it('emits a representation change when AUTO follows a new external format', () => {
+    directive.writeValue('#ff0000');
+    directive.writeValue('rgb(255,0,0)');
+    directive.writeValue('rgb(255,0,0)');
+    expect(fixture.componentInstance.colorChanges).toEqual([
+      '#ff0000',
+      'rgb(255, 0, 0)',
+    ]);
+  });
+
+  it('restores the committed AUTO format when pending text edits are canceled', () => {
+    directive.writeValue('#ff0000');
+    fixture.componentInstance.colorChanges = [];
+    stateService.colorModel = 'CMYK';
+    stateService.setTemp({ value: new Rgba(0, 255, 0, 1), origin: 'text' });
+    stateService.set({ value: new Rgba(255, 0, 0, 1), origin: 'cancel' });
+    expect(directive.value).toBe('#ff0000');
+    expect(stateService.colorModel).toBe('HEXA');
+    expect(fixture.componentInstance.colorChanges).toEqual([]);
+  });
+
+  it('updates an open editor when allowedModels changes without emitting value events', () => {
+    directive.allowedModels = ['HEXA'];
+    directive.display = { palette: false, sliders: false };
+    directive.ngOnChanges({
+      allowedModels: new SimpleChange(undefined, ['HEXA'], false),
+    });
+    directive.writeValue('#ff0000');
+    directive.openPanel();
+    fixture.detectChanges();
+    const input = document.body.querySelector<HTMLInputElement>(
+      'ngx-colors-overlay input',
+    )!;
+    expect(input.value).toBe('#ff0000');
+    fixture.componentInstance.colorChanges = [];
+    directive.allowedModels = ['HSLA'];
+    directive.ngOnChanges({
+      allowedModels: new SimpleChange(['HEXA'], ['HSLA'], false),
+    });
+    TestBed.tick();
+    expect(input.value).toBe('hsl(0, 100%, 50%)');
+    expect(fixture.componentInstance.colorChanges).toEqual([]);
+    expect(directive.value).toBe('#ff0000');
+    directive.closePanel();
+  });
+
+  for (const action of ['ACCEPT', 'CANCEL', 'Escape']) {
+    it(`keeps text previews pending until ${action}`, () => {
+      directive.display = { palette: false, sliders: false };
+      directive.confirmationRequired = {
+        text: true,
+        palette: false,
+        sliders: true,
+      };
+      directive.ngOnChanges({
+        confirmationRequired: new SimpleChange(
+          undefined,
+          { text: true },
+          false,
+        ),
+      });
+      directive.writeValue('#ff0000');
+      fixture.componentInstance.colorChanges = [];
+      const userChange = jasmine.createSpy('userChange');
+      directive.userChange.subscribe(userChange);
+      directive.openPanel();
+      fixture.detectChanges();
+      const input = document.body.querySelector<HTMLInputElement>(
+        'ngx-colors-overlay input',
+      )!;
+      input.value = 'cmyk(100%, 0%, 100%, 0%)';
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(fixture.componentInstance.colorChanges).toEqual([]);
+      expect(userChange).not.toHaveBeenCalled();
+      if (action === 'Escape') {
+        document.body
+          .querySelector('ngx-colors-overlay')!
+          .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+      } else {
+        const button = Array.from(
+          document.body.querySelectorAll<HTMLButtonElement>(
+            'ngx-colors-overlay button',
+          ),
+        ).find((element) => element.textContent?.trim() === action)!;
+        button.click();
+      }
+      if (action === 'ACCEPT') {
+        expect(fixture.componentInstance.colorChanges).toEqual([
+          'cmyk(100%, 0%, 100%, 0%)',
+        ]);
+        expect(userChange).toHaveBeenCalledOnceWith('cmyk(100%, 0%, 100%, 0%)');
+        expect(stateService.colorModel).toBe('CMYK');
+      } else {
+        expect(fixture.componentInstance.colorChanges).toEqual([]);
+        expect(userChange).not.toHaveBeenCalled();
+        expect(stateService.colorModel).toBe('HEXA');
+        expect(directive.value).toBe('#ff0000');
+      }
+      expect(directive.isOpen).toBeFalse();
+    });
+  }
 
   it('does not re-emit colorChange for a programmatic write of the same value', () => {
     stateService.set({ value: new Rgba(1, 2, 3, 1), origin: 'state' });

@@ -73,6 +73,7 @@
   </div>
   @if (this.stateService.configuration.display.text) {
     <ngx-colors-text-input
+      [allowedModels]="this.stateService.configuration.allowedModels"
       [formControl]="this.textInputCtrl"
       (commit)="this.onTextInputCommit()"
     ></ngx-colors-text-input>

@@ -10,6 +10,7 @@ import { StateService } from '../../services/state.service';
 import { BehaviorSubject, Subject, delay, of } from 'rxjs';
 import { ColorHelper } from '../../utility/color-helper';
 import { ColorOption } from '../../types/color-option';
+import { ErrorHandler } from '@angular/core';
 
 describe('PaletteComponent', () => {
   let component: PaletteComponent;
@@ -63,6 +64,18 @@ describe('PaletteComponent loading skeleton', () => {
     palette$.next(['#ff0000']);
 
     expect(component.loading).toBeFalse();
+  });
+
+  it('clears loading and reports observable failures through Angular ErrorHandler', () => {
+    const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+    const palette = new Subject<ColorOption[]>();
+    component.palette$ = palette;
+    fixture.detectChanges();
+    const error = new Error('Invalid palette');
+    palette.error(error);
+    expect(component.loading).toBeFalse();
+    expect(component.paletteStack.size).toBe(0);
+    expect(handleError).toHaveBeenCalledOnceWith(error);
   });
 
   it('shows the skeleton while a delayed palette resolves, then renders it', fakeAsync(() => {

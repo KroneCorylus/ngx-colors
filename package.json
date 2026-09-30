@@ -1,6 +1,7 @@
 {
   "name": "ngx-colors",
   "version": "4.0.1",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

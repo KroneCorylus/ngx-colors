@@ -219,12 +219,14 @@ describe('NgxColorsTriggerDirective overlay cleanup', () => {
     <ngx-colors
       ngxColorsTrigger
       [(ngModel)]="value"
+      [disabled]="disabled"
       (open)="onOpen($event)"
       (close)="onClose($event)"
     ></ngx-colors>
   `,
 })
 class OpenCloseHostComponent {
+  disabled = false;
   value = '#ff00ff';
   openCount = 0;
   closeCount = 0;
@@ -275,6 +277,31 @@ describe('NgxColorsTriggerDirective open/close outputs', () => {
 
     expect(fixture.componentInstance.openCount).toBe(1);
     expect(fixture.componentInstance.closeCount).toBe(0);
+  });
+
+  it('closes the open panel when the disabled input becomes true', () => {
+    getTriggerElement().click();
+    expect(getOverlayElement()).toBeTruthy();
+
+    fixture.componentInstance.disabled = true;
+    fixture.detectChanges();
+
+    expect(document.body.querySelector('ngx-colors-overlay')).toBeNull();
+    expect(fixture.componentInstance.value).toBe('#ff00ff');
+  });
+
+  it('closes the open panel when the form control is disabled', () => {
+    getTriggerElement().click();
+    expect(getOverlayElement()).toBeTruthy();
+
+    const trigger = fixture.debugElement
+      .query(By.directive(NgxColorsTriggerDirective))
+      .injector.get(NgxColorsTriggerDirective);
+    trigger.setDisabledState?.(true);
+    fixture.detectChanges();
+
+    expect(document.body.querySelector('ngx-colors-overlay')).toBeNull();
+    expect(fixture.componentInstance.value).toBe('#ff00ff');
   });
 
   it('emits (close) when the panel is closed by clicking outside it', () => {

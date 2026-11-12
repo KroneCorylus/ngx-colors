@@ -78,7 +78,19 @@ export class NgxColorsTriggerDirective
   @HostListener('click') onClick() {
     this.openPanel();
   }
-  @Input() disabled: boolean = false;
+  private _disabled = false;
+
+  @Input() set disabled(disabled: boolean) {
+    this._disabled = disabled;
+    if (disabled && this.isOpen) {
+      this.closePanel();
+    }
+  }
+
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
   @HostBinding('style.opacity') get disabledOpacity(): number {
     return this.disabled ? 0.5 : 1;
   }
